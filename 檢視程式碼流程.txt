@@ -1,0 +1,57 @@
+檔案列表及閱讀順序
+前端 HTML 檔案
+
+index.html：首頁入口，提供導覽列和主要功能的概述。
+login.html：會員登入頁面，使用者輸入帳號和密碼進行登入。
+register.html：會員註冊頁面，包含多個步驟來完成註冊，包括帳號、密碼及車輛資訊等。
+inquiry.html：提交詢價單的頁面，會員可以查詢維修或產品價格。
+query.html：查詢維修記錄的頁面，會員根據車牌號碼和電話號碼來查找記錄。
+控制器 Servlet（後端邏輯）
+
+LoginServlet.java：處理登入請求，進行使用者身份驗證。
+RegisterServlet.java：處理註冊請求，將新會員資訊存入資料庫。
+InquiryServlet.java：處理詢價提交，將會員的詢價資訊存入資料庫。
+InventoryServlet.java：處理庫存相關的更新請求。
+OrderServlet.java：處理訂單的生成，會員確認報價後下單。
+PurchaseRecordServlet.java：處理進貨記錄的新增請求。
+QueryServlet.java：根據會員輸入的車牌和電話號碼來查找維修記錄。
+QuotationServlet.java：處理報價單的生成，供員工提交報價。
+ReportServlet.java：處理報表的生成，返回查詢或統計資料。
+過濾器及驗證
+
+AuthenticationFilter.java（新增）：
+用於對所有請求進行過濾，確保訪問保護頁面時用戶已經登入。
+數據訪問層（DAO，資料庫操作）
+
+UserDao.java：管理會員資訊，包含登入、註冊等功能。
+InquiryDao.java：管理詢價資料的 CRUD 操作。
+InventoryDao.java：管理庫存的更新和查詢。
+OrderDao.java：處理訂單的增刪查改操作。
+PurchaseRecordDao.java：管理進貨記錄資料的處理。
+QuotationDao.java：管理報價資料的增刪查改操作。
+RepairRecordDao.java：管理維修紀錄，新增、更新及查詢維修記錄。
+ReportDao.java：用於處理報表查詢，生成報表的數據源。
+模型類（Model，資料結構）
+
+User.java：會員類別，包含使用者帳號、密碼等屬性。
+Inquiry.java：詢價單模型類別，代表會員的詢價資料。
+Inventory.java：庫存類別，管理商品或零件的庫存。
+Order.java：訂單類別，處理會員的訂單資料。
+PurchaseRecord.java：進貨記錄類別，管理進貨的相關資訊。
+RepairRecord.java：維修記錄類別，管理維修服務的相關資訊。
+Quotation.java（新增）：報價單類別，管理報價的相關資訊。
+Report.java：報表資料的結構化類別。
+ReportData.java（新增）：用於報表生成的資料類別。
+工具類
+
+DBUtil.java：提供連接資料庫的方法，讓各個 DAO 可以重複使用這個連接方式。
+其他
+
+RepairRecordGsonConverter.java（新增）：用於將 RepairRecord 物件轉換為 JSON 格式。
+建議閱讀順序：
+前端頁面（HTML）：先查看各個 HTML 頁面，了解系統為用戶提供的功能，包含 login.html、register.html、inquiry.html、query.html 等。這些頁面代表了系統提供的主要功能。
+控制器 Servlet（後端邏輯）：再看 Servlet 的程式碼，如 LoginServlet.java、RegisterServlet.java 等，了解當使用者在前端頁面操作時，後端如何處理相應的邏輯。
+過濾器及驗證：閱讀 AuthenticationFilter.java，了解如何保護頁面，確保只有經過身份驗證的用戶才能訪問系統功能。
+數據訪問層（DAO）：查看 DAO，例如 UserDao.java、InquiryDao.java，了解系統如何與資料庫互動並存取、操作數據。
+模型類（Model）：檢視模型類，如 User.java、Inquiry.java，了解資料結構是如何設計的，以支援不同的功能。
+工具類（DBUtil）：最後閱讀 DBUtil.java，了解資料庫連接的設定與使用方法。
