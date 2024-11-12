@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>預約服務</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">服務預約</h2>
+        <form id="appointment-form">
+            <div class="mb-3">
+                <label for="service_items" class="form-label">服務項目</label>
+                <select id="service_items" name="service_items" class="form-select" required>
+                    <option value="">請選擇</option>
+                    <option value="maintenance">保養</option>
+                    <option value="repair">維修</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="appointment_date" class="form-label">預約日期</label>
+                <input type="date" id="appointment_date" name="appointment_date" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="appointment_time" class="form-label">預約時間</label>
+                <input type="time" id="appointment_time" name="appointment_time" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">提交預約</button>
+        </form>
+    </div>
+
+    <script src="assets/js/common.js"></script>
+    <script>
+        document.getElementById('appointment-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const data = {
+                service_items: document.getElementById('service_items').value,
+                appointment_date: document.getElementById('appointment_date').value,
+                appointment_time: document.getElementById('appointment_time').value
+            };
+            ajaxRequest('/api/appointments/create.php', 'POST', data, function (response) {
+                alert(response.success ? "預約成功" : "預約失敗：" + response.message);
+            });
+        });
+    </script>
+</body>
+
+</html>

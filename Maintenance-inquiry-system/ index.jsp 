@@ -1,0 +1,100 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page session="true" %>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>維修查詢系統</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <!-- 動態導航欄 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.jsp">維修查詢系統</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <c:choose>
+                        <c:when test="${sessionScope.user_role != null}">
+                            <li class="nav-item"><a class="nav-link" href="profile.jsp">個人資料</a></li>
+                            <li class="nav-item"><a class="nav-link" href="logout.jsp">登出</a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="nav-item"><a class="nav-link" href="login.jsp">登入</a></li>
+                            <li class="nav-item"><a class="nav-link" href="register.jsp">註冊</a></li>
+                        </c:otherwise>
+                    </c:choose>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主內容 -->
+    <main class="container mt-4">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title">歡迎來到維修紀錄查詢系統</h2>
+                        <p class="card-text">我們提供方便快捷的車輛維修紀錄查詢服務。使用我們的系統，您可以輕鬆查找您的維修紀錄，了解車輛的最新狀態。</p>
+                        <a href="query.jsp" class="btn btn-primary btn-lg">立即查詢</a>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h3 class="card-title">系統功能</h3>
+                        <ul>
+                            <li>查找維修紀錄：輸入車牌號碼和電話號碼，即可查詢維修歷史。</li>
+                            <li>用戶註冊和登入：註冊賬號並登入，以便查看和管理維修紀錄。</li>
+                            <li>方便的維修預約：在線預約維修服務，讓您不再浪費時間。（開發中）</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">查詢維修紀錄</h5>
+                                <p class="card-text">查看過往的維修紀錄，了解車輛的維修狀態和保養情況。</p>
+                                <a href="query.jsp" class="btn btn-primary">查詢紀錄</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">預約服務</h5>
+                                <p class="card-text">選擇日期和時間，並提交維修或保養服務的預約請求。</p>
+                                <a href="appointments.jsp" class="btn btn-primary">預約服務</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">滿意度調查</h5>
+                                <p class="card-text">對過去的服務進行評價，並提交您的反饋，以便我們改進服務。</p>
+                                <a href="survey.jsp" class="btn btn-primary">參加調查</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 頁腳 -->
+    <footer class="bg-light text-center py-3 mt-4">
+        <p>&copy; 2024 協作單位：睿煬企業社、康寧大學資管科17.林宸皓13.陳彥丞19.陳宗偉</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+</body>
+</html>
