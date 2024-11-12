@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>庫存管理</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">管理員系統</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">首頁</a></li>
+                <li class="nav-item"><a class="nav-link" href="admin_inventory.html">庫存管理</a></li>
+                <li class="nav-item"><a class="nav-link" href="admin_orders.html">訂單管理</a></li>
+                <li class="nav-item"><a class="nav-link" href="admin_users.html">用戶管理</a></li>
+                <li class="nav-item"><a class="nav-link" href="admin_settings.html">系統設定</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 class="text-center mb-4">庫存管理</h2>
+        <table class="table table-bordered">
+            <thead class="table-primary">
+                <tr>
+                    <th>零件名稱</th>
+                    <th>庫存數量</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="inventory-table-body">
+                <!-- 庫存列表動態生成 -->
+            </tbody>
+        </table>
+        <button class="btn btn-primary" id="add-inventory-btn">新增零件</button>
+    </div>
+
+    <script>
+        // 渲染庫存表格
+        function loadInventory() {
+            fetch('/admin/get-inventory')
+                .then(response => response.json())
+                .then(data => {
+                    const inventoryTableBody = document.getElementById('inventory-table-body');
+                    inventoryTableBody.innerHTML = '';
+                    data.forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${item.partName}</td>
+                            <td>${item.quantity}</td>
+                            <td><button class="btn btn-secondary" onclick="updateInventory('${item.partName}')">更新數量</button></td>
+                        `;
+                        inventoryTableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('無法加載庫存列表:', error));
+        }
+
+        function updateInventory(partName) {
+            const quantity = prompt(`請輸入 ${partName} 的新庫存數量:`);
+            if (quantity !== null) {
+                fetch(`/admin/update-inventory/${partName}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ quantity })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadInventory();
+                        alert('庫存已更新');
+                    } else {
+                        alert('更新失敗');
+                    }
+                })
+                .catch(error => console.error('更新庫存失敗:', error));
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadInventory);
+    </script>
+</body>
+
+</html>

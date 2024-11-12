@@ -1,0 +1,17 @@
+body {
+    font-family: '微軟正黑體', sans-serif;
+    background-color: #f8f8f8;
+}
+
+.navbar {
+    background-color: #66ccff;
+}
+
+.navbar-brand, .nav-link {
+    color: white;
+    font-weight: bold;
+}
+
+.container {
+    margin-top: 50px;
+}
