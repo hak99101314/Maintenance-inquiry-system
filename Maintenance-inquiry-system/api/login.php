@@ -9,6 +9,13 @@ $dbname = "睿煬企業社";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
+// 檢查連接
+if ($conn->connect_error) {
+    die("資料庫連接失敗：" . $conn->connect_error);
+}
+echo "成功連接至資料庫";
+
+
 if ($conn->connect_error) {
     die(json_encode(['success' => false, 'message' => '資料庫連接失敗']));
 }
