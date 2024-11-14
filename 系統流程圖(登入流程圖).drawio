@@ -1,67 +1,70 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36" version="24.7.16">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36" version="24.8.6">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
     <mxGraphModel dx="1434" dy="782" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
-        <mxCell id="nLiXJdlD6BryKtPg3rHf-0" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="nLiXJdlD6BryKtPg3rHf-1" target="nLiXJdlD6BryKtPg3rHf-13">
+        <mxCell id="nLiXJdlD6BryKtPg3rHf-0" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="nLiXJdlD6BryKtPg3rHf-1" target="nLiXJdlD6BryKtPg3rHf-13" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="nLiXJdlD6BryKtPg3rHf-1" value="登入" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="142.5" y="70" width="130" height="40" as="geometry" />
+        <mxCell id="nLiXJdlD6BryKtPg3rHf-1" value="登入" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="130.25" y="110" width="130" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="nLiXJdlD6BryKtPg3rHf-2" value="如果帳號存在" style="rounded=0;html=1;jettySize=auto;orthogonalLoop=1;fontSize=11;endArrow=block;endFill=0;endSize=8;strokeWidth=1;shadow=0;labelBackgroundColor=none;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="nLiXJdlD6BryKtPg3rHf-4" target="nLiXJdlD6BryKtPg3rHf-9">
+        <mxCell id="nLiXJdlD6BryKtPg3rHf-2" value="如果帳號存在" style="rounded=0;html=1;jettySize=auto;orthogonalLoop=1;fontSize=11;endArrow=block;endFill=0;endSize=8;strokeWidth=1;shadow=0;labelBackgroundColor=none;edgeStyle=orthogonalEdgeStyle;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="nLiXJdlD6BryKtPg3rHf-4" target="nLiXJdlD6BryKtPg3rHf-9" edge="1">
           <mxGeometry x="-0.05" y="45" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="nLiXJdlD6BryKtPg3rHf-3" value="如果帳號不存在" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;fontSize=11;endArrow=block;endFill=0;endSize=8;strokeWidth=1;shadow=0;labelBackgroundColor=none;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="nLiXJdlD6BryKtPg3rHf-4" target="nLiXJdlD6BryKtPg3rHf-6">
+        <mxCell id="nLiXJdlD6BryKtPg3rHf-3" value="如果帳號不存在" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;fontSize=11;endArrow=block;endFill=0;endSize=8;strokeWidth=1;shadow=0;labelBackgroundColor=none;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="nLiXJdlD6BryKtPg3rHf-4" target="nLiXJdlD6BryKtPg3rHf-6" edge="1">
           <mxGeometry x="-0.2226" y="11" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="nLiXJdlD6BryKtPg3rHf-4" value="驗證使用者" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="150" y="245" width="115" height="99" as="geometry" />
+        <mxCell id="nLiXJdlD6BryKtPg3rHf-4" value="驗證使用者" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=6;spacingTop=-4;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="137.75" y="285" width="115" height="99" as="geometry" />
         </mxCell>
-        <mxCell id="nLiXJdlD6BryKtPg3rHf-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="nLiXJdlD6BryKtPg3rHf-6" target="nLiXJdlD6BryKtPg3rHf-16">
+        <mxCell id="nLiXJdlD6BryKtPg3rHf-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="nLiXJdlD6BryKtPg3rHf-6" target="nLiXJdlD6BryKtPg3rHf-16" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="nLiXJdlD6BryKtPg3rHf-6" value="提示使用者「帳號不存在」並自動跳轉到註冊頁面" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="414" y="274.5" width="316" height="40" as="geometry" />
+        <mxCell id="nLiXJdlD6BryKtPg3rHf-6" value="提示使用者「帳號不存在」並自動跳轉到註冊頁面" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="401.75" y="314.5" width="316" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="nLiXJdlD6BryKtPg3rHf-7" value="如果密碼正確" style="rounded=0;html=1;jettySize=auto;orthogonalLoop=1;fontSize=11;endArrow=block;endFill=0;endSize=8;strokeWidth=1;shadow=0;labelBackgroundColor=none;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="nLiXJdlD6BryKtPg3rHf-9" target="nLiXJdlD6BryKtPg3rHf-10">
+        <mxCell id="nLiXJdlD6BryKtPg3rHf-7" value="如果密碼正確" style="rounded=0;html=1;jettySize=auto;orthogonalLoop=1;fontSize=11;endArrow=block;endFill=0;endSize=8;strokeWidth=1;shadow=0;labelBackgroundColor=none;edgeStyle=orthogonalEdgeStyle;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="nLiXJdlD6BryKtPg3rHf-9" target="nLiXJdlD6BryKtPg3rHf-10" edge="1">
           <mxGeometry x="-0.0462" y="43" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="nLiXJdlD6BryKtPg3rHf-8" value="密碼錯誤" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;fontSize=11;endArrow=block;endFill=0;endSize=8;strokeWidth=1;shadow=0;labelBackgroundColor=none;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="nLiXJdlD6BryKtPg3rHf-9" target="nLiXJdlD6BryKtPg3rHf-11">
+        <mxCell id="nLiXJdlD6BryKtPg3rHf-8" value="密碼錯誤" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;fontSize=11;endArrow=block;endFill=0;endSize=8;strokeWidth=1;shadow=0;labelBackgroundColor=none;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="nLiXJdlD6BryKtPg3rHf-9" target="nLiXJdlD6BryKtPg3rHf-11" edge="1">
           <mxGeometry y="10" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="nLiXJdlD6BryKtPg3rHf-9" value="檢查密碼是否正確" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="150" y="410" width="115" height="109" as="geometry" />
+        <mxCell id="nLiXJdlD6BryKtPg3rHf-9" value="檢查密碼是否正確" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=6;spacingTop=-4;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="137.75" y="450" width="115" height="109" as="geometry" />
         </mxCell>
-        <mxCell id="nLiXJdlD6BryKtPg3rHf-10" value="設置會話並跳轉到系統首頁" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="121.25" y="600" width="172.5" height="36" as="geometry" />
+        <mxCell id="nLiXJdlD6BryKtPg3rHf-10" value="設置會話並跳轉到系統首頁" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="109" y="640" width="172.5" height="36" as="geometry" />
         </mxCell>
-        <mxCell id="nLiXJdlD6BryKtPg3rHf-11" value="提醒使用者「密碼錯誤」" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="444" y="444.5" width="210" height="40" as="geometry" />
+        <mxCell id="nLiXJdlD6BryKtPg3rHf-11" value="提醒使用者「密碼錯誤」" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="431.75" y="484.5" width="210" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="nLiXJdlD6BryKtPg3rHf-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="nLiXJdlD6BryKtPg3rHf-13" target="nLiXJdlD6BryKtPg3rHf-4">
+        <mxCell id="nLiXJdlD6BryKtPg3rHf-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="nLiXJdlD6BryKtPg3rHf-13" target="nLiXJdlD6BryKtPg3rHf-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="nLiXJdlD6BryKtPg3rHf-13" value="驗證帳號與密碼" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="142.5" y="160" width="130" height="40" as="geometry" />
+        <mxCell id="nLiXJdlD6BryKtPg3rHf-13" value="驗證帳號與密碼" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="130.25" y="200" width="130" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="nLiXJdlD6BryKtPg3rHf-14" value="登入流程圖" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;strokeColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="157.5" y="20" width="100" height="30" as="geometry" />
+        <mxCell id="nLiXJdlD6BryKtPg3rHf-14" value="登入流程圖" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;strokeColor=none;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="145.25" y="60" width="100" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="nLiXJdlD6BryKtPg3rHf-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="nLiXJdlD6BryKtPg3rHf-16" target="nLiXJdlD6BryKtPg3rHf-1">
+        <mxCell id="nLiXJdlD6BryKtPg3rHf-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="nLiXJdlD6BryKtPg3rHf-16" target="nLiXJdlD6BryKtPg3rHf-1" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="nLiXJdlD6BryKtPg3rHf-16" value="註冊完成後，跳回登入頁面" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="487" y="70" width="170" height="40" as="geometry" />
+        <mxCell id="nLiXJdlD6BryKtPg3rHf-16" value="註冊完成後，跳回登入頁面" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="474.75" y="110" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="hqCIcdHdKqObzn2pg9KG-0" value="1.1.1.2" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="165.25" y="30" width="60" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
