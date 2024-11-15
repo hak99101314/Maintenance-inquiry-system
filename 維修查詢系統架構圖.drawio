@@ -525,13 +525,21 @@
         <mxCell id="qS1px_nAEGDlvm55yif1-2" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; font-size: small; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;&amp;nbsp; 1.1.5.3&amp;nbsp;&lt;/span&gt;預約維修" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
           <mxGeometry x="845" y="417" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="LYBCBuEU89iMJcUB3um_-1" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;" edge="1" target="LYBCBuEU89iMJcUB3um_-2" source="i7zBOyGKAb41JnRDGn2z-35" parent="vLOGakIaKndCi6_WX_65-37">
+        <mxCell id="LYBCBuEU89iMJcUB3um_-1" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-35" target="LYBCBuEU89iMJcUB3um_-2" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="-360" y="272" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="LYBCBuEU89iMJcUB3um_-2" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; font-size: small; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;1.1.2.4 車輛資訊更新&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};" vertex="1" parent="vLOGakIaKndCi6_WX_65-37">
+        <mxCell id="LYBCBuEU89iMJcUB3um_-2" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; font-size: small; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;1.1.2.4 車輛資訊更新&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
           <mxGeometry x="650" y="530" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zYZ4bhmDmVf4tej1kryr-1" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;" edge="1" target="zYZ4bhmDmVf4tej1kryr-2" source="i7zBOyGKAb41JnRDGn2z-102" parent="vLOGakIaKndCi6_WX_65-37">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="890" y="512" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zYZ4bhmDmVf4tej1kryr-2" value="1.2.3.4 預約管理" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};" vertex="1" parent="vLOGakIaKndCi6_WX_65-37">
+          <mxGeometry x="1510" y="522" width="120" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
