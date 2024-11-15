@@ -48,6 +48,27 @@
         <mxCell id="nmBEmq-NwXMAFS2sOP7L-0" value="&lt;div&gt;系統管理員登入頁面&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="180" y="110" width="130" height="30" as="geometry" />
         </mxCell>
+        <mxCell id="yKSuwgebeVDcDCGIUPHs-0" value="1.2.1.2" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="215" y="78" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="yKSuwgebeVDcDCGIUPHs-1" value="1.2.1.2.1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="105" y="157" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="yKSuwgebeVDcDCGIUPHs-2" value="1.2.1.2.2" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="105" y="267" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="yKSuwgebeVDcDCGIUPHs-3" value="1.2.1.2.2.1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="625" y="267" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="yKSuwgebeVDcDCGIUPHs-4" value="1.2.1.2.3" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="105" y="387" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="yKSuwgebeVDcDCGIUPHs-5" value="1.2.1.2.3.1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="595" y="387" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="yKSuwgebeVDcDCGIUPHs-6" value="1.2.1.2.4" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="60" y="527" width="70" height="30" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
