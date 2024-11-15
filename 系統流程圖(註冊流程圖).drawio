@@ -60,6 +60,30 @@
         <mxCell id="YU8IBkJR2fgqWBuLfcPq-16" value="驗證手機號碼" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" parent="1" vertex="1">
           <mxGeometry x="160" y="222" width="120" height="40" as="geometry" />
         </mxCell>
+        <mxCell id="_3Ja_STK182xu5NTVRt1-2" value="1.1.1.1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="190" y="58" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="_3Ja_STK182xu5NTVRt1-3" value="1.1.1.1.1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="75" y="147" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="_3Ja_STK182xu5NTVRt1-4" value="1.1.1.1.2" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="80" y="227" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="_3Ja_STK182xu5NTVRt1-5" value="1.1.1.1.3" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="75" y="337" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="_3Ja_STK182xu5NTVRt1-6" value="1.1.1.1.3.1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="675" y="337" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="_3Ja_STK182xu5NTVRt1-7" value="1.1.1.1.4" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="75" y="457" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="_3Ja_STK182xu5NTVRt1-8" value="1.1.1.1.4.1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="675" y="457" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="_3Ja_STK182xu5NTVRt1-9" value="1.1.1.1.5" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="414" y="667" width="70" height="30" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
