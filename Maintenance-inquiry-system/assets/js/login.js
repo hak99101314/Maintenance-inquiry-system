@@ -1,17 +1,19 @@
-function login() {
-    console.log('Login script loaded'); // 檢查 login.js 是否加載成功
+// 登入功能
+async function login(event) {
+    event.preventDefault(); // 防止表單提交刷新頁面
+
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    fetch('api/login.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password })
-    })
-    .then(response => response.json())
-    .then(data => {
+    try {
+        const response = await fetch('api/login.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
         if (data.success) {
             localStorage.setItem('user_role', data.user_role);
             localStorage.setItem('username', data.username);
@@ -23,38 +25,38 @@ function login() {
                 window.location.href = 'index.html';
             }
         } else {
-            alert('登入失敗：帳號或密碼錯誤');
+            alert(data.message || '登入失敗：帳號或密碼錯誤');
         }
-    })
-    .catch(error => console.error('Error:', error));
+    } catch (error) {
+        console.error('Error:', error);
+        alert('伺服器發生錯誤，請稍後再試');
+    }
 }
 
-function showForgotPasswordModal() {
-    document.getElementById('forgotPasswordModal').style.display = 'block';
-}
+// 密碼重設功能
+async function requestPasswordReset(event) {
+    event.preventDefault(); // 防止表單提交刷新頁面
 
-function closeForgotPasswordModal() {
-    document.getElementById('forgotPasswordModal').style.display = 'none';
-}
-
-function requestPasswordReset() {
     const email = document.getElementById('resetEmail').value;
 
-    fetch('api/requestPasswordReset.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email })
-    })
-    .then(response => response.json())
-    .then(data => {
+    try {
+        const response = await fetch('api/requestPasswordReset.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+
         if (data.success) {
             alert('重設密碼的連結已發送至您的電子郵件');
-            closeForgotPasswordModal();
+            const modal = bootstrap.Modal.getInstance(document.getElementById('forgotPasswordModal'));
+            modal.hide();
         } else {
-            alert('未找到此電子郵件地址');
+            alert(data.message || '未找到此電子郵件地址');
         }
-    })
-    .catch(error => console.error('Error:', error));
+    } catch (error) {
+        console.error('Error:', error);
+        alert('伺服器發生錯誤，請稍後再試');
+    }
 }
