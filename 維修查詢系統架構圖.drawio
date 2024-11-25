@@ -136,7 +136,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-62" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; font-size: small; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;1.1.4.2 確認報價（下單）&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-rl;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="710" y="263.5" width="44" height="170" as="geometry" />
+          <mxGeometry x="700" y="258" width="44" height="170" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-63" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-5" target="i7zBOyGKAb41JnRDGn2z-64" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -558,9 +558,7 @@
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="710" y="236.75" as="sourcePoint" />
             <mxPoint x="730" y="264.5" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="720" y="250" />
-            </Array>
+            <Array as="points" />
           </mxGeometry>
         </mxCell>
         <mxCell id="4PGPDPuOVmFuvjaG2hXw-11" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; font-size: small; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;1.2.6.4 維修工時報表&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-rl;" vertex="1" parent="vLOGakIaKndCi6_WX_65-37">
