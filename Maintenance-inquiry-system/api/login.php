@@ -30,12 +30,11 @@ $user = $data['username'];
 $pass = $data['password'];
 
 // 檢查用戶
-$sql = "SELECT username, full_name, role, password_hash FROM users WHERE username = ?";
+$sql = "SELECT username, role, password_hash FROM users WHERE username = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $user);
 $stmt->execute();
 $result = $stmt->get_result();
-
 
 // 驗證用戶
 if ($result->num_rows === 1) {
@@ -45,7 +44,6 @@ if ($result->num_rows === 1) {
         echo json_encode([
             'success' => true,
             'user_role' => $userData['role'],
-            'full_name' => $userData['full_name'],
             'username' => $userData['username']
         ]);
     } else {
