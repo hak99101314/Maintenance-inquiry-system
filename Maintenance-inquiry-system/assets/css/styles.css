@@ -1,107 +1,137 @@
 /* 全局樣式 */
 body {
-    font-family: '微軟正黑體', sans-serif;
+    font-family: '微軟正黑體', Arial, sans-serif;
     background-color: #f8f8f8;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23d1e8ff' fill-opacity='0.4'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     margin: 0;
     padding: 0;
+    color: #333;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+p {
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+a {
+    color: #66ccff;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: #4da6ff;
+    text-decoration: underline;
 }
 
 /* 導航欄樣式 */
 .navbar {
     background-color: #66ccff;
+    padding: 0.75rem 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-brand, .nav-link {
-    color: white;
+    color: white !important;
     font-weight: bold;
 }
 
 .nav-link.active {
-    text-decoration: underline;
+    color: #ffffff !important;
+    font-weight: bold;
+    border-bottom: 2px solid #4da6ff;
 }
 
 /* 卡片樣式 */
 .card {
-    border-radius: 20px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
-    animation: fadeIn 1s ease;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* 表單控制項 */
+.card-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.card-text {
+    color: #555;
+}
+
+/* 表單樣式 */
+.form-label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
 .form-control {
-    border-radius: 20px;
-    border-color: #ced4da;
-    transition: all 0.2s ease;
+    border-radius: 15px;
+    border: 1px solid #ced4da;
+    padding: 0.75rem;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .form-control:focus {
-    border-color: #66ccff;
+    border-color: #4da6ff;
     box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
 }
 
 /* 按鈕樣式 */
-.btn-primary, .btn-outline-secondary {
-    border-radius: 20px;
-    transition: all 0.3s ease;
-}
-
 .btn-primary {
     background-color: #66ccff;
     border-color: #66ccff;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
 }
 
 .btn-primary:hover {
     background-color: #4da6ff;
     border-color: #4da6ff;
     transform: translateY(-2px);
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.btn-outline-secondary:hover {
-    background-color: #6c757d;
-    color: #ffffff;
-    border-color: #6c757d;
-    transform: translateY(-2px);
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* 標題樣式 */
-h2 {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-/* 標籤和提示文本 */
-label {
-    font-weight: bold;
-    color: #333;
-}
-
-.hidden {
-    display: none;
-}
-
-/* 表單步驟切換動畫 */
-.fade-in {
-    animation: fadeIn 0.5s ease-in-out;
+.btn-primary:disabled {
+    background-color: #a6cfff;
+    border-color: #a6cfff;
+    cursor: not-allowed;
+    opacity: 0.65;
 }
 
 /* 載入動畫樣式 */
 .spinner-border {
     width: 3rem;
     height: 3rem;
+    border-width: 0.4rem;
+    margin-top: 1rem;
+}
+
+/* 頁腳樣式 */
+footer {
+    background-color: #66ccff;
+    color: #ffffff;
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 0.875rem;
+    margin-top: 2rem;
 }

@@ -2,8 +2,13 @@
 async function login(event) {
     event.preventDefault(); // 防止表單提交刷新頁面
 
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    if (!username || !password) {
+        alert('請輸入帳號和密碼');
+        return;
+    }
 
     try {
         const response = await fetch('api/login.php', {
@@ -15,10 +20,16 @@ async function login(event) {
         const data = await response.json();
 
         if (data.success) {
-            localStorage.setItem('user_role', data.user_role);
-            localStorage.setItem('username', data.username);
+            // 儲存用戶信息到 Local Storage
+            localStorage.setItem('user_id', data.user_id); // 儲存用戶 ID
+            localStorage.setItem('user_role', data.user_role); // 儲存角色
+            localStorage.setItem('username', data.username); // 儲存帳號
+            localStorage.setItem('full_name', data.full_name); // 儲存姓名
 
-            // 判別用戶角色並重定向
+            // 顯示歡迎訊息
+            alert(`歡迎 ${data.full_name} (${data.user_role === 'admin' ? '管理員' : (data.user_role === 'staff' ? '員工' : '會員')}) 登入！`);
+
+            // 根據角色進行重定向
             if (data.user_role === 'admin' || data.user_role === 'staff') {
                 window.location.href = 'admin_users.html';
             } else {
@@ -37,7 +48,12 @@ async function login(event) {
 async function requestPasswordReset(event) {
     event.preventDefault(); // 防止表單提交刷新頁面
 
-    const email = document.getElementById('resetEmail').value;
+    const email = document.getElementById('resetEmail').value.trim();
+
+    if (!email) {
+        alert('請輸入電子郵件');
+        return;
+    }
 
     try {
         const response = await fetch('api/requestPasswordReset.php', {
@@ -59,4 +75,11 @@ async function requestPasswordReset(event) {
         console.error('Error:', error);
         alert('伺服器發生錯誤，請稍後再試');
     }
+}
+
+// 登出功能
+function logout() {
+    localStorage.clear(); // 清除 Local Storage 資料
+    alert('您已成功登出');
+    window.location.href = 'login.html';
 }

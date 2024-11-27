@@ -1,69 +1,84 @@
-// 步驟 1：檢查用戶名和電子郵件
-document.getElementById('step1-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    document.getElementById('step1').classList.add('hidden');
-    document.getElementById('step2').classList.remove('hidden');
-});
+document.addEventListener('DOMContentLoaded', () => {
+    const step1Next = document.getElementById('step1-next');
+    const step2Next = document.getElementById('step2-next');
+    const step2Prev = document.getElementById('step2-prev');
+    const step3Prev = document.getElementById('step3-prev');
 
-// 步驟 2：檢查密碼
-document.getElementById('step2-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirm_password').value;
-    if (password !== confirmPassword) {
-        alert('密碼與確認密碼不一致');
-        return;
-    }
-    document.getElementById('step2').classList.add('hidden');
-    document.getElementById('step3').classList.remove('hidden');
-});
+    // 下一步: 第1步到第2步
+    step1Next.addEventListener('click', () => {
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const fullName = document.getElementById('full_name').value.trim();
+        const contactNumber = document.getElementById('contact_number').value.trim();
 
-// 步驟 3：提交最終註冊表單
-document.getElementById('step3-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    document.getElementById('loading').style.display = 'block';
-
-    const formData = {
-        username: document.getElementById('username').value,
-        email: document.getElementById('email').value,
-        password: document.getElementById('password').value,
-        car_make: document.getElementById('car_make').value,
-        plate_number: document.getElementById('plate_number').value,
-        engine_number: document.getElementById('engine_number').value,
-        year_of_manufacture: document.getElementById('year_of_manufacture').value,
-        month_of_manufacture: document.getElementById('month_of_manufacture').value,
-        full_name: document.getElementById('full_name').value,
-        contact_number: document.getElementById('contact_number').value,
-    };
-
-    fetch('api/register.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('loading').style.display = 'none';
-        if (data.success) {
-            alert('註冊成功！請登入');
-            window.location.href = 'login.html';
+        if (username && email && fullName && contactNumber) {
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
         } else {
-            alert('註冊失敗：' + data.message);
+            alert('請填寫所有欄位');
         }
-    })
-    .catch(error => {
-        document.getElementById('loading').style.display = 'none';
-        console.error('Error:', error);
+    });
+
+    // 下一步: 第2步到第3步
+    step2Next.addEventListener('click', () => {
+        const password = document.getElementById('password').value.trim();
+        const confirmPassword = document.getElementById('confirm_password').value.trim();
+
+        if (password && confirmPassword && password === confirmPassword) {
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.remove('hidden');
+        } else {
+            alert('密碼與確認密碼不一致');
+        }
+    });
+
+    // 上一步: 第2步到第1步
+    step2Prev.addEventListener('click', () => {
+        document.getElementById('step2').classList.add('hidden');
+        document.getElementById('step1').classList.remove('hidden');
+    });
+
+    // 上一步: 第3步到第2步
+    step3Prev.addEventListener('click', () => {
+        document.getElementById('step3').classList.add('hidden');
+        document.getElementById('step2').classList.remove('hidden');
+    });
+
+    // 提交表單: 第3步
+    document.getElementById('step3-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        document.getElementById('loading').classList.remove('hidden');
+
+        const formData = {
+            username: document.getElementById('username').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            full_name: document.getElementById('full_name').value.trim(),
+            contact_number: document.getElementById('contact_number').value.trim(),
+            password: document.getElementById('password').value.trim(),
+            car_make: document.getElementById('car_make').value.trim(),
+            plate_number: document.getElementById('plate_number').value.trim(),
+            engine_number: document.getElementById('engine_number').value.trim(),
+        };
+
+        fetch('api/register.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                document.getElementById('loading').classList.add('hidden');
+                if (data.success) {
+                    alert('註冊成功！');
+                    window.location.href = 'login.html';
+                } else {
+                    alert('註冊失敗：' + data.message);
+                }
+            })
+            .catch((error) => {
+                document.getElementById('loading').classList.add('hidden');
+                console.error('Error:', error);
+                alert('伺服器發生錯誤，請稍後再試');
+            });
     });
 });
-
-// 顯示服務條款和隱私政策
-function showTerms() {
-    alert('服務條款: 我們提供的服務是免費的，請遵守相關法律法規。');
-}
-
-function showPrivacy() {
-    alert('隱私政策: 我們將妥善保護您的個人隱私，信息不會被洩露。');
-}

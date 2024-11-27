@@ -1,6 +1,7 @@
 <?php
-header('Content-Type: application/json');
 session_start();
+
+header('Content-Type: application/json');
 
 $servername = "localhost";
 $username = "root";
@@ -21,20 +22,21 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-$sql = "SELECT service, date, time FROM appointments WHERE user_id = ?";
+$sql = "SELECT u.username, u.full_name, u.email, u.contact_number, 
+               v.license_plate, v.brand, v.model
+        FROM users u
+        LEFT JOIN vehicles v ON u.user_id = v.owner_id
+        WHERE u.user_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
-    $appointments = [];
-    while ($row = $result->fetch_assoc()) {
-        $appointments[] = $row;
-    }
-    echo json_encode(['success' => true, 'appointments' => $appointments]);
+    $data = $result->fetch_assoc();
+    echo json_encode(['success' => true, 'data' => $data]);
 } else {
-    echo json_encode(['success' => false, 'message' => '沒有預約紀錄']);
+    echo json_encode(['success' => false, 'message' => '無法找到用戶資料']);
 }
 
 $stmt->close();

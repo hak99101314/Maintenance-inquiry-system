@@ -1,7 +1,5 @@
 <?php
 header('Content-Type: application/json');
-session_start();
-
 $servername = "localhost";
 $username = "root";
 $password = "karry,roy,jackson";
@@ -14,27 +12,26 @@ if ($conn->connect_error) {
     exit;
 }
 
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => false, 'message' => '未登入']);
+// 獲取 user_id
+$user_id = $_GET['user_id'] ?? null;
+
+if (!$user_id) {
+    echo json_encode(['success' => false, 'message' => '用戶ID未提供']);
     exit;
 }
 
-$user_id = $_SESSION['user_id'];
-
-$sql = "SELECT service, date, time FROM appointments WHERE user_id = ?";
+// 查詢用戶資料
+$sql = "SELECT user_id, username, full_name, role FROM users WHERE user_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
-    $appointments = [];
-    while ($row = $result->fetch_assoc()) {
-        $appointments[] = $row;
-    }
-    echo json_encode(['success' => true, 'appointments' => $appointments]);
+    $user = $result->fetch_assoc();
+    echo json_encode(['success' => true, 'data' => $user]);
 } else {
-    echo json_encode(['success' => false, 'message' => '沒有預約紀錄']);
+    echo json_encode(['success' => false, 'message' => '用戶不存在']);
 }
 
 $stmt->close();

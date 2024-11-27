@@ -1,59 +1,63 @@
 <?php
 header('Content-Type: application/json');
+session_start();
 
-// 接收前端的 JSON 數據
-$data = json_decode(file_get_contents("php://input"), true);
-
-// 檢查是否提供帳號和密碼
-if (!isset($data['username']) || !isset($data['password'])) {
-    echo json_encode(['success' => false, 'message' => '請提供帳號和密碼']);
-    exit;
-}
-
-// 資料庫配置
 $servername = "localhost";
 $username = "root";
 $password = "karry,roy,jackson";
 $dbname = "睿煬企業社";
 
-// 建立資料庫連接
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// 檢查連接
+// 檢查資料庫連接
 if ($conn->connect_error) {
     echo json_encode(['success' => false, 'message' => '資料庫連接失敗：' . $conn->connect_error]);
     exit;
 }
 
-// 取得用戶名和密碼
-$user = $data['username'];
-$pass = $data['password'];
+// 獲取請求的 JSON 資料
+$data = json_decode(file_get_contents("php://input"), true);
+$username = $data['username'] ?? null;
+$password = $data['password'] ?? null;
 
-// 檢查用戶
-$sql = "SELECT username, role, password_hash FROM users WHERE username = ?";
+// 檢查帳號和密碼是否存在
+if (!$username || !$password) {
+    echo json_encode(['success' => false, 'message' => '請提供帳號和密碼']);
+    exit;
+}
+
+// 查詢用戶資料
+$sql = "SELECT user_id, username, password_hash, full_name, role FROM users WHERE username = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $user);
+$stmt->bind_param("s", $username);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// 驗證用戶
 if ($result->num_rows === 1) {
-    $userData = $result->fetch_assoc();
+    $user = $result->fetch_assoc();
 
-    if (password_verify($pass, $userData['password_hash'])) {
+    // 驗證密碼
+    if (password_verify($password, $user['password_hash'])) {
+        // 儲存到 Session
+        $_SESSION['user_id'] = $user['user_id'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['full_name'] = $user['full_name'];
+        $_SESSION['role'] = $user['role'];
+
+        // 回傳成功訊息和用戶資訊
         echo json_encode([
             'success' => true,
-            'user_role' => $userData['role'],
-            'username' => $userData['username']
+            'user_id' => $user['user_id'],
+            'username' => $user['username'],
+            'full_name' => $user['full_name'],
+            'user_role' => $user['role']
         ]);
     } else {
-        echo json_encode(['success' => false, 'message' => '帳號或密碼錯誤']);
+        echo json_encode(['success' => false, 'message' => '密碼錯誤']);
     }
 } else {
-    echo json_encode(['success' => false, 'message' => '帳號或密碼錯誤']);
+    echo json_encode(['success' => false, 'message' => '帳號不存在']);
 }
 
-// 關閉連接
 $stmt->close();
 $conn->close();
-?>
