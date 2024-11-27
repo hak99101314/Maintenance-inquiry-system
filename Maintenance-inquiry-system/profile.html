@@ -10,27 +10,6 @@
 </head>
 
 <body>
-    <!-- 導覽列 -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="index.html">維修查詢系統</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">首頁</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="profile.html">用戶資料</a></li>
-                    <li class="nav-item"><a class="nav-link" href="appointments.html">預約維修</a></li>
-                    <li class="nav-item"><a class="nav-link" href="survey.html">滿意度調查</a></li>
-                    <li class="nav-item"><a class="nav-link" href="query.html">查詢紀錄</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="logout()">登出</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- 主內容 -->
     <div class="container mt-5">
         <h2 class="text-center mb-4">用戶資料</h2>
         <form id="profile-form" class="p-4 border rounded bg-light">
@@ -61,16 +40,36 @@
                 <label for="brand" class="form-label">品牌</label>
                 <input type="text" id="brand" name="brand" class="form-control">
             </div>
-            <div class="mb-3">
-                <label for="model" class="form-label">型號</label>
-                <input type="text" id="model" name="model" class="form-control">
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100" id="save-profile">保存更改</button>
+            <button type="submit" class="btn btn-primary w-100">保存更改</button>
         </form>
     </div>
 
-    <script src="assets/js/profile.js"></script>
+    <script src="assets/js/common.js"></script>
+    <script>
+        function loadProfile() {
+            ajaxRequest('/api/user/getProfile.php', 'GET', null, function (profile) {
+                document.getElementById('full_name').value = profile.full_name;
+                document.getElementById('contact_number').value = profile.contact_number;
+                document.getElementById('license_plate').value = profile.license_plate;
+                document.getElementById('brand').value = profile.brand;
+            });
+        }
+
+        document.getElementById('profile-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const data = {
+                full_name: document.getElementById('full_name').value,
+                contact_number: document.getElementById('contact_number').value,
+                license_plate: document.getElementById('license_plate').value,
+                brand: document.getElementById('brand').value
+            };
+            ajaxRequest('/api/user/updateProfile.php', 'POST', data, function (response) {
+                alert(response.success ? "更新成功" : "更新失敗：" + response.message);
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', loadProfile);
+    </script>
 </body>
 
 </html>

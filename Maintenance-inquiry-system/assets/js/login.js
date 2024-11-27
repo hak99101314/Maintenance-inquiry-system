@@ -20,16 +20,10 @@ async function login(event) {
         const data = await response.json();
 
         if (data.success) {
-            // 儲存用戶信息到 Local Storage
-            localStorage.setItem('user_id', data.user_id); // 儲存用戶 ID
-            localStorage.setItem('user_role', data.user_role); // 儲存角色
-            localStorage.setItem('username', data.username); // 儲存帳號
-            localStorage.setItem('full_name', data.full_name); // 儲存姓名
+            localStorage.setItem('user_role', data.user_role);
+            localStorage.setItem('username', data.username);
 
-            // 顯示歡迎訊息
-            alert(`歡迎 ${data.full_name} (${data.user_role === 'admin' ? '管理員' : (data.user_role === 'staff' ? '員工' : '會員')}) 登入！`);
-
-            // 根據角色進行重定向
+            // 判別用戶角色並重定向
             if (data.user_role === 'admin' || data.user_role === 'staff') {
                 window.location.href = 'admin_users.html';
             } else {
