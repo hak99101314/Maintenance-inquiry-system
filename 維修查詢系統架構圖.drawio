@@ -5,7 +5,7 @@
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="vLOGakIaKndCi6_WX_65-37" value="系統架構" style="swimlane;startSize=20;horizontal=1;containerType=tree;textShadow=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;fontSize=15;" parent="1" vertex="1">
-          <mxGeometry x="-660" y="270" width="1740" height="900" as="geometry" />
+          <mxGeometry x="-660" y="270" width="1850" height="900" as="geometry" />
         </mxCell>
         <mxCell id="vLOGakIaKndCi6_WX_65-39" value="維修查詢系統" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
           <mxGeometry x="994" y="66" width="120" height="40" as="geometry" />
