@@ -1,11 +1,11 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="25.0.3">
   <diagram id="prtHgNgQTEPvFCAcTncT" name="Page-1">
-    <mxGraphModel dx="2161" dy="408" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="2889" dy="707" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="vLOGakIaKndCi6_WX_65-37" value="系統架構" style="swimlane;startSize=20;horizontal=1;containerType=tree;textShadow=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;fontSize=15;" parent="1" vertex="1">
-          <mxGeometry x="-390" y="10" width="2880" height="900" as="geometry" />
+          <mxGeometry x="-80" y="10" width="2570" height="900" as="geometry" />
         </mxCell>
         <mxCell id="vLOGakIaKndCi6_WX_65-39" value="維修查詢系統" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
           <mxGeometry x="1380" y="30" width="120" height="40" as="geometry" />
@@ -22,90 +22,90 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-5" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;1.1 會員功能&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="260" y="180" width="120" height="40" as="geometry" />
+          <mxGeometry x="560" y="180" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-8" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-5" target="i7zBOyGKAb41JnRDGn2z-9" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="470" y="154" as="sourcePoint" />
+            <mxPoint x="770" y="154" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-9" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;&amp;nbsp;1.1.1 註冊與登入&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="100" y="300" width="120" height="40" as="geometry" />
+          <mxGeometry x="400" y="300" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-12" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-9" target="i7zBOyGKAb41JnRDGn2z-13" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="330" y="286" as="sourcePoint" />
+            <mxPoint x="630" y="286" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-13" value="1.1.1&lt;span style=&quot;background-color: initial;&quot;&gt;.1 註 冊 新 會 員&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-lr;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="190" y="416.5" width="44" height="170" as="geometry" />
+          <mxGeometry x="490" y="416.5" width="44" height="170" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-14" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-9" target="i7zBOyGKAb41JnRDGn2z-15" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="160" y="360" as="sourcePoint" />
-            <mxPoint x="90" y="383" as="targetPoint" />
+            <mxPoint x="460" y="360" as="sourcePoint" />
+            <mxPoint x="390" y="383" as="targetPoint" />
             <Array as="points" />
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-15" value="1.1.1.2&amp;nbsp; 登入系統" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};align=center;rotation=0;textDirection=vertical-lr;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="110" y="415.5" width="44" height="170" as="geometry" />
+          <mxGeometry x="410" y="415.5" width="44" height="170" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-16" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-15" target="i7zBOyGKAb41JnRDGn2z-17" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="340" y="408" as="sourcePoint" />
+            <mxPoint x="640" y="408" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-17" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;&amp;nbsp;1.1.1.2.1 檢查會員身份&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-lr;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="170" y="642" width="44" height="170" as="geometry" />
+          <mxGeometry x="470" y="642" width="44" height="170" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-18" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-15" target="i7zBOyGKAb41JnRDGn2z-19" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="210" y="488" as="sourcePoint" />
+            <mxPoint x="510" y="488" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-19" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;&amp;nbsp; 1.1.1.2.2 忘記密碼&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-lr;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="50" y="642" width="40" height="170" as="geometry" />
+          <mxGeometry x="350" y="642" width="40" height="170" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-34" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-5" target="i7zBOyGKAb41JnRDGn2z-35" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="340" y="234" as="sourcePoint" />
+            <mxPoint x="640" y="234" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-35" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;1.1.2 資料管理&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="270" y="300" width="120" height="40" as="geometry" />
+          <mxGeometry x="570" y="300" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-36" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-35" target="i7zBOyGKAb41JnRDGn2z-37" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="330" y="286" as="sourcePoint" />
+            <mxPoint x="630" y="286" as="sourcePoint" />
             <Array as="points">
-              <mxPoint x="330" y="372" />
+              <mxPoint x="630" y="372" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-37" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;1.1.2.1 修改個人資料&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-lr;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="250" y="417.5" width="40" height="170" as="geometry" />
+          <mxGeometry x="550" y="417.5" width="40" height="170" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-39" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;1.1.2.2 更改密碼&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-rl;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="300" y="418.75" width="40" height="170" as="geometry" />
+          <mxGeometry x="600" y="418.75" width="40" height="170" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-63" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-5" target="i7zBOyGKAb41JnRDGn2z-64" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="-300" y="280" as="sourcePoint" />
+            <mxPoint y="280" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-64" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;&amp;nbsp; 1.1.3 訂單管理&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="500" y="300" width="120" height="40" as="geometry" />
+          <mxGeometry x="800" y="300" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-65" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-64" target="i7zBOyGKAb41JnRDGn2z-66" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="-580" y="332" as="sourcePoint" />
+            <mxPoint x="-280" y="332" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-66" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;&amp;nbsp;&amp;nbsp; 1.1.3.1 查看訂單狀態&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-rl;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="490" y="418" width="40" height="150" as="geometry" />
+          <mxGeometry x="790" y="418" width="40" height="150" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-68" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;&amp;nbsp;&amp;nbsp; 1.1.3.2 訂單維修進度追蹤&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-rl;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="560" y="418" width="50" height="185.75" as="geometry" />
+          <mxGeometry x="860" y="418" width="50" height="185.75" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-79" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" target="i7zBOyGKAb41JnRDGn2z-80" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -205,70 +205,70 @@
           <mxGeometry x="1750" y="418.75" width="44" height="170" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-129" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;1.3.2 系統設定&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="2670" y="304.5" width="120" height="50" as="geometry" />
+          <mxGeometry x="2360" y="303.5" width="120" height="50" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-131" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-7" target="i7zBOyGKAb41JnRDGn2z-132" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1520" y="280" as="sourcePoint" />
+            <mxPoint x="1210" y="279" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-132" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;&amp;nbsp; 1.3.1 用戶管理&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="2280" y="300" width="120" height="50" as="geometry" />
+          <mxGeometry x="1970" y="299" width="120" height="50" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-135" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-132" target="i7zBOyGKAb41JnRDGn2z-136" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1510" y="332" as="sourcePoint" />
+            <mxPoint x="1200" y="331" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-136" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;1.3.1.1 查看所有用戶&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-rl;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="2250" y="416.5" width="50" height="163.5" as="geometry" />
+          <mxGeometry x="1940" y="415.5" width="50" height="163.5" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-137" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=horizontal;startArrow=none;endArrow=none;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-132" target="i7zBOyGKAb41JnRDGn2z-138" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="2349.75" y="362" as="sourcePoint" />
-            <mxPoint x="2350.25" y="398.3800000000001" as="targetPoint" />
+            <mxPoint x="2039.75" y="361" as="sourcePoint" />
+            <mxPoint x="2040.25" y="397.3800000000001" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="2340" y="392" />
+              <mxPoint x="2030" y="391" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-138" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; background-color: rgb(255, 255, 255);&quot;&gt;1.3.1.2 新增/刪除用戶&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-rl;align=center;verticalAlign=middle;labelPosition=center;verticalLabelPosition=middle;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="2315" y="414.75" width="50" height="168" as="geometry" />
+          <mxGeometry x="2005" y="413.75" width="50" height="168" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-139" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-132" target="i7zBOyGKAb41JnRDGn2z-140" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1380" y="532" as="sourcePoint" />
+            <mxPoint x="1070" y="531" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-140" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;1.3.1.3 更新用戶權限&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-rl;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="2390" y="416.5" width="50" height="170" as="geometry" />
+          <mxGeometry x="2080" y="415.5" width="50" height="170" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-141" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-129" target="i7zBOyGKAb41JnRDGn2z-142" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1630" y="336.5" as="sourcePoint" />
+            <mxPoint x="1320" y="335.5" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-142" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;&amp;nbsp;1.3.2.1 調整系統參數&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-rl;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="2630" y="416.5" width="50" height="166" as="geometry" />
+          <mxGeometry x="2320" y="415.5" width="50" height="166" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-143" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-129" target="i7zBOyGKAb41JnRDGn2z-144" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1630" y="456.5" as="sourcePoint" />
+            <mxPoint x="1320" y="455.5" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-144" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;1.3.2.2 系統數據備份&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-rl;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="2705" y="414.75" width="50" height="167" as="geometry" />
+          <mxGeometry x="2395" y="413.75" width="50" height="167" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-145" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-129" target="i7zBOyGKAb41JnRDGn2z-146" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1630" y="536.5" as="sourcePoint" />
+            <mxPoint x="1320" y="535.5" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-146" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;&amp;nbsp; 1.3.2.3 日誌管理&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-rl;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="2784" y="416.5" width="50" height="170" as="geometry" />
+          <mxGeometry x="2474" y="415.5" width="50" height="170" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-7" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;&amp;nbsp; 1.3 管理員功能&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="2560" y="180" width="120" height="40" as="geometry" />
+          <mxGeometry x="2250" y="179" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-130" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-7" target="i7zBOyGKAb41JnRDGn2z-129" edge="1">
           <mxGeometry relative="1" as="geometry" />
@@ -280,14 +280,14 @@
         </mxCell>
         <mxCell id="CAXlTMmM8GYfuFRi7L40-3" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-35" target="CAXlTMmM8GYfuFRi7L40-4" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="-370" y="382" as="sourcePoint" />
+            <mxPoint x="-70" y="382" as="sourcePoint" />
             <Array as="points">
-              <mxPoint x="330" y="372" />
+              <mxPoint x="630" y="372" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="CAXlTMmM8GYfuFRi7L40-4" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;1.1.2.3 顯示車輛信息&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-rl;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="360" y="416.75" width="40" height="173.5" as="geometry" />
+          <mxGeometry x="660" y="416.75" width="40" height="173.5" as="geometry" />
         </mxCell>
         <mxCell id="fq9uPXwty8QXhf4ej4uf-1" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-112" target="fq9uPXwty8QXhf4ej4uf-2" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -299,11 +299,11 @@
         </mxCell>
         <mxCell id="qS1px_nAEGDlvm55yif1-1" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-64" target="qS1px_nAEGDlvm55yif1-2" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="-640" y="382" as="sourcePoint" />
+            <mxPoint x="-340" y="382" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="qS1px_nAEGDlvm55yif1-2" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;&amp;nbsp; 1.1.3.3&amp;nbsp;&lt;/span&gt;預約維修" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-rl;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="620" y="418" width="35" height="180" as="geometry" />
+          <mxGeometry x="920" y="418" width="35" height="180" as="geometry" />
         </mxCell>
         <mxCell id="zYZ4bhmDmVf4tej1kryr-1" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-82" target="zYZ4bhmDmVf4tej1kryr-2" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -315,30 +315,30 @@
           <mxGeometry x="1534" y="416.5" width="44" height="170" as="geometry" />
         </mxCell>
         <mxCell id="wiIu2HbstxolNT0k3t43-13" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;1.1.2.4 車輛資訊更新&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-rl;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="420" y="417.5" width="40" height="173.5" as="geometry" />
+          <mxGeometry x="720" y="417.5" width="40" height="173.5" as="geometry" />
         </mxCell>
         <mxCell id="wiIu2HbstxolNT0k3t43-14" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" target="wiIu2HbstxolNT0k3t43-13" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="330" y="335.86" as="sourcePoint" />
-            <mxPoint x="420" y="375.0034999999999" as="targetPoint" />
+            <mxPoint x="630" y="335.86" as="sourcePoint" />
+            <mxPoint x="720" y="375.0034999999999" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="390" y="372" />
+              <mxPoint x="690" y="372" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="wiIu2HbstxolNT0k3t43-19" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" target="i7zBOyGKAb41JnRDGn2z-39" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="330" y="335" as="sourcePoint" />
-            <mxPoint x="320" y="413.75" as="targetPoint" />
+            <mxPoint x="630" y="335" as="sourcePoint" />
+            <mxPoint x="620" y="413.75" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="330" y="372" />
+              <mxPoint x="630" y="372" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="wiIu2HbstxolNT0k3t43-20" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" target="i7zBOyGKAb41JnRDGn2z-68" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="560" y="340" as="sourcePoint" />
-            <mxPoint x="620" y="380" as="targetPoint" />
+            <mxPoint x="860" y="340" as="sourcePoint" />
+            <mxPoint x="920" y="380" as="targetPoint" />
             <Array as="points" />
           </mxGeometry>
         </mxCell>
