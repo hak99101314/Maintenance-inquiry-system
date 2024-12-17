@@ -195,7 +195,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-116" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; 1.2.3.2 更新維修狀態&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-rl;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="1105" y="419.25" width="44" height="170" as="geometry" />
+          <mxGeometry x="1123" y="416" width="44" height="170" as="geometry" />
         </mxCell>
         <mxCell id="i7zBOyGKAb41JnRDGn2z-129" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;1.3.2 系統設定&lt;/span&gt;" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
           <mxGeometry x="1545" y="304" width="120" height="50" as="geometry" />
@@ -291,8 +291,13 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="fq9uPXwty8QXhf4ej4uf-2" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;1.2.3.4&lt;/span&gt;刪除維修紀錄" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-rl;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
-          <mxGeometry x="1215" y="419.75" width="44" height="170" as="geometry" />
+        <mxCell id="qZw3ajIAqxA_kLUC3v0o-1" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;endArrow=none;exitX=0;exitY=0.25;exitDx=0;exitDy=0;" edge="1" parent="vLOGakIaKndCi6_WX_65-37" source="fq9uPXwty8QXhf4ej4uf-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1200" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fq9uPXwty8QXhf4ej4uf-2" value="&lt;span style=&quot;color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;1.2.3.3&lt;/span&gt;刪除維修紀錄" style="whiteSpace=wrap;html=1;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};textDirection=vertical-rl;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" vertex="1">
+          <mxGeometry x="1200" y="416" width="44" height="170" as="geometry" />
         </mxCell>
         <mxCell id="qS1px_nAEGDlvm55yif1-1" value="" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;startArrow=none;endArrow=none;fontSize=15;" parent="vLOGakIaKndCi6_WX_65-37" source="i7zBOyGKAb41JnRDGn2z-64" target="qS1px_nAEGDlvm55yif1-2" edge="1">
           <mxGeometry relative="1" as="geometry">
