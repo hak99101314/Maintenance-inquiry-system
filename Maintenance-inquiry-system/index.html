@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>維修查詢系統 - 首頁</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="assets/js/index.js" defer></script>
+</head>
+
+<body>
+    <!-- 導覽列 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">維修查詢系統</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto" id="auth-nav">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link" href="appointments.html">預約服務</a></li>
+                    <li class="nav-item"><a class="nav-link" href="profile.html">用戶資料</a></li>
+                    <li class="nav-item"><a class="nav-link" href="query.html">查詢維修紀錄</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">登入</a></li>
+                    <li class="nav-item"><a class="nav-link" href="register.html">註冊</a></li>
+                    <!-- 登入／註冊／登出按鈕將由 JavaScript 動態加入 -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 歡迎訊息 -->
+    <header class="bg-light py-5 text-center">
+        <div class="container">
+            <h1 id="welcome-message" class="mb-3">歡迎來到維修查詢系統</h1>
+            <p class="lead mb-4">我們致力於提供快速、可靠的維修查詢與服務預約，助您輕鬆管理車輛狀況。</p>
+            <div id="header-auth">
+                <!-- 登入時，不顯示使用者名稱，故不加入任何項目 -->
+            </div>
+        </div>
+    </header>
+
+    <!-- 核心功能 -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">我們的核心功能</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card shadow-sm">
+                        <img src="assets/images/query.jpg" class="card-img-top" alt="查詢紀錄">
+                        <div class="card-body">
+                            <h5 class="card-title">查詢維修紀錄</h5>
+                            <p class="card-text">快速查詢您的車輛維修紀錄，隨時掌握維修進度與歷史。</p>
+                            <a href="query.html" class="btn btn-primary">立即查詢</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-sm">
+                        <img src="assets/images/appointment.jpg" class="card-img-top" alt="預約服務">
+                        <div class="card-body">
+                            <h5 class="card-title">預約服務</h5>
+                            <p class="card-text">選擇合適的時間與服務項目，方便快捷地預約車輛維修服務。</p>
+                            <a href="appointments.html" class="btn btn-primary">立即預約</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-sm">
+                        <img src="assets/images/feedback.jpg" class="card-img-top" alt="滿意度調查">
+                        <div class="card-body">
+                            <h5 class="card-title">滿意度調查</h5>
+                            <p class="card-text">提交您的意見與建議，幫助我們提供更優質的服務。</p>
+                            <a href="survey.html" class="btn btn-primary">立即參加</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 最新消息 -->
+    <section class="bg-light py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">最新消息</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">全新維修功能上線</h5>
+                            <p class="card-text">我們推出了更多的維修線上功能，讓您的車輛保養更透明。立即查看詳情！</p>
+                            <a href="#" class="btn btn-outline-primary">查看詳情</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">維修服務時間延長</h5>
+                            <p class="card-text">為滿足更多客戶需求，我們的維修服務時間已延長至晚上8點。</p>
+                            <a href="#" class="btn btn-outline-primary">了解更多</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 聯繫我們 -->
+    <section class="bg-light py-4">
+        <div class="container">
+            <h2 class="text-center mb-4">聯繫我們</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card shadow-sm text-center">
+                        <div class="card-body">
+                            <h5 class="mb-4">如果您有任何問題，請通過以下方式聯繫我們：</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><strong>電子郵件：</strong>support@example.com</li>
+                                <li class="mb-2"><strong>電話：</strong>124-567-890</li>
+                                <li><strong>地址：</strong>XX市XX區XX路XX號</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 頁尾 -->
+    <footer class="bg-primary text-light py-4 text-center">
+        <p>&copy; 2024 維修查詢系統 | 協作單位：睿煬企業社、康寧大學資管科17.林宸皓13.陳彥丞19.陳宗偉</p>
+    </footer>
+
+    <script src="assets/js/auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

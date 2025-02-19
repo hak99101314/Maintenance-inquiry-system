@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用戶管理 - 管理員系統</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/admin_styles.css">
+</head>
+
+<body>
+    <!-- 導覽列 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">管理員系統</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="admin_dashboard.html">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_orders.html">訂單管理</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="admin_users.html">用戶管理</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_settings.html">系統設定</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">登出</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 用戶管理 -->
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">用戶管理</h2>
+        <table class="table table-dark table-hover">
+            <thead>
+                <tr>
+                    <th>用戶ID</th>
+                    <th>帳號</th>
+                    <th>姓名</th>
+                    <th>角色</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="user-table-body">
+                <!-- 動態生成用戶列表 -->
+            </tbody>
+        </table>
+        <button class="btn btn-primary w-100" id="add-user-btn">新增用戶</button>
+    </div>
+
+    <!-- 新增用戶模態框 -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUserModalLabel">新增用戶</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-user-form">
+                        <div class="mb-3">
+                            <label for="new-username" class="form-label">帳號</label>
+                            <input type="text" class="form-control" id="new-username" placeholder="請輸入用戶帳號" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="new-full-name" class="form-label">姓名</label>
+                            <input type="text" class="form-control" id="new-full-name" placeholder="請輸入用戶姓名" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="new-role" class="form-label">角色</label>
+                            <select class="form-control" id="new-role" required>
+                                <option value="customer">會員</option>
+                                <option value="staff">員工</option>
+                                <option value="admin">管理員</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="new-password" class="form-label">密碼</label>
+                            <input type="password" class="form-control" id="new-password" placeholder="請輸入密碼" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">保存</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 編輯用戶模態框 -->
+    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editUserModalLabel">編輯用戶</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-user-form">
+                        <!-- 隱藏字段存儲用戶 ID -->
+                        <input type="hidden" id="edit-user-id">
+
+                        <div class="mb-3">
+                            <label for="edit-username" class="form-label">帳號</label>
+                            <input type="text" class="form-control" id="edit-username" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-full-name" class="form-label">姓名</label>
+                            <input type="text" class="form-control" id="edit-full-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-role" class="form-label">角色</label>
+                            <select class="form-control" id="edit-role" required>
+                                <option value="customer">會員</option>
+                                <option value="staff">員工</option>
+                                <option value="admin">管理員</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-password" class="form-label">新密碼</label>
+                            <input type="password" class="form-control" id="edit-password" placeholder="如果不需要更改密碼，請留空">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">保存更改</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 載入管理員專用的 JS -->
+    <script src="assets/js/admin_users.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
