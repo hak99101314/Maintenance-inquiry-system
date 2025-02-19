@@ -1,0 +1,149 @@
+/* 全局樣式 */
+body {
+    font-family: '微軟正黑體', Arial, sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+p {
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+/* 導航欄樣式 */
+.navbar {
+    background-color: #34495e;
+    padding: 0.75rem 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand, .nav-link {
+    color: #ffffff !important;
+    font-weight: bold;
+}
+
+.nav-link.active {
+    color: #ffffff !important;
+    font-weight: bold;
+    border-bottom: 2px solid #2980b9;
+}
+
+/* 卡片樣式 */
+.card {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.card-text {
+    color: #555;
+}
+
+/* 表單容器優化 */
+.form-container {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,.1);
+}
+
+/* 表單群組間距 */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+/* 標籤樣式 */
+.form-label {
+    font-weight: 500;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+/* 輸入框樣式 */
+.form-control {
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+}
+
+/* 按鈕樣式 */
+.btn-primary {
+    background-color: #3498db;
+    border-color: #3498db;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:disabled {
+    background-color: #95a5a6;
+    border-color: #95a5a6;
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+/* 載入動畫樣式 */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border-width: 0.4rem;
+    margin-top: 1rem;
+}
+
+/* 頁腳樣式 */
+footer {
+    background-color: #34495e;
+    color: #ffffff;
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 0.875rem;
+    margin-top: 2rem;
+}

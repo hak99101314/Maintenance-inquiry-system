@@ -1,0 +1,65 @@
+/* 管理後台主題色調 */
+:root {
+    --admin-primary: #2c3e50;
+    --admin-secondary: #34495e;
+    --admin-accent: #3498db;
+    --admin-success: #2ecc71;
+    --admin-warning: #f1c40f;
+    --admin-danger: #e74c3c;
+}
+
+/* 後台全局樣式 */
+body {
+    background-color: #f5f6fa;
+    color: var(--admin-primary);
+}
+
+/* 後台導航欄 */
+.navbar {
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-secondary) 100%);
+    padding: 1rem;
+}
+
+/* 後台卡片樣式 */
+.card {
+    border: none;
+    border-radius: 15px;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,.1);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-secondary) 100%);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+}
+
+/* 後台按鈕樣式 */
+.btn-admin {
+    background: var(--admin-accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-admin:hover {
+    background: darken(var(--admin-accent), 10%);
+    transform: translateY(-2px);
+}
+
+/* 後台表格樣式 */
+.admin-table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0,0,0,.05);
+}
+
+.admin-table thead th {
+    background: var(--admin-primary);
+    color: white;
+    font-weight: 500;
+    border: none;
+}

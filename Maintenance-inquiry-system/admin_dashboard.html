@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>員工系統 - 維修查詢系統</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/admin_styles.css">
+</head>
+
+<body>
+    <!-- 導覽列 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="admin_dashboard.html">
+                <i class="fas fa-tools me-2"></i>員工系統
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="admin_dashboard.html">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_record.html">新增維修紀錄</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_users.html">客戶管理</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html" onclick="logout()">登出</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 歡迎區塊 -->
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h2 class="card-title">
+                            <i class="fas fa-user-circle me-2"></i>
+                            <span id="welcome-message">歡迎回來，</span>
+                        </h2>
+                        <p class="card-text">今天是 <span id="current-date"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 功能區塊 -->
+    <div class="container mt-4">
+        <div class="row g-4">
+            <!-- 新增維修紀錄 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-plus-circle fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">新增維修紀錄</h5>
+                        <p class="card-text">新增客戶車輛的維修紀錄和相關資訊</p>
+                        <a href="admin_record.html" class="btn btn-primary">
+                            <i class="fas fa-arrow-right me-2"></i>前往新增
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 查看維修紀錄 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-history fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">查看維修紀錄</h5>
+                        <p class="card-text">查看和管理所有的維修紀錄</p>
+                        <a href="admin_view_records.html" class="btn btn-primary">
+                            <i class="fas fa-search me-2"></i>查看紀錄
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 客戶管理 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">客戶管理</h5>
+                        <p class="card-text">管理客戶資料和相關資訊</p>
+                        <a href="admin_users.html" class="btn btn-primary">
+                            <i class="fas fa-user-cog me-2"></i>管理客戶
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 維修紀錄查詢 -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-history fa-3x mb-3 text-primary"></i>
+                        <h5 class="card-title">維修紀錄查詢</h5>
+                        <p class="card-text">查看和管理所有維修紀錄</p>
+                        <a href="maintenance_records.html" class="btn btn-primary">
+                            <i class="fas fa-search me-1"></i>查看紀錄
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 統計資訊 -->
+    <div class="container mt-4 mb-5">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title mb-0">今日維修數</h6>
+                                <h2 class="mt-2 mb-0" id="today-repairs">0</h2>
+                            </div>
+                            <i class="fas fa-wrench fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title mb-0">本月維修總數</h6>
+                                <h2 class="mt-2 mb-0" id="month-repairs">0</h2>
+                            </div>
+                            <i class="fas fa-chart-line fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-info text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title mb-0">客戶總數</h6>
+                                <h2 class="mt-2 mb-0" id="total-customers">0</h2>
+                            </div>
+                            <i class="fas fa-users fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer class="bg-dark text-light py-4 text-center">
+        <p class="mb-0">&copy; 2024 維修查詢系統 | 員工專用系統</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/admin_dashboard.js"></script>
+</body>
+
+</html>
