@@ -1,56 +1,65 @@
-/* 全局樣式 */
+/* 管理後台主題色調 */
+:root {
+    --admin-primary: #ee7661;
+    --admin-secondary: #34495e;
+    --admin-accent: #3498db;
+    --admin-success: #2ecc71;
+    --admin-warning: #f1c40f;
+    --admin-danger: #e74c3c;
+}
+
+/* 後台全局樣式 */
 body {
-    font-family: '微軟正黑體', Arial, sans-serif;
-    background-color: #2c2f33; /* 深色背景 */
-    color: #ffffff; /* 白色文字 */
-    margin: 0;
-    padding: 0;
+    background-color: #f5f6fa;
+    color: var(--admin-primary);
 }
 
-/* 標題樣式 */
-h1, h2, h3, h4, h5, h6 {
-    font-weight: bold;
-    color: #f1f1f1; /* 淺色文字 */
-}
-
-/* 超連結樣式 */
-a {
-    color: #61dafb; /* 藍色文字 */
-    text-decoration: none;
-}
-
-a:hover {
-    color: #21a1f1;
-    text-decoration: underline;
-}
-
-/* 導覽列 */
+/* 後台導航欄 */
 .navbar {
-    background-color: #23272a; /* 深色背景 */
-    padding: 0.75rem 1rem;
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-secondary) 100%);
+    padding: 1rem;
 }
 
-.navbar-brand, .nav-link {
+/* 後台卡片樣式 */
+.card {
+    border: none;
+    border-radius: 15px;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,.1);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-secondary) 100%);
     color: white;
-    font-weight: bold;
+    border-radius: 15px 15px 0 0 !important;
 }
 
-.container {
-    margin-top: 50px;
+/* 後台按鈕樣式 */
+.btn-admin {
+    background: var(--admin-accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 1.5rem;
+    transition: all 0.3s ease;
 }
 
-.form-label {
-    font-weight: bold;
-    color: #ffffff;
+.btn-admin:hover {
+    background: darken(var(--admin-accent), 10%);
+    transform: translateY(-2px);
 }
 
-/* 頁腳 */
-footer {
-    background-color: #23272a;
-    text-align: center;
-    padding: 1rem 0;
-    border-top: 1px solid #444c56;
-    color: #f1f1f1;
-    font-size: 0.9rem;
+/* 後台表格樣式 */
+.admin-table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0,0,0,.05);
 }
 
+.admin-table thead th {
+    background: var(--admin-primary);
+    color: white;
+    font-weight: 500;
+    border: none;
+}

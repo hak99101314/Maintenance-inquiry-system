@@ -6,7 +6,7 @@ $data = json_decode(file_get_contents("php://input"), true);
 
 $servername = "localhost";
 $username = "root";
-$password = "karry,roy,jackson";
+$password = "";
 $dbname = "睿煬企業社";
 
 $conn = new mysqli($servername, $username, $password, $dbname);

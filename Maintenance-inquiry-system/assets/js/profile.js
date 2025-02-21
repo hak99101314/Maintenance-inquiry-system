@@ -78,3 +78,9 @@ function saveProfile(event) {
 
 document.getElementById('profile-form').addEventListener('submit', saveProfile);
 document.addEventListener('DOMContentLoaded', loadProfile);
+// 登出功能
+function logout() {
+    localStorage.clear();
+    alert('您已成功登出，請重新登入');
+    window.location.href = 'login.html';
+}

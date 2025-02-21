@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增車輛 - 維修查詢系統</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">維修查詢系統</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link" href="profile.html">個人資料</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="add_vehicle.html">新增車輛</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html" onclick="logout()">登出</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 新增車輛表單 -->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center mb-4">新增車輛</h2>
+                <form id="add-vehicle-form" class="p-4 border rounded bg-light">
+                    <div class="mb-3">
+                        <label for="licensePlate" class="form-label">車牌號碼</label>
+                        <input type="text" class="form-control" id="licensePlate" placeholder="輸入車牌號碼" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="brand" class="form-label">品牌</label>
+                        <input type="text" class="form-control" id="brand" placeholder="輸入品牌" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="model" class="form-label">型號</label>
+                        <input type="text" class="form-control" id="model" placeholder="輸入型號" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="engineNumber" class="form-label">引擎編號</label>
+                        <input type="text" class="form-control" id="engineNumber" placeholder="輸入引擎編號" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="year" class="form-label">年份</label>
+                        <input type="number" class="form-control" id="year" placeholder="輸入年份 (例如: 2022)" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="month" class="form-label">月份</label>
+                        <input type="number" class="form-control" id="month" placeholder="輸入月份 (1-12)" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">新增車輛</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('add-vehicle-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const licensePlate = document.getElementById('licensePlate').value.trim();
+            const brand = document.getElementById('brand').value.trim();
+            const model = document.getElementById('model').value.trim();
+            const engineNumber = document.getElementById('engineNumber').value.trim();
+            const year = document.getElementById('year').value.trim();
+            const month = document.getElementById('month').value.trim();
+
+            try {
+                const response = await fetch('api/add_vehicle.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        license_plate: licensePlate,
+                        brand: brand,
+                        model: model,
+                        engine_number: engineNumber,
+                        year: year,
+                        month: month
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('車輛已成功新增！');
+                    window.location.href = 'query.html'; // 跳轉到車輛列表或紀錄查詢頁
+                } else {
+                    alert(result.message || '新增車輛失敗');
+                }
+            } catch (error) {
+                alert('伺服器錯誤，請稍後再試');
+            }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,26 +1,52 @@
 /* 全局樣式 */
 body {
     font-family: '微軟正黑體', Arial, sans-serif;
-    background-color: #f8f8f8;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23d1e8ff' fill-opacity='0.4'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-color: #f4f7f6; /* 優雅的淡灰背景 */
     margin: 0;
     padding: 0;
+    color: #333;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+p {
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+a {
+    color: #e74c3c; /* 橘紅作為連結原色 */
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: #c0392b; /* 深橘紅 */
+    text-decoration: underline;
 }
 
 /* 導航欄樣式 */
 .navbar {
-    background-color: #66ccff;
+    /* 使用橘紅到粉橘的漸層 */
+    background: linear-gradient(90deg, #ff7e5f, #feb47b);
     padding: 0.75rem 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-brand, .nav-link {
-    color: white !important;
+    color: #ffffff !important;
     font-weight: bold;
 }
 
 .nav-link.active {
-    text-decoration: underline;
+    color: #ffffff !important;
+    font-weight: bold;
+    border-bottom: 2px solid #c0392b; /* 深橘紅 */
 }
 
 /* 卡片樣式 */
@@ -28,52 +54,80 @@ body {
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
-    animation: fadeIn 1s ease;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* 表單樣式 */
-.form-label {
-    font-size: 1rem;
+.card-title {
+    font-size: 1.8rem;
     font-weight: bold;
     color: #333;
+    margin-bottom: 1rem;
 }
 
+.card-text {
+    color: #555;
+}
+
+/* 表單容器優化 */
+.form-container {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+}
+
+/* 表單群組間距 */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+/* 標籤樣式 */
+.form-label {
+    font-weight: 500;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+/* 輸入框樣式 */
 .form-control {
-    border-radius: 20px;
-    border-color: #ced4da;
-    transition: all 0.2s ease;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
 }
 
 .form-control:focus {
-    border-color: #4da6ff;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+    border-color: #e74c3c; /* 聚焦時使用橘紅 */
 }
 
 /* 按鈕樣式 */
 .btn-primary {
-    background-color: #66ccff;
-    border-color: #66ccff;
+    /* 按鈕採用橘紅到粉橘的漸層 */
+    background: linear-gradient(90deg, #ff7e5f, #feb47b);
+    border: none;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
 }
 
 .btn-primary:hover {
-    background-color: #4da6ff;
-    border-color: #4da6ff;
+    /* 濃縮深色漸層 */
+    background: linear-gradient(90deg, #e5504d, #f7a072);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .btn-primary:disabled {
-    background-color: #a6cfff;
-    border-color: #a6cfff;
+    background-color: #d1d1d1;
+    border-color: #d1d1d1;
     cursor: not-allowed;
     opacity: 0.65;
 }
@@ -88,19 +142,11 @@ body {
 
 /* 頁腳樣式 */
 footer {
-    background-color: #66ccff;
+    /* 與導航欄相同的漸層 */
+    background: linear-gradient(90deg, #ff7e5f, #feb47b);
     color: #ffffff;
     text-align: center;
     padding: 1rem 0;
     font-size: 0.875rem;
     margin-top: 2rem;
-}
-
-/* 頁腳樣式 */
-footer {
-    background-color: #66ccff;
-    color: #ffffff;
-    text-align: center;
-    padding: 1rem 0;
-    font-size: 0.875rem;
 }

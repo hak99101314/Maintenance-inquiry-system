@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>維修紀錄詳情 - 維修查詢系統</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+
+        .record-details {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .record-details h5 {
+            margin-bottom: 20px;
+        }
+
+        table {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 導覽列 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="admin_dashboard.html">
+                <i class="fas fa-tools me-2"></i>員工系統
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="admin_dashboard.html">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="maintenance_records.html">維修紀錄查詢</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" id="logoutBtn">登出</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 維修紀錄詳情 -->
+    <div class="container">
+        <div class="record-details">
+            <h5>維修紀錄詳細內容</h5>
+            <p><strong>維修單號：</strong> <span id="record-id"></span></p>
+            <p><strong>車牌號碼：</strong> <span id="plate-number"></span></p>
+            <p><strong>車型：</strong> <span id="car-model"></span></p>
+            <p><strong>車主：</strong> <span id="owner"></span></p>
+            <p><strong>維修日期：</strong> <span id="repair-date"></span></p>
+            <p><strong>總計金額：</strong> <span id="total-cost"></span></p>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>維修項目</th>
+                        <th>規格</th>
+                        <th>數量</th>
+                        <th>單價</th>
+                        <th>小計</th>
+                        <th>備註</th>
+                    </tr>
+                </thead>
+                <tbody id="repair-items">
+                    <!-- 動態插入維修項目 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const recordId = urlParams.get('id'); // 獲取 URL 中的維修單號
+
+            if (!recordId) {
+                alert('缺少維修單號，無法顯示紀錄');
+                return;
+            }
+
+            try {
+                const response = await fetch(`api/get_maintenance_details.php?id=${recordId}`);
+                const result = await response.json();
+
+                if (result.success) {
+                    // 填充維修紀錄基本信息
+                    document.getElementById('record-id').textContent = result.data.id;
+                    document.getElementById('plate-number').textContent = result.data.plate_number;
+                    document.getElementById('car-model').textContent = result.data.car_model;
+                    document.getElementById('owner').textContent = result.data.owner;
+                    document.getElementById('repair-date').textContent = result.data.repair_date;
+                    document.getElementById('total-cost').textContent = result.data.total_cost;
+
+                    // 填充維修項目表格
+                    const itemsBody = document.getElementById('repair-items');
+                    result.data.items.forEach(item => {
+                        const row = `
+                            <tr>
+                                <td>${item.repair_item}</td>
+                                <td>${item.specification}</td>
+                                <td>${item.quantity}</td>
+                                <td>${item.unit_price}</td>
+                                <td>${item.subtotal}</td>
+                                <td>${item.notes}</td>
+                            </tr>
+                        `;
+                        itemsBody.innerHTML += row;
+                    });
+                } else {
+                    alert(result.message || '無法加載維修紀錄');
+                }
+            } catch (error) {
+                alert('伺服器錯誤，請稍後再試');
+            }
+        });
+    </script>
+</body>
+
+</html>

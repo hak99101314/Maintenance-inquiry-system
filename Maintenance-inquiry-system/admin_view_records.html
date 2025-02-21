@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>維修紀錄查詢 - 維修查詢系統</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+
+        table {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 導覽列 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="admin_dashboard.html">
+                <i class="fas fa-tools me-2"></i>員工系統
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="admin_dashboard.html">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="maintenance_records.html">維修紀錄查詢</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" id="logoutBtn">登出</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 維修紀錄查詢 -->
+    <div class="container">
+        <h2 class="text-center">維修紀錄查詢</h2>
+
+        <!-- 查詢表單 -->
+        <form id="search-form" class="row g-3">
+            <div class="col-md-6">
+                <label for="plate_number" class="form-label">車牌號碼</label>
+                <input type="text" class="form-control" id="plate_number" name="plate_number" placeholder="輸入車牌號碼">
+            </div>
+            <div class="col-md-6">
+                <label for="repair_date" class="form-label">維修日期</label>
+                <input type="date" class="form-control" id="repair_date" name="repair_date">
+            </div>
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-primary">查詢</button>
+            </div>
+        </form>
+
+        <!-- 查詢結果 -->
+        <table class="table table-striped table-bordered" id="records-table" style="display: none;">
+            <thead>
+                <tr>
+                    <th>維修單號</th>
+                    <th>車牌號碼</th>
+                    <th>車型</th>
+                    <th>車主</th>
+                    <th>維修日期</th>
+                    <th>總計金額</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="records-body"></tbody>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('search-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const plateNumber = document.getElementById('plate_number').value.trim();
+            const repairDate = document.getElementById('repair_date').value;
+
+            try {
+                const response = await fetch(`api/search_maintenance.php?plate_number=${plateNumber}&repair_date=${repairDate}`);
+                const result = await response.json();
+
+                const table = document.getElementById('records-table');
+                const tbody = document.getElementById('records-body');
+                tbody.innerHTML = '';
+
+                if (result.success) {
+                    table.style.display = 'table';
+                    result.data.forEach(record => {
+                        const row = `
+                            <tr>
+                                <td>${record.id}</td>
+                                <td>${record.plate_number}</td>
+                                <td>${record.car_model}</td>
+                                <td>${record.owner}</td>
+                                <td>${record.repair_date}</td>
+                                <td>${record.total_cost}</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" onclick="viewDetails(${record.id})">查看</button>
+                                </td>
+                            </tr>
+                        `;
+                        tbody.innerHTML += row;
+                    });
+                } else {
+                    alert(result.message || '查無資料');
+                    table.style.display = 'none';
+                }
+            } catch (error) {
+                alert('查詢失敗，請稍後再試');
+            }
+        });
+
+        function viewDetails(recordId) {
+            window.location.href = `maintenance_details.html?id=${recordId}`;
+        }
+    </script>
+</body>
+
+</html>

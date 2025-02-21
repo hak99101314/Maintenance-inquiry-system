@@ -1,47 +1,46 @@
-<?php
-header('Content-Type: application/json');
-$data = json_decode(file_get_contents("php://input"), true);
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重設密碼</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">重設密碼</h2>
+        <form id="reset-password-form" class="col-md-6 mx-auto">
+            <input type="hidden" id="token" value="<?php echo htmlspecialchars($_GET['token']); ?>">
+            <div class="mb-3">
+                <label for="new-password" class="form-label">新密碼</label>
+                <input type="password" id="new-password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">重設密碼</button>
+        </form>
+        <div id="response-message" class="mt-3 text-center"></div>
+    </div>
 
-$servername = "localhost";
-$username = "root";
-$password = "karry,roy,jackson";
-$dbname = "睿煬企業社";
+    <script>
+        document.getElementById('reset-password-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const token = document.getElementById('token').value;
+            const password = document.getElementById('new-password').value;
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die(json_encode(['success' => false, 'message' => '資料庫連接失敗']));
-}
-
-$token = $data['token'];
-$newPassword = password_hash($data['newPassword'], PASSWORD_DEFAULT);
-
-// 驗證 token 並重設密碼
-$sql = "SELECT user_id FROM password_resets WHERE token = ? AND expires_at > NOW()";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $token);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows === 1) {
-    $user = $result->fetch_assoc();
-    $update_sql = "UPDATE users SET password_hash = ? WHERE user_id = ?";
-    $update_stmt = $conn->prepare($update_sql);
-    $update_stmt->bind_param("si", $newPassword, $user['user_id']);
-    if ($update_stmt->execute()) {
-        // 刪除已使用的 token
-        $delete_sql = "DELETE FROM password_resets WHERE token = ?";
-        $delete_stmt = $conn->prepare($delete_sql);
-        $delete_stmt->bind_param("s", $token);
-        $delete_stmt->execute();
-        echo json_encode(['success' => true]);
-    } else {
-        echo json_encode(['success' => false, 'message' => '密碼更新失敗']);
-    }
-} else {
-    echo json_encode(['success' => false, 'message' => '重設連結已失效']);
-}
-
-$stmt->close();
-$conn->close();
-?>
+            fetch('api/resetPassword.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const responseMessage = document.getElementById('response-message');
+                if (data.success) {
+                    responseMessage.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                } else {
+                    responseMessage.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

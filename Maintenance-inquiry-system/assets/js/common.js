@@ -27,3 +27,9 @@ function ajaxRequest(url, method, data = null, callback) {
     .then(callback)
     .catch(error => console.error('Error:', error));
 }
+// 登出功能
+function logout() {
+    localStorage.clear();
+    alert('您已成功登出，請重新登入');
+    window.location.href = 'login.html';
+}

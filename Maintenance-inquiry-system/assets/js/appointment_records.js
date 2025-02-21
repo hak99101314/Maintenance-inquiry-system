@@ -23,3 +23,9 @@ function loadAppointments() {
 }
 
 document.addEventListener("DOMContentLoaded", loadAppointments);
+// 登出功能
+function logout() {
+    localStorage.clear();
+    alert('您已成功登出，請重新登入');
+    window.location.href = 'login.html';
+}

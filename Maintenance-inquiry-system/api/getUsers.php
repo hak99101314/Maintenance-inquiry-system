@@ -1,28 +1,21 @@
 <?php
-header('Content-Type: application/json');
-$servername = "localhost";
-$username = "root";
-$password = "karry,roy,jackson";
-$dbname = "睿煬企業社";
+header('Content-Type: application/json; charset=utf-8');
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-if ($conn->connect_error) {
-    echo json_encode(['success' => false, 'message' => '資料庫連接失敗']);
-    exit;
+try {
+    $pdo = new PDO('mysql:host=localhost;dbname=睿煬企業社;charset=utf8', 'root', '');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $stmt = $pdo->query('SELECT user_id, username, full_name, role FROM users');
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    echo json_encode(['success' => true, 'data' => $users], JSON_UNESCAPED_UNICODE);
+} catch (PDOException $e) {
+    echo json_encode(['success' => false, 'message' => '資料庫連接失敗: ' . $e->getMessage()]);
 }
-
-$sql = "SELECT user_id, username, full_name, role FROM users";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    $users = [];
-    while ($row = $result->fetch_assoc()) {
-        $users[] = $row;
-    }
-    echo json_encode(['success' => true, 'data' => $users]);
-} else {
-    echo json_encode(['success' => false, 'message' => '沒有用戶資料']);
-}
-
-$conn->close();
+?>

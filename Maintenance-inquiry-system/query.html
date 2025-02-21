@@ -6,44 +6,265 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>查詢維修紀錄 - 維修查詢系統</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css"> <!-- 使用統一的樣式 -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+        .btn {
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+        .btn-query {
+            background: linear-gradient(45deg, #1a2980 0%, #26d0ce 100%);
+            border: none;
+            color: white;
+            font-weight: 500;
+        }
+        .btn-query:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 41, 128, 0.3);
+            color: white;
+        }
+        .btn-outline-primary {
+            border: 2px solid #1a2980;
+            color: #1a2980;
+        }
+        .btn-outline-primary:hover {
+            background: linear-gradient(45deg, #1a2980 0%, #26d0ce 100%);
+            border-color: transparent;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 41, 128, 0.3);
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container mt-4">
-        <nav class="navbar navbar-expand-lg navbar-dark">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">維修查詢系統</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="index.html">首頁</a></li>
-                        <li class="nav-item"><a class="nav-link" href="login.html">登入</a></li>
-                        <li class="nav-item"><a class="nav-link" href="register.html">註冊</a></li>
-                        <li class="nav-item"><a class="nav-link" href="query.html">查詢紀錄</a></li>
-                    </ul>
+    <!-- 導航欄 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">維修查詢系統</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link" href="profile.html">個人資料</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="query.html">查詢維修紀錄</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html" onclick="logout()">登出</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主內容 -->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card animate-fade">
+                    <div class="card-body p-4">
+                        <h2 class="text-center mb-4">維修紀錄查詢</h2>
+                        
+                        <!-- 新增返回按鈕 -->
+                        <div class="text-end mb-3">
+                            <a href="index.html" class="btn btn-outline-primary">
+                                <i class="fas fa-arrow-left me-2"></i>返回首頁
+                            </a>
+                        </div>
+
+                        <form id="query-form" class="mb-4">
+                            <div class="row align-items-end">
+                                <div class="col-md-9">
+                                    <label for="vehicleSelect" class="form-label">選擇車輛</label>
+                                    <select class="form-select" id="vehicleSelect" required>
+                                        <option value="">請選擇車輛</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-query w-100">
+                                        <i class="fas fa-search me-2"></i>查詢
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- 新增重新查詢按鈕 -->
+                        <div class="text-center mb-3" id="refresh-button" style="display: none;">
+                            <button class="btn btn-outline-primary" onclick="refreshData()">
+                                <i class="fas fa-sync-alt me-2"></i>重新查詢
+                            </button>
+                        </div>
+
+                        <div id="loading-spinner" class="loading-spinner">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">載入中...</span>
+                            </div>
+                        </div>
+
+                        <div id="results-container" class="hidden">
+                            <h3 class="text-center mb-4">維修紀錄</h3>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>日期</th>
+                                            <th>類型</th>
+                                            <th>內容</th>
+                                            <th>費用 (元)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="results-table-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div id="no-records" class="no-records hidden">
+                            <i class="fas fa-exclamation-circle fa-2x mb-3"></i>
+                            <p>目前沒有維修紀錄</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
-        
-        <h2 class="text-center my-4">查詢維修紀錄</h2>
-        
-        <form action="MaintenanceQueryServlet" method="post">
-            <div class="mb-3">
-                <label for="plateNumber" class="form-label">車牌號碼</label>
-                <input type="text" class="form-control" id="plateNumber" name="plateNumber" required>
-            </div>
-            <div class="mb-3">
-                <label for="phoneNumber" class="form-label">電話號碼</label>
-                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" required>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">查詢</button>
-        </form>
+        </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            await loadVehicles();
+        });
+
+        async function loadVehicles() {
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const vehicleSelect = document.getElementById('vehicleSelect');
+
+            try {
+                showLoading(true);
+                const response = await fetch('api/get_user_vehicles.php');
+                const result = await response.json();
+
+                if (result.success) {
+                    const vehicles = result.data;
+                    vehicleSelect.innerHTML = `
+                        <option value="">請選擇車輛</option>
+                        ${vehicles.map(vehicle => 
+                            `<option value="${vehicle.plate_number}">${vehicle.plate_number} - ${vehicle.brand} ${vehicle.car_model}</option>`
+                        ).join('')}
+                    `;
+                } else {
+                    showToast(result.message, 'error');
+                }
+            } catch (error) {
+                showToast('系統錯誤，請稍後再試', 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        async function refreshData() {
+            const vehicleSelect = document.getElementById('vehicleSelect');
+            if (vehicleSelect.value) {
+                await loadRepairRecords(vehicleSelect.value);
+            } else {
+                await loadVehicles();
+            }
+        }
+
+        document.getElementById('query-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const plateNumber = document.getElementById('vehicleSelect').value;
+            if (plateNumber) {
+                await loadRepairRecords(plateNumber);
+                document.getElementById('refresh-button').style.display = 'block';
+            } else {
+                showToast('請選擇車輛', 'error');
+            }
+        });
+
+        async function loadRepairRecords(plateNumber) {
+            const resultsContainer = document.getElementById('results-container');
+            const resultsTableBody = document.getElementById('results-table-body');
+            const noRecords = document.getElementById('no-records');
+            
+            try {
+                showLoading(true);
+                resultsContainer.classList.add('hidden');
+                noRecords.classList.add('hidden');
+
+                const response = await fetch(`api/get_repair_records.php?plate_number=${encodeURIComponent(plateNumber)}`);
+                const result = await response.json();
+
+                if (result.success) {
+                    resultsTableBody.innerHTML = result.data.map(record => `
+                        <tr class="animate-fade">
+                            <td>${formatDate(record.repair_date)}</td>
+                            <td>${record.type}</td>
+                            <td>${record.content}</td>
+                            <td>${formatCurrency(record.cost)}</td>
+                        </tr>
+                    `).join('');
+                    
+                    resultsContainer.classList.remove('hidden');
+                } else {
+                    noRecords.classList.remove('hidden');
+                }
+            } catch (error) {
+                showToast('系統錯誤，請稍後再試', 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function showLoading(show = true) {
+            const loadingSpinner = document.getElementById('loading-spinner');
+            loadingSpinner.style.display = show ? 'block' : 'none';
+        }
+
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('zh-TW');
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('zh-TW').format(amount);
+        }
+
+        function showToast(message, type) {
+            const toastContainer = document.createElement('div');
+            toastContainer.style.position = 'fixed';
+            toastContainer.style.top = '20px';
+            toastContainer.style.right = '20px';
+            toastContainer.style.zIndex = '1050';
+            
+            const toast = document.createElement('div');
+            toast.className = `toast align-items-center text-white bg-${type === 'success' ? 'success' : 'danger'} border-0`;
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+            
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            document.body.appendChild(toastContainer);
+            
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+            
+            toast.addEventListener('hidden.bs.toast', () => {
+                toastContainer.remove();
+            });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

@@ -4,109 +4,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>訂單管理</title>
+    <title>維修狀態管理 - 維修查詢系統</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/admin_styles.css"> <!-- 外部樣式 -->
+    <link rel="stylesheet" href="assets/css/admin_styles.css">
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <!-- 導航列 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">管理員系統</a>
+            <a class="navbar-brand" href="#">員工管理系統</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">首頁</a></li>
-                <li class="nav-item"><a class="nav-link" href="admin_inventory.html">庫存管理</a></li>
-                <li class="nav-item"><a class="nav-link" href="admin_orders.html">訂單管理</a></li>
-                <li class="nav-item"><a class="nav-link" href="admin_users.html">用戶管理</a></li>
-                <li class="nav-item"><a class="nav-link" href="admin_settings.html">系統設定</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_dashboard.html">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="admin_orders.html">維修狀態管理</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container">
-        <h2 class="text-center mb-4">訂單管理</h2>
+    <!-- 主內容 -->
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">維修狀態管理</h2>
+        <div class="text-end mb-3">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addOrderModal">新增維修狀態</button>
+        </div>
         <table class="table table-bordered">
             <thead class="table-primary">
                 <tr>
                     <th>訂單ID</th>
-                    <th>用戶</th>
+                    <th>用戶名稱</th>
+                    <th>維修日期</th>
+                    <th>維修內容</th>
                     <th>狀態</th>
-                    <th>操作</th>
                 </tr>
             </thead>
-            <tbody id="order-table-body">
-                <!-- 訂單列表動態生成 -->
+            <tbody id="orderTableBody">
+                <!-- 訂單資料將由 JavaScript 動態生成 -->
             </tbody>
         </table>
     </div>
 
-    <script>
-        // 渲染訂單表格
-        function loadOrders() {
-            fetch('/admin/get-orders')
-                .then(response => response.json())
-                .then(data => {
-                    const orderTableBody = document.getElementById('order-table-body');
-                    orderTableBody.innerHTML = '';
-                    data.forEach(order => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${order.id}</td>
-                            <td>${order.username}</td>
-                            <td>
-                                <select class="form-select" onchange="updateOrderStatus(${order.id}, this.value)">
-                                    <option value="待維修" ${order.status === '待維修' ? 'selected' : ''}>待維修</option>
-                                    <option value="維修中" ${order.status === '維修中' ? 'selected' : ''}>維修中</option>
-                                    <option value="已完成" ${order.status === '已完成' ? 'selected' : ''}>已完成</option>
-                                </select>
-                            </td>
-                            <td><button class="btn btn-danger" onclick="deleteOrder(${order.id})">刪除</button></td>
-                        `;
-                        orderTableBody.appendChild(row);
-                    });
-                })
-                .catch(error => console.error('無法加載訂單列表:', error));
-        }
+    <!-- 新增訂單模態框 -->
+    <div class="modal fade" id="addOrderModal" tabindex="-1" aria-labelledby="addOrderModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addOrderModalLabel">新增訂單</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addOrderForm">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">用戶名稱</label>
+                            <input type="text" class="form-control" id="username" placeholder="輸入用戶名稱" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="orderDate" class="form-label">維修日期</label>
+                            <input type="date" class="form-control" id="orderDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="orderContent" class="form-label">維修內容</label>
+                            <textarea class="form-control" id="orderContent" rows="3" placeholder="輸入訂單內容" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="status" class="form-label">狀態</label>
+                            <select class="form-select" id="status" required>
+                                <option value="待處理">待處理</option>
+                                <option value="處理中">處理中</option>
+                                <option value="已完成">已完成</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">新增維修狀態</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        function updateOrderStatus(orderId, status) {
-            fetch(`/admin/update-order/${orderId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ status })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('訂單狀態已更新');
-                } else {
-                    alert('更新失敗');
-                }
-            })
-            .catch(error => console.error('更新訂單狀態失敗:', error));
-        }
-
-        function deleteOrder(orderId) {
-            fetch(`/admin/delete-order/${orderId}`, {
-                method: 'DELETE'
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    loadOrders();
-                    alert('訂單已刪除');
-                } else {
-                    alert('刪除失敗');
-                }
-            })
-            .catch(error => console.error('刪除訂單失敗:', error));
-        }
-
-        document.addEventListener('DOMContentLoaded', loadOrders);
-    </script>
+    <script src="assets/js/admin_orders.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

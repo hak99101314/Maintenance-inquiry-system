@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>維修紀錄管理</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/admin_styles.css">
+    <style>
+        .container {
+            max-width: 1200px;
+            margin-top: 30px;
+        }
+
+        .table thead {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .table th,
+        .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="admin_dashboard.html">員工系統</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 class="text-center mb-4">維修紀錄管理</h2>
+
+        <form id="searchForm" class="mb-3">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="輸入車牌號碼" name="plate_number">
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="輸入車主名稱" name="owner">
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary w-100">查詢</button>
+                </div>
+            </div>
+        </form>
+
+        <table class="table table-bordered table-hover" id="recordsTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>日期</th>
+                    <th>車主</th>
+                    <th>車牌號碼</th>
+                    <th>車型</th>
+                    <th>聯絡電話</th>
+                    <th>總金額</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 動態生成 -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 編輯模態框 -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">編輯維修紀錄</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <input type="hidden" id="editRecordId">
+                        <div class="mb-3">
+                            <label for="editPlateNumber" class="form-label">車牌號碼</label>
+                            <input type="text" class="form-control" id="editPlateNumber" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editOwner" class="form-label">車主</label>
+                            <input type="text" class="form-control" id="editOwner" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editRepairDate" class="form-label">維修日期</label>
+                            <input type="date" class="form-control" id="editRepairDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editTotalCost" class="form-label">總金額</label>
+                            <input type="number" class="form-control" id="editTotalCost" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">保存修改</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const plateNumber = document.querySelector('[name="plate_number"]').value.trim();
+            const owner = document.querySelector('[name="owner"]').value.trim();
+
+            try {
+                const response = await fetch(`api/search_maintenance_records.php?plate_number=${encodeURIComponent(plateNumber)}&owner=${encodeURIComponent(owner)}`);
+                const result = await response.json();
+
+                const recordsTable = document.getElementById('recordsTable');
+                const tbody = recordsTable.querySelector('tbody');
+                tbody.innerHTML = '';
+
+                if (result.success) {
+                    recordsTable.style.display = 'table';
+                    result.data.forEach(record => {
+                        const row = `
+                            <tr>
+                                <td>${record.repair_date}</td>
+                                <td>${record.owner}</td>
+                                <td>${record.plate_number}</td>
+                                <td>${record.car_model}</td>
+                                <td>${record.phone}</td>
+                                <td>${record.total_cost}</td>
+                                <td class="btn-group">
+                                    <button class="btn btn-primary btn-sm" onclick="viewDetails(${record.id})">查看</button>
+                                    <button class="btn btn-secondary btn-sm" onclick="printRecord(${record.id})">列印</button>
+                                    <button class="btn btn-warning btn-sm" onclick="openEditModal(${record.id})">編輯</button>
+                                </td>
+                            </tr>
+                        `;
+                        tbody.innerHTML += row;
+                    });
+                } else {
+                    alert(result.message || '查無資料');
+                    recordsTable.style.display = 'none';
+                }
+            } catch (error) {
+                alert('查詢失敗，請稍後再試');
+            }
+        });
+
+        // 查看功能，跳轉到詳細頁面
+        function viewDetails(recordId) {
+            window.location.href = `maintenance_details.html?id=${recordId}`;
+        }
+
+        // 列印功能
+        function printRecord(recordId) {
+            window.open(`maintenance_print.html?id=${recordId}`, '_blank');
+        }
+
+        // 編輯功能
+        function openEditModal(recordId) {
+            fetch(`api/get_maintenance_details.php?id=${recordId}`)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        document.getElementById('editRecordId').value = result.data.id;
+                        document.getElementById('editPlateNumber').value = result.data.plate_number;
+                        document.getElementById('editOwner').value = result.data.owner;
+                        document.getElementById('editRepairDate').value = result.data.repair_date;
+                        document.getElementById('editTotalCost').value = result.data.total_cost;
+
+                        const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+                        editModal.show();
+                    } else {
+                        alert(result.message || '無法加載維修紀錄');
+                    }
+                })
+                .catch(error => {
+                    alert('伺服器錯誤，請稍後再試');
+                });
+        }
+
+        document.getElementById('editForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const recordId = document.getElementById('editRecordId').value;
+            const plateNumber = document.getElementById('editPlateNumber').value.trim();
+            const owner = document.getElementById('editOwner').value.trim();
+            const repairDate = document.getElementById('editRepairDate').value;
+            const totalCost = document.getElementById('editTotalCost').value;
+
+            fetch(`api/update_maintenance_record.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: recordId,
+                    plate_number: plateNumber,
+                    owner: owner,
+                    repair_date: repairDate,
+                    total_cost: totalCost
+                })
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        alert('維修紀錄已成功更新');
+                        window.location.reload();
+                    } else {
+                        alert(result.message || '更新失敗');
+                    }
+                })
+                .catch(error => {
+                    alert('伺服器錯誤，請稍後再試');
+                });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

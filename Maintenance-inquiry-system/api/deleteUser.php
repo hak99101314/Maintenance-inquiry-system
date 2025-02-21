@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // 数据库连接设置
 $servername = "localhost";
 $username = "root";
-$password = "karry,roy,jackson";
+$password = "";
 $dbname = "睿煬企業社";
 
 $conn = new mysqli($servername, $username, $password, $dbname);

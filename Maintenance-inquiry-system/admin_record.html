@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增維修紀錄 - 維修查詢系統</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/admin_styles.css">
+    <style>
+        .repair-form {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+        .form-header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+        }
+        .customer-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .repair-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .repair-table th, .repair-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: center;
+        }
+        .repair-table th {
+            background-color: #f8f9fa;
+        }
+        .notes {
+            font-size: 0.9em;
+            margin-top: 20px;
+        }
+        .info-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .info-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+        .info-item label {
+            min-width: 70px;
+            margin-right: 10px;
+        }
+        .info-item input {
+            flex: 1;
+        }
+        .signature-amount {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .signature-amount .form-group {
+            display: flex;
+            align-items: center;
+        }
+        .signature-amount label {
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+        @media print {
+            /* 隱藏不需要列印的元素 */
+            .navbar,
+            .btn,
+            input[type="button"] {
+                display: none !important;
+            }
+            
+            /* 調整列印時的樣式 */
+            .repair-form {
+                border: none;
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+            }
+            
+            /* 確保表格邊框在列印時可見 */
+            .repair-table,
+            .repair-table th,
+            .repair-table td {
+                border: 1px solid black !important;
+            }
+            
+            /* 調整列印時的字體大小 */
+            body {
+                font-size: 12pt;
+            }
+            
+            /* 確保分頁正確 */
+            .repair-form {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 導覽列 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="admin_dashboard.html">
+                <i class="fas fa-tools me-2"></i>員工系統
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="admin_dashboard.html">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="admin_record.html">新增維修紀錄</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html" id="logoutBtn">登出</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="repair-form">
+            <div class="form-header">
+                <h2>睿煬 汽車修護廠</h2>
+                <div>服務專線：0913-985808</div>
+            </div>
+
+            <form id="repair-form">
+                <div class="info-row">
+                    <div class="info-item">
+                        <label>車主：</label>
+                        <input type="text" class="form-control" name="owner">
+                    </div>
+                    <div class="info-item">
+                        <label>電話：</label>
+                        <input type="text" class="form-control" name="phone">
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-item">
+                        <label>車號：</label>
+                        <input type="text" class="form-control" name="plate_number">
+                    </div>
+                    <div class="info-item">
+                        <label>行動：</label>
+                        <input type="text" class="form-control" name="mobile">
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-item">
+                        <label>車型：</label>
+                        <input type="text" class="form-control" name="car_model">
+                    </div>
+                    <div class="info-item">
+                        <label>日期：</label>
+                        <input type="date" class="form-control" name="date">
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-item">
+                        <label>年份：</label>
+                        <input type="text" class="form-control" name="year">
+                    </div>
+                    <div class="info-item">
+                        <label>公里數：</label>
+                        <input type="text" class="form-control" name="mileage">
+                    </div>
+                </div>
+
+                <table class="repair-table">
+                    <thead>
+                        <tr>
+                            <th>維修項目</th>
+                            <th>規格</th>
+                            <th>數量</th>
+                            <th>單價</th>
+                            <th>小計</th>
+                            <th>備註</th>
+                        </tr>
+                    </thead>
+                    <tbody id="repair-items">
+                    </tbody>
+                </table>
+
+                <button type="button" class="btn btn-secondary mb-3" onclick="addRepairItem()">新增維修項目</button>
+
+                <div class="mb-3">
+                    <label>建議事項：</label>
+                    <textarea class="form-control" name="suggestions" rows="2"></textarea>
+                </div>
+
+                <div class="signature-amount">
+                    <div class="form-group">
+                        <label>客戶簽名：</label>
+                        <input type="text" class="form-control" name="customer_signature" style="width: 150px;">
+                    </div>
+                    <div class="form-group">
+                        <label>總計金額：</label>
+                        <input type="text" class="form-control" name="total_amount" style="width: 150px;" readonly>
+                    </div>
+                </div>
+
+                <div class="notes">
+                    <p>※1. 本維修單不含營業加值稅，如需開立發票，請自行填寫5%營業稅。</p>
+                    <p>※2. 委修期間車輛如遇天災、人禍及其他不可抗拒之事而發生損壞，本公司恕不負責。</p>
+                    <p>※3. 委修期間，維修車輛內之重要物品請自行保管、擔保，本公司恕不負保管之責任。</p>
+                    <p>※4. 委修車輛如有維修之問題，請於交車後三日內回廠檢修，逾期視同維修無誤。</p>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg me-2">儲存維修紀錄</button>
+                    <button type="button" class="btn btn-secondary btn-lg" onclick="printRecord()">
+                        <i class="fas fa-print me-1"></i>列印維修單
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="assets/js/get_vehicle_info.js"></script>
+
+    <script>
+        function addRepairItem() {
+            const tbody = document.getElementById('repair-items');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="text" class="form-control" name="item[]"></td>
+                <td><input type="text" class="form-control" name="spec[]"></td>
+                <td><input type="number" class="form-control" name="quantity[]" onchange="calculateSubtotal(this)"></td>
+                <td><input type="number" class="form-control" name="price[]" onchange="calculateSubtotal(this)"></td>
+                <td><input type="number" class="form-control" name="subtotal[]" readonly></td>
+                <td><input type="text" class="form-control" name="note[]"></td>
+            `;
+            tbody.appendChild(newRow);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            addRepairItem();
+        });
+
+        function calculateSubtotal(input) {
+            const row = input.closest('tr');
+            const quantity = parseFloat(row.querySelector('[name="quantity[]"]').value) || 0;
+            const price = parseFloat(row.querySelector('[name="price[]"]').value) || 0;
+            const subtotal = quantity * price;
+            row.querySelector('[name="subtotal[]"]').value = subtotal;
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            const subtotals = [...document.getElementsByName('subtotal[]')];
+            const total = subtotals.reduce((sum, input) => sum + (parseFloat(input.value) || 0), 0);
+            document.getElementsByName('total_amount')[0].value = total;
+        }
+
+        function printRecord() {
+            // 在列印前填入當前日期
+            if (!document.getElementsByName('date')[0].value) {
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementsByName('date')[0].value = today;
+            }
+            
+            // 執行列印
+            window.print();
+        }
+        
+        // 在表單提交時添加確認
+        document.getElementById('repair-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            Swal.fire({
+                title: '確認儲存',
+                text: "是否要儲存此維修紀錄？",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#1a4f95',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '確定儲存',
+                cancelButtonText: '取消'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // 這裡添加儲存邏輯
+                    saveRecord();
+                }
+            });
+        });
+        
+        // 儲存紀錄的函數
+        async function saveRecord() {
+            try {
+                const formData = new FormData(document.getElementById('repair-form'));
+                const response = await fetch('api/maintenance/create.php', {
+                    method: 'POST',
+                    body: formData
+                });
+        
+                if (!response.ok) {
+                    throw new Error('伺服器錯誤，無法儲存資料');
+                }
+        
+                const result = await response.json();
+        
+                if (result.status === 'success') {
+                    // 儲存成功提示框
+                    Swal.fire({
+                        title: '儲存成功',
+                        text: '是否要列印維修單？',
+                        icon: 'success',
+                        showCancelButton: true,
+                        confirmButtonColor: '#1a4f95',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: '立即列印',
+                        cancelButtonText: '稍後列印'
+                    }).then((action) => {
+                        if (action.isConfirmed) {
+                            printRecord(); // 執行列印功能
+                        } else {
+                            // 列印完成後跳轉
+                            window.location.href = 'appointment_records.html'; // 跳轉到維修記錄頁面
+                        }
+                    });
+                } else {
+                    throw new Error(result.message || '儲存失敗，請稍後再試');
+                }
+            } catch (error) {
+                // 發生錯誤時提示
+                Swal.fire({
+                    title: '錯誤',
+                    text: error.message,
+                    icon: 'error',
+                    confirmButtonColor: '#1a4f95'
+                });
+            }
+        }
+        
+    </script>
+</body>
+
+</html>
