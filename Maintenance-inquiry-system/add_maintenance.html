@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增維修紀錄 - 維修查詢系統</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css"> <!-- 外部樣式 -->
+</head>
+
+<body>
+    <!-- 導覽列 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="admin_dashboard.html">管理員系統</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="admin_dashboard.html">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="add_maintenance.html">新增維修紀錄</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html" onclick="logout()">登出</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主內容 -->
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">新增維修紀錄</h2>
+        <form id="add-maintenance-form" class="p-4 border rounded bg-light">
+            <!-- 選擇使用者 -->
+            <div class="mb-3">
+                <label for="userSelect" class="form-label">選擇使用者</label>
+                <select class="form-select" id="userSelect" required>
+                    <option value="">-- 選擇使用者 --</option>
+                </select>
+            </div>
+            <!-- 維修紀錄輸入 -->
+            <div class="mb-3">
+                <label for="vehicleId" class="form-label">車牌號碼</label>
+                <input type="text" class="form-control" id="vehicleId" placeholder="輸入車牌號碼" required>
+            </div>
+            <div class="mb-3">
+                <label for="repairDate" class="form-label">維修日期</label>
+                <input type="date" class="form-control" id="repairDate" required>
+            </div>
+            <div class="mb-3">
+                <label for="repairContent" class="form-label">維修內容</label>
+                <textarea class="form-control" id="repairContent" rows="3" placeholder="輸入維修內容" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="repairCost" class="form-label">維修費用 (元)</label>
+                <input type="number" class="form-control" id="repairCost" placeholder="輸入維修費用" required>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">儲存紀錄</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="assets/js/add_maintenance.js"></script> <!-- 外部 JS 檔案 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

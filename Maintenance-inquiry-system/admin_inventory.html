@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>諮詢留言查詢</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/admin_styles.css"> <!-- 外部樣式 -->
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">管理員系統</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="admin_dashboard.html">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="admin_inventory.html">諮詢留言查詢</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_orders.html">訂單管理</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_users.html">用戶管理</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_settings.html">系統設定</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">諮詢留言查詢</h2>
+        <table class="table table-bordered table-striped" id="inquiriesTable">
+            <thead class="table-primary">
+                <tr>
+                    <th>編號</th>
+                    <th>姓名</th>
+                    <th>Email</th>
+                    <th>主旨</th>
+                    <th>內容</th>
+                    <th>日期</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 諮詢留言資料將根據 JSON 內容動態生成 -->
+            </tbody>
+        </table>
+        <div id="noData" class="text-center text-muted" style="display:none;">暫無查詢資料</div>
+    </div>
+
+    <script>
+        // 讀取諮詢留言資料
+        function loadInquiries() {
+            fetch('fetch_inquiries.php')
+                .then(response => response.json())
+                .then(data => {
+                    const inquiriesTableBody = document.querySelector('#inquiriesTable tbody');
+                    inquiriesTableBody.innerHTML = '';
+                    
+                    if (data && data.length > 0) {
+                        data.forEach(item => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${item.id}</td>
+                                <td>${item.customerName}</td>
+                                <td>${item.email}</td>
+                                <td>${item.subject}</td>
+                                <td>${item.message}</td>
+                                <td>${item.inquiry_date}</td>
+                            `;
+                            inquiriesTableBody.appendChild(row);
+                        });
+                    } else {
+                        document.getElementById('noData').style.display = 'block';
+                    }
+                })
+                .catch(error => console.error('讀取諮詢留言失敗:', error));
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            loadInquiries();
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
