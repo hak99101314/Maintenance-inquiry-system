@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // ========== 資料庫連線設定 ==========
-$conn = new mysqli("localhost", "root", "", "睿煬企業社");
+$conn = new mysqli("localhost", "root", "karry,roy,jackson", "睿煬企業社");
 if ($conn->connect_error) {
     die("連接失敗: " . $conn->connect_error);
 }

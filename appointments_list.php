@@ -12,7 +12,7 @@ $user_id = intval($_SESSION['user_id']);
 
 // ========== 資料庫連線設定 ==========
 // 建立資料庫連線
-$conn = new mysqli("localhost", "root", "", "睿煬企業社");
+$conn = new mysqli("localhost", "root", "karry,roy,jackson", "睿煬企業社");
 
 // 檢查資料庫連線是否成功
 if ($conn->connect_error) {

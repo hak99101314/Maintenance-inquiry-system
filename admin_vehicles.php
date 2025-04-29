@@ -3,7 +3,7 @@ session_start();
 if (!isset($_SESSION['user_id'])) {
     die("<p style='color:red;'>請先登入。</p>");
 }
-$conn = new mysqli("localhost", "root", "", "睿煬企業社");
+$conn = new mysqli("localhost", "root", "karry,roy,jackson", "睿煬企業社");
 if ($conn->connect_error) {
     die("連接失敗: " . $conn->connect_error);
 }
