@@ -1,18 +1,14 @@
 <?php
 session_start();
-//header("Content-Type: application/json"); // 設定回應為 JSON 格式
 
 $response = ["success" => false, "message" => ""];
 
-// 當表單以 POST 方式送出時，進行註冊處理
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // 資料庫連線設定
     $servername = "localhost";
     $dbUsername = "root";
     $dbPassword = "karry,roy,jackson";
     $dbName = "睿煬企業社";
 
-    // 建立資料庫連線
     $conn = new mysqli($servername, $dbUsername, $dbPassword, $dbName);
     if ($conn->connect_error) {
         $response["message"] = "資料庫連線失敗：" . $conn->connect_error;
@@ -20,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // 取得表單資料
     $username             = $conn->real_escape_string($_POST['username'] ?? '');
     $email                = $conn->real_escape_string($_POST['email'] ?? '');
     $password             = $_POST['password'] ?? '';
@@ -33,21 +28,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $full_name            = $conn->real_escape_string($_POST['full_name'] ?? '');
     $contact_number       = $conn->real_escape_string($_POST['contact_number'] ?? '');
 
-    // 檢查必要欄位
     if (empty($username) || empty($email) || empty($password) || empty($confirm_password) || empty($full_name)) {
         $response["message"] = "請填寫所有必要欄位";
         echo json_encode($response);
         exit();
     }
 
-    // 密碼一致性檢查
     if ($password !== $confirm_password) {
         $response["message"] = "密碼與確認密碼不一致";
         echo json_encode($response);
         exit();
     }
 
-    // 檢查帳號是否已存在
     $checkQuery = "SELECT user_id FROM users WHERE username='$username'";
     $checkResult = $conn->query($checkQuery);
     if ($checkResult && $checkResult->num_rows > 0) {
@@ -56,20 +48,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // 若無錯誤則新增用戶資料
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
     $insertUser = "INSERT INTO users (username, password_hash, role, full_name, contact_number, email) 
                    VALUES ('$username', '$password_hash', 'customer', '$full_name', '$contact_number', '$email')";
 
     if ($conn->query($insertUser) === TRUE) {
-        // 取得新用戶 ID
         $new_user_id = $conn->insert_id;
 
-        // 新增車輛資料
         $insertVehicle = "INSERT INTO vehicles (license_plate, owner_id, brand, engine_number, year, month) 
                           VALUES ('$plate_number', '$new_user_id', '$car_make', '$engine_number', '$year_of_manufacture', '$month_of_manufacture')";
 
         if ($conn->query($insertVehicle) === TRUE) {
+            // ✅ 新增成功，寄出通知信
+            require_once 'send_email.php';
+
+            $subject = "會員註冊成功通知 - 睿煬企業社";
+            $body = "
+    <div style='font-family:Arial,sans-serif; color:#333; background:#f9f9f9; padding:20px; border-radius:8px; max-width:600px; margin:auto;'>
+        <h2 style='color:#2c3e50;'>親愛的 {$full_name} 您好</h2>
+        <p>感謝您註冊成為睿煬企業社的會員，您的帳號已成功建立！</p>
+
+        <p>以下是您的註冊資訊：</p>
+        <ul>
+            <li>帳號：{$username}</li>
+            <li>車牌號碼：{$plate_number}</li>
+            <li>聯絡電話：{$contact_number}</li>
+        </ul>
+
+        <p>歡迎使用我們的線上預約與查詢服務，期待為您提供最好的服務。</p>
+
+        <p style='margin-top:30px;'>睿煬企業社 敬上</p>
+    </div>
+";
+
+// 呼叫寄信 (改成正確的4個參數)
+sendEmail($email, $full_name, $subject, $body);
+
+
             $response["success"] = true;
             $response["message"] = "註冊成功！";
         } else {
@@ -84,6 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="zh-Hant">

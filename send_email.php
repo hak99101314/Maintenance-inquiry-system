@@ -25,7 +25,7 @@ $mail = new PHPMailer(true);
         $mail->addAddress($to_email, $to_name);
 
         // 內嵌LOGO圖片
-        $mail->addEmbeddedImage(__DIR__.'/Screenshot_20250224_162218_Drive.jpg', 'companylogo');
+        $mail->addEmbeddedImage(__DIR__.'/logo.jpg', 'companylogo');
 
         // 設定內容是HTML格式
         $mail->isHTML(true);
