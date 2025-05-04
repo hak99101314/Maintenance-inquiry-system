@@ -25,29 +25,64 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // 透過車牌找到對應的會員 ID（owner_id）
     $stmt = $conn->prepare("SELECT owner_id FROM vehicles WHERE license_plate = ?");
-    $stmt->bind_param("s", $license_plate);
-    $stmt->execute();
-    $stmt->bind_result($member_id);
-    $stmt->fetch();
-    $stmt->close();
+$stmt->bind_param("s", $license_plate);
+$stmt->execute();
+$stmt->bind_result($member_id);
+$stmt->fetch();
+$stmt->close();
 
-    if ($member_id) {
-        // 將 license_plate 與 member_id 同時寫入 estimates 表
-        $stmt = $conn->prepare("INSERT INTO estimates (member_id, license_plate, items, total_price, created_by) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("issdi", $member_id, $license_plate, $items, $total_price, $_SESSION['user_id']);
+// 這樣判斷就好（看 $member_id 有沒有值）
+if ($member_id) {
 
-        if ($stmt->execute()) {
-            $message = "✅ 估價單新增成功！";
-        } else {
-            $message = "❌ 新增失敗：" . $stmt->error;
+    // 這裡才準備要插入估價單
+    $insert = $conn->prepare("INSERT INTO estimates (member_id, license_plate, items, total_price, created_by) VALUES (?, ?, ?, ?, ?)");
+    $insert->bind_param("issdi", $member_id, $license_plate, $items, $total_price, $_SESSION['user_id']);
+
+    if ($insert->execute()) {
+        $message = "✅ 估價單新增成功！";
+
+        // ====== 新增後寄送通知 Email ======
+        require_once 'send_email.php';
+
+        $emailQuery = $conn->prepare("SELECT email, full_name FROM users WHERE user_id = ?");
+        $emailQuery->bind_param("i", $member_id);
+        $emailQuery->execute();
+        $emailResult = $emailQuery->get_result();
+        $emailData = $emailResult->fetch_assoc();
+        $emailQuery->close();
+
+        if ($emailData) {
+            $to_email = $emailData['email'];
+            $to_name = $emailData['full_name'];
+
+            $subject = "【睿煬企業社】您的估價單已建立";
+            $body = "
+                <div style='font-family:Arial,sans-serif; color:#333; background:#f9f9f9; padding:20px; border-radius:8px; max-width:600px; margin:auto;'>
+                    <h2 style='color:#2c3e50;'>親愛的 {$to_name}，您好：</h2>
+                    <p>我們已經為您的愛車建立了一份新的估價單，以下是詳細內容：</p>
+                    <ul>
+                        <li>🚗 車牌號碼：{$license_plate}</li>
+                        <li>📋 估價內容：{$items}</li>
+                        <li>💰 總金額：NT$ {$total_price}</li>
+                    </ul>
+                    <p>如有任何疑問，歡迎與我們聯繫。</p>
+                    <p style='margin-top:20px;'>睿煬企業社 敬上</p>
+                </div>
+            ";
+
+            if (!sendEmail($to_email, $to_name, $subject, $body)) {
+                $message .= "<br>⚡ 但寄送通知信件失敗，請檢查Email發送狀況！";
+            }
         }
 
-        $stmt->close();
     } else {
-        $message = "❌ 查無對應車牌，無法新增估價單。";
+        $message = "❌ 新增失敗：" . $insert->error;
     }
-}
 
+    $insert->close();
+} else {
+    $message = "❌ 查無對應車牌，無法新增估價單。";
+}
 
 // 抓取所有車牌及其對應使用者姓名
 $query = "
@@ -73,7 +108,7 @@ while ($row = $result->fetch_assoc()) {
         $usersWithVehicles[$uid]['plates'][] = $row['license_plate'];
     }
 }
-
+}
 $conn->close();
 ?>
 
