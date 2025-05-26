@@ -51,7 +51,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // 驗證密碼是否正確
                 if (password_verify($password, $user['password_hash'])) {
                     // 記錄登入時間
-                    $_SESSION['login_time'] = date("Y-m-d H:i:s");
+// ✅ 更新 last_login 欄位為現在時間
+  // ✅ 設定時區為台北時間（UTC+8）
+  date_default_timezone_set('Asia/Taipei');
+  $currentTime = date("Y-m-d H:i:s");
+
+  // ✅ 更新 last_login 時間
+  $userId = $user['user_id'];
+  $updateSql = "UPDATE users SET last_login = '$currentTime' WHERE user_id = $userId";
+  $conn->query($updateSql);
 
                     // 設定會話變數
                     $_SESSION['user_id']   = $user['user_id'];     // 使用者 ID

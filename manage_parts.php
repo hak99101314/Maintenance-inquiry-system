@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'staf
 $host = "localhost";
 $dbname = "睿煬企業社";
 $username = "root";
-$password = 'karry,roy,jackson';
+$password = "karry,roy,jackson";
 $conn = new mysqli($host, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("資料庫連線失敗：" . $conn->connect_error);

@@ -69,7 +69,7 @@ $vehicles = [];
 // 查詢會員車輛資訊及其維修紀錄數量
 $sqlVehicles = "
     SELECT v.vehicle_id, v.license_plate, v.brand, v.model, v.year, 
-           IFNULL((SELECT COUNT(*) FROM repair_orders ro WHERE ro.plate_number = v.license_plate), 0) AS repair_count
+           IFNULL((SELECT COUNT(*) FROM maintenance_records mr WHERE mr.vehicle_id = v.vehicle_id), 0) AS repair_count
     FROM vehicles v
     WHERE v.owner_id = ?";
 $stmt = $conn->prepare($sqlVehicles);
@@ -318,6 +318,8 @@ footer {
                                         echo '<span class="badge bg-success">已完成</span>';
                                     } elseif ($status === 'cancelled') {
                                         echo '<span class="badge bg-danger">已取消</span>';
+                                    } elseif ($status === 'noshow') {
+                                        echo '<span class="badge bg-dark">未到</span>';
                                     } else {
                                         echo '<span class="badge bg-secondary">' . htmlspecialchars($status) . '</span>';
                                     }
@@ -412,7 +414,7 @@ footer {
 
     <!-- 頁尾 -->
     <footer class="bg-primary text-light py-4 text-center">
-        <p>&copy; 2024-2025 維修查詢系統 | 協作單位：睿煬企業社、康寧大學資管科17.林宸皓13.陳彥丞19.陳宗偉</p>
+        <p>&copy; 2024-2025 睿煬企業社維修查詢系統 | 開發人員：林宸皓、陳彥丞、陳宗偉</p>
     </footer>
 
     <!-- 引入 Bootstrap JS -->

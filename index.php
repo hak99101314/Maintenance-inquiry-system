@@ -150,7 +150,7 @@ if (isset($_SESSION['user_id'])) {
 
 <!-- 頁尾 -->
 <footer class="bg-primary text-light py-4 text-center">
-    <p class="mb-0">&copy; 2024-2025 維修查詢系統 | 協作單位：睿煬企業社、康寧大學資管科17.林宸皓13.陳彥丞19.陳宗偉</p>
+    <p class="mb-0">&copy; 2024-2025 睿煬企業社維修查詢系統 | 開發人員：林宸皓、陳彥丞、陳宗偉</p>
 </footer>
 
 <!-- Bootstrap JS -->

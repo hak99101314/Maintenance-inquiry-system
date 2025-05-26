@@ -188,7 +188,7 @@ footer {
 
     <!-- 頁尾區塊 -->
     <footer class="bg-primary text-light py-4 text-center">
-        <p>&copy; 2024-2025 維修查詢系統 | 協作單位：睿煬企業社、康寧大學資管科17.林宸皓13.陳彥丞19.陳宗偉</p>
+        <p>&copy; 2024-2025 睿煬企業社維修查詢系統 | 開發人員：林宸皓、陳彥丞、陳宗偉</p>
     </footer>
 
     <!-- 引入 Bootstrap JS (包含 Popper) -->

@@ -44,7 +44,9 @@ $status_map = [
     'confirmed' => '已確認',
     'repair' => '維修中',
     'completed' => '維修完成',
-    'cancelled' => '已取消'
+    'cancelled' => '已取消',
+    'noshow' => '未到'
+
 ];
 // 維修項目對應中文
 $service_item_map = [
@@ -168,7 +170,7 @@ footer {
           <li class="nav-item"><a class="nav-link" href="handle_appointments.php">處理預約</a></li>
           <li class="nav-item"><a class="nav-link" href="maintenance_records.php">維修紀錄</a></li>
           <li class="nav-item"><a class="nav-link" href="staff_users.php">客戶管理</a></li>
-          <li class="nav-item"><a class="nav-link" href="manage_parts.php">管理零件</a></li>
+          
         </ul>
         
         <!-- 右側使用者選單 -->
@@ -254,10 +256,10 @@ footer {
   </div>
   <div class="col-md-3">
         <div class="card dashboard-card h-100">
-          <div class="card-body text-center">
+          <div class="card-body text-center d-flex flex-column justify-content-between">
             <i class="fas fa-file-invoice-dollar fa-2x mb-3 text-primary"></i>
             <h5 class="card-title">估價單狀態</h5>
-            <a href="admin_view_estimates.php" class="btn btn-outline-primary">進入查看</a>
+            <a href="admin_view_estimates.php" class="btn btn-primary mt-3">進入查看</a>
           </div>
         </div>
       </div>
@@ -326,6 +328,7 @@ footer {
         'repair' => 'bg-primary',
         'completed' => 'bg-success',
         'cancelled' => 'bg-danger',
+        'noshow' => 'bg-dark',
         default => 'bg-secondary'
       };
       echo "<td><span class='badge $statusClass status-badge'>$statusText</span></td>";
@@ -336,7 +339,7 @@ footer {
           echo "<button class='btn btn-sm btn-outline-primary' onclick='confirmAppointment(" . $row['appointment_id'] . ")'>確認</button> ";
           echo "<button class='btn btn-sm btn-outline-danger' onclick='cancelAppointment(" . $row['appointment_id'] . ")'>取消</button>";
       } elseif ($status == 'confirmed') {
-          echo "<button class='btn btn-sm btn-outline-primary' onclick='startMaintenance(" . $row['appointment_id'] . ")'>開始維修</button>";
+        echo "<a href='admin_add_part.php?appointment_id=" . $row['appointment_id'] . "' class='btn btn-sm btn-outline-primary'>開始維修</a>";
       } elseif ($status == 'repair') {
           echo "<button class='btn btn-sm btn-outline-success' onclick='completeMaintenance(" . $row['appointment_id'] . ")'>完成維修</button>";
       }
@@ -421,7 +424,7 @@ footer {
 
   <!-- ========== 頁尾資訊 ========== -->
   <footer class="bg-primary text-light py-4 text-center">
-    <p>&copy; 2024-2025 維修查詢系統 | 協作單位：睿煬企業社、康寧大學資管科17.林宸皓13.陳彥丞19.陳宗偉</p>
+    <p>&copy; 2024-2025 睿煬企業社維修查詢系統 | 開發人員：林宸皓、陳彥丞、陳宗偉</p>
   </footer>
 
   <!-- ========== JavaScript 程式碼 ========== -->

@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'staff') {
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'staff'])) {
     header("Location: login.php");
     exit();
 }
@@ -15,15 +15,19 @@ if ($conn->connect_error) {
     die("資料庫連線失敗: " . $conn->connect_error);
 }
 
+$is_admin = ($_SESSION['role'] === 'admin');
+
 $sql = "SELECT 
             a.appointment_id AS id,
             u.full_name AS name,
             u.contact_number AS phone,
+            u.no_show_count,
             v.license_plate,
             a.service_items AS service,
             a.appointment_date,
             a.appointment_time,
-            a.status
+            a.status,
+            (SELECT COUNT(*) FROM appointment_blacklist b WHERE b.user_id = u.user_id) AS is_blacklisted
         FROM appointments a
         JOIN users u ON a.customer_id = u.user_id
         JOIN vehicles v ON a.vehicle_id = v.vehicle_id
@@ -36,7 +40,6 @@ if ($result) {
         'maintenance' => '一般檢修',
         'inspection' => '年度檢查',
         'cleaning' => '車輛清潔'
-        
     ];
 
     while ($row = $result->fetch_assoc()) {
@@ -57,7 +60,8 @@ $status_map = [
     'confirmed' => '已確認',
     'repair' => '維修中',
     'completed' => '維修完成',
-    'cancelled' => '已取消'
+    'cancelled' => '已取消',
+    'noshow' => '未到'
 ];
 ?>
 <!DOCTYPE html>
@@ -68,44 +72,21 @@ $status_map = [
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <style>
-    body {
-      background-color: #f4f6f9;
-    }
-    .sidebar {
-      height: 100vh;
-      background-color: #2c3e50;
-      color: white;
-    }
-    .sidebar a {
-      color: #ecf0f1;
-      display: block;
-      padding: 1rem;
-      text-decoration: none;
-    }
-    .sidebar a:hover, .sidebar a.active {
-      background-color: #1abc9c;
-    }
-    .main-content {
-      padding: 2rem;
-    }
-  </style>
 </head>
 <body>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-2 sidebar d-flex flex-column">
+    <div class="col-md-2 sidebar d-flex flex-column bg-dark text-white vh-100">
       <h4 class="p-3 text-center border-bottom">員工系統</h4>
-      <a href="staff_dashboard.php"><i class="fas fa-home me-2"></i>首頁</a>
-      <a href="staff_profile.php"><i class="fas fa-id-badge me-2"></i>員工資料</a>
-      <a href="staff_users.php"><i class="fas fa-users me-2"></i>客戶管理</a>
-      <a href="handle_appointments.php" class="active"><i class="fas fa-calendar-alt me-2"></i>預約管理</a>
-      <a href="staff_orders.php"><i class="fas fa-wrench me-2"></i>維修管理</a>
-      <a href="logout.php"><i class="fas fa-sign-out-alt me-2"></i>登出</a>
+      <a href="staff_dashboard.php" class="text-white p-2">首頁</a>
+      <a href="staff_profile.php" class="text-white p-2">員工資料</a>
+      <a href="staff_users.php" class="text-white p-2">客戶管理</a>
+      <a href="handle_appointments.php" class="text-white p-2 bg-success">預約管理</a>
+      <a href="staff_orders.php" class="text-white p-2">維修管理</a>
+      <a href="logout.php" class="text-white p-2">登出</a>
     </div>
-    <div class="col-md-10 main-content">
+    <div class="col-md-10 p-4">
       <h3 class="mb-4"><i class="fas fa-calendar-alt me-2"></i>預約管理</h3>
-
       <div class="table-responsive bg-white p-3 rounded shadow-sm">
         <table class="table table-bordered align-middle text-center">
           <thead class="table-secondary">
@@ -118,6 +99,7 @@ $status_map = [
               <th>日期</th>
               <th>時間</th>
               <th>狀態</th>
+              <?php if ($is_admin): ?><th>黑名單</th><?php endif; ?>
               <th>操作</th>
             </tr>
           </thead>
@@ -139,15 +121,20 @@ $status_map = [
                       'repair' => 'bg-primary',
                       'completed' => 'bg-success',
                       'cancelled' => 'bg-danger',
+                      'no_show' => 'bg-dark',
                       default => 'bg-secondary',
                     };
                     echo "<span class='badge $badgeClass'>" . ($status_map[$appointment['status']] ?? '未知') . "</span>";
                   ?>
                 </td>
+                <?php if ($is_admin): ?>
+                  <td><?= $appointment['is_blacklisted'] ? '<span class="text-danger fw-bold">是</span>' : '否' ?></td>
+                <?php endif; ?>
                 <td>
                   <?php if ($appointment['status'] === 'pending'): ?>
                     <button class="btn btn-sm btn-success" onclick="updateStatus(<?= $appointment['id'] ?>, 'confirmed')">確認</button>
                     <button class="btn btn-sm btn-danger" onclick="updateStatus(<?= $appointment['id'] ?>, 'cancelled')">取消</button>
+                    <button class="btn btn-sm btn-secondary" onclick="updateStatus(<?= $appointment['id'] ?>, 'no_show')">未到</button>
                   <?php else: ?>
                     <span class="text-muted">--</span>
                   <?php endif; ?>

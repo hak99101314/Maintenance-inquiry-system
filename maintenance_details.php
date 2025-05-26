@@ -1,6 +1,6 @@
 <?php
-// ========== 維修紀錄詳情頁面 ==========
-// 功能：顯示特定維修單的詳細內容與維修項目清單
+// ========== 檔案說明 ==========
+// maintenance_details.php 員工系統 - 維修紀錄詳情頁面（正規化資料表）
 
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
@@ -12,17 +12,23 @@ if ($record_id <= 0) {
     die("缺少維修單號，無法顯示紀錄。");
 }
 
-$servername = "localhost";
-$dbUsername = "root";
-$dbPassword = "karry,roy,jackson";
-$dbName = "睿煬企業社";
-
-$conn = new mysqli($servername, $dbUsername, $dbPassword, $dbName);
+$conn = new mysqli("localhost", "root", "karry,roy,jackson", "睿煬企業社");
 if ($conn->connect_error) {
     die("資料庫連線失敗: " . $conn->connect_error);
 }
 
-$stmt = $conn->prepare("SELECT id, owner, phone, mobile, plate_number, car_model, year, repair_date, mileage, recommendations, customer_signature, total_cost FROM repair_orders WHERE id = ?");
+// 查主紀錄、車輛、車主資訊（透過 JOIN）
+$sql = "SELECT mr.*, v.license_plate, v.brand, v.model, v.year,
+               u.full_name AS owner_name, u.contact_number
+        FROM maintenance_records mr
+        JOIN vehicles v ON mr.vehicle_id = v.vehicle_id
+        JOIN users u ON v.owner_id = u.user_id
+        WHERE mr.record_id = ?";
+
+$stmt = $conn->prepare($sql);
+if (!$stmt) {
+    die("SQL 準備錯誤: " . $conn->error);
+}
 $stmt->bind_param("i", $record_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -32,7 +38,14 @@ if ($result->num_rows === 0) {
 $record = $result->fetch_assoc();
 $stmt->close();
 
-$stmt2 = $conn->prepare("SELECT repair_item, specification, quantity, unit_price, subtotal, notes FROM repair_items WHERE order_id = ?");
+// 查維修細項
+$stmt2 = $conn->prepare("SELECT item_name AS repair_item, specification, quantity, unit_price, 
+                                (quantity * unit_price) AS subtotal, notes
+                         FROM maintenance_items
+                         WHERE record_id = ?");
+if (!$stmt2) {
+    die("維修項目查詢失敗: " . $conn->error);
+}
 $stmt2->bind_param("i", $record_id);
 $stmt2->execute();
 $result2 = $stmt2->get_result();
@@ -44,8 +57,8 @@ $stmt2->close();
 $conn->close();
 
 $role = $_SESSION['role'];
-$homeUrl = $role === 'admin' ? 'admin_dashboard.php' : ($role === 'staff' ? 'staff_dashboard.php' : ($role === 'customer' ? 'dashboard.php' : '#'));
-$returnUrl = $role === 'admin' ? 'admin_maintenance.php' : ($role === 'staff' ? 'maintenance_records.php' : ($role === 'customer' ? 'maintenance-history.php' : '#'));
+$homeUrl = $role === 'admin' ? 'admin_dashboard.php' : ($role === 'staff' ? 'staff_dashboard.php' : 'dashboard.php');
+$returnUrl = $role === 'admin' ? 'admin_maintenance.php' : ($role === 'staff' ? 'maintenance_records.php' : 'maintenance-history.php');
 ?>
 <!DOCTYPE html>
 <html lang="zh-Hant">
@@ -92,22 +105,18 @@ $returnUrl = $role === 'admin' ? 'admin_maintenance.php' : ($role === 'staff' ? 
     <div class="card p-4">
         <h4 class="card-title text-center">維修紀錄詳細內容</h4>
         <div class="row mb-3">
-            <div class="col-md-6"><strong>維修單號：</strong> <?= htmlspecialchars($record['id']) ?></div>
+            <div class="col-md-6"><strong>維修單號：</strong> <?= htmlspecialchars($record['record_id']) ?></div>
             <div class="col-md-6"><strong>維修日期：</strong> <?= htmlspecialchars($record['repair_date']) ?></div>
         </div>
         <div class="row mb-3">
-            <div class="col-md-6"><strong>車主：</strong> <?= htmlspecialchars($record['owner']) ?></div>
-            <div class="col-md-6"><strong>電話：</strong> <?= htmlspecialchars($record['phone']) ?></div>
+            <div class="col-md-6"><strong>車主：</strong> <?= htmlspecialchars($record['owner_name']) ?></div>
+            <div class="col-md-6"><strong>電話：</strong> <?= htmlspecialchars($record['contact_number']) ?></div>
         </div>
         <div class="row mb-3">
-            <div class="col-md-6"><strong>行動電話：</strong> <?= htmlspecialchars($record['mobile']) ?></div>
-            <div class="col-md-6"><strong>車牌號碼：</strong> <?= htmlspecialchars($record['plate_number']) ?></div>
+            <div class="col-md-6"><strong>車牌號碼：</strong> <?= htmlspecialchars($record['license_plate']) ?></div>
+            <div class="col-md-6"><strong>品牌 / 型號：</strong> <?= htmlspecialchars($record['brand'] . ' / ' . $record['model']) ?></div>
         </div>
-        <div class="row mb-3">
-            <div class="col-md-6"><strong>車型：</strong> <?= htmlspecialchars($record['car_model']) ?></div>
-            <div class="col-md-6"><strong>年份：</strong> <?= htmlspecialchars($record['year']) ?></div>
-        </div>
-        <div class="mb-4"><strong>公里數：</strong> <?= htmlspecialchars($record['mileage']) ?></div>
+        <div class="mb-3"><strong>年份：</strong> <?= htmlspecialchars($record['year']) ?>，<strong>公里數：</strong> <?= htmlspecialchars($record['mileage']) ?></div>
         <hr>
         <h5>建議事項</h5>
         <p><?= nl2br(htmlspecialchars($record['recommendations'])) ?></p>

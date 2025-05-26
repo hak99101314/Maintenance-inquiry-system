@@ -20,7 +20,7 @@ $appointment_id = intval($_GET['id']);
 // ========== 資料庫連線設定 ==========
 $servername = "localhost";
 $username = "root";
-$password = 'karry,roy,jackson';
+$password = "karry,roy,jackson";
 $dbname = "睿煬企業社";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -108,6 +108,7 @@ $appointment = $result->fetch_assoc();
                         'repair' => 'bg-primary',
                         'completed' => 'bg-success',
                         'cancelled' => 'bg-danger',
+                        'noshow' => 'bg-dark',
                         default => 'bg-secondary'
                     };
                     $status_text = match($appointment['status']) {
@@ -116,6 +117,7 @@ $appointment = $result->fetch_assoc();
                         'repair' => '維修中',
                         'completed' => '已完成',
                         'cancelled' => '已取消',
+                        'noshow' => '未到',
                         default => '未知狀態'
                     };
                     ?>

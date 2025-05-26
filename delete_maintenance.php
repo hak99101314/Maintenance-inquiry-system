@@ -13,7 +13,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 // 設定資料庫連線參數
 $servername = "localhost";
 $username = "root";
-$password = 'karry,roy,jackson';
+$password = "karry,roy,jackson";
 $dbname = "睿煬企業社";
 
 // 建立資料庫連線

@@ -1,82 +1,94 @@
 <?php
-// 設定回應格式為 JSON
 header('Content-Type: application/json');
-// 開始會話
 session_start();
 
-// 檢查使用者是否已登入
+// 驗證登入
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => '請先登入']);
     exit();
 }
 
-// 檢查是否為 POST 請求方法
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'message' => '無效的請求方法']);
     exit();
 }
 
-// 獲取並解析 POST 請求中的 JSON 數據
 $input = json_decode(file_get_contents('php://input'), true);
-
-// 檢查必要參數是否存在
 if (!isset($input['appointment_id']) || !isset($input['status'])) {
     echo json_encode(['success' => false, 'message' => '缺少必要參數']);
     exit();
 }
 
-// 取得請求參數
 $appointment_id = $input['appointment_id'];
 $status = $input['status'];
 $user_id = $_SESSION['user_id'];
 $user_role = $_SESSION['role'];
 
-// 定義有效的狀態列表並驗證
-$valid_statuses = ['pending', 'confirmed', 'repair', 'completed', 'cancelled'];
+$valid_statuses = ['pending', 'confirmed', 'repair', 'completed', 'cancelled', 'no_show'];
 if (!in_array($status, $valid_statuses)) {
     echo json_encode(['success' => false, 'message' => '無效的狀態值']);
     exit();
 }
 
-// 資料庫連線設定
-$servername = "localhost";    // 資料庫伺服器名稱
-$dbUsername = "root";         // 資料庫使用者名稱
-$dbPassword = "karry,roy,jackson";            // 資料庫密碼
-$dbName = "睿煬企業社";      // 資料庫名稱
-
-// 建立資料庫連線
-$conn = new mysqli($servername, $dbUsername, $dbPassword, $dbName);
+// 資料庫連線
+$conn = new mysqli("localhost", "root", "karry,roy,jackson", "睿煬企業社");
 if ($conn->connect_error) {
     echo json_encode(['success' => false, 'message' => '資料庫連線失敗']);
     exit();
 }
 
-// 根據使用者角色設定不同的權限
-if ($user_role === 'staff' || $user_role === 'admin') {
-    // 員工和管理員可以更新所有狀態
-    $sql = "UPDATE appointments SET status = ? WHERE appointment_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("si", $status, $appointment_id);
-} else {
-    // 一般會員只能取消自己的預約
-    if ($status !== 'cancelled') {
+// 查出該預約的 user_id
+$stmt = $conn->prepare("SELECT customer_id FROM appointments WHERE appointment_id = ?");
+$stmt->bind_param("i", $appointment_id);
+$stmt->execute();
+$result = $stmt->get_result();
+if ($result->num_rows === 0) {
+    echo json_encode(['success' => false, 'message' => '找不到預約紀錄']);
+    exit();
+}
+$appointment = $result->fetch_assoc();
+$customer_id = $appointment['customer_id'];
+$stmt->close();
+
+// 權限邏輯
+if ($user_role !== 'admin' && $user_role !== 'staff') {
+    if ($status !== 'cancelled' || $customer_id !== $user_id) {
         echo json_encode(['success' => false, 'message' => '權限不足']);
         exit();
     }
-    // 確保會員只能取消自己的預約
-    $sql = "UPDATE appointments SET status = ? WHERE appointment_id = ? AND customer_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sii", $status, $appointment_id, $user_id);
 }
 
-// 執行更新操作並回傳結果
-if ($stmt->execute()) {
-    echo json_encode(['success' => true, 'message' => '狀態更新成功']);
-} else {
-    echo json_encode(['success' => false, 'message' => '狀態更新失敗']);
-}
-
-// 清理資源並關閉連線
+// 更新預約狀態
+$stmt = $conn->prepare("UPDATE appointments SET status = ? WHERE appointment_id = ?");
+$stmt->bind_param("si", $status, $appointment_id);
+$success = $stmt->execute();
 $stmt->close();
+
+if (!$success) {
+    echo json_encode(['success' => false, 'message' => '狀態更新失敗']);
+    exit();
+}
+
+// 特殊處理：no_show 時更新 no_show_count 與黑名單
+if ($status === 'no_show') {
+    // 累加 no_show_count
+    $conn->query("UPDATE users SET no_show_count = no_show_count + 1 WHERE user_id = $customer_id");
+
+    // 若 >= 3 且尚未進入黑名單
+    $check = $conn->query("SELECT no_show_count FROM users WHERE user_id = $customer_id");
+    $no_show = $check->fetch_assoc()['no_show_count'];
+
+    if ($no_show >= 3) {
+        $black = $conn->query("SELECT * FROM appointment_blacklist WHERE user_id = $customer_id");
+        if ($black->num_rows === 0) {
+            $reason = "預約未到達 3 次，自動列入黑名單";
+            $stmt = $conn->prepare("INSERT INTO appointment_blacklist (user_id, reason) VALUES (?, ?)");
+            $stmt->bind_param("is", $customer_id, $reason);
+            $stmt->execute();
+            $stmt->close();
+        }
+    }
+}
+
 $conn->close();
-?>
+echo json_encode(['success' => true, 'message' => '狀態更新成功']);
