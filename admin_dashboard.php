@@ -68,23 +68,23 @@ $service_item_map = [
   <style>
     /* 歡迎區塊樣式設定 */
     .welcome-section {
-      background-color: #f8f9fa;  // 淺灰色背景
-      padding: 2rem 0;            // 上下內距
-      margin-bottom: 2rem;        // 下方外距
+      background-color: #f8f9fa;  /*淺灰色背景*/
+      padding: 2rem 0;            /* 上下內距*/
+      margin-bottom: 2rem;        /*下方外距*/
     }
     /* 儀表板卡片過渡效果設定 */
     .dashboard-card {
-      transition: transform 0.3s ease;  // 平滑過渡效果
-      margin-bottom: 1.5rem;           // 下方外距
+      transition: transform 0.3s ease;  /* 平滑過渡效果*/
+      margin-bottom: 1.5rem;           /*; 下方外距*/
     }
     /* 卡片懸停效果 */
     .dashboard-card:hover {
-      transform: translateY(-5px);     // 向上移動效果
+      transform: translateY(-5px);     /* 向上移動效果*/
     }
     /* 狀態徽章樣式設定 */
     .status-badge {
-      font-size: 0.9rem;              // 字體大小
-      padding: 0.5em 1em;             // 內距
+      font-size: 0.9rem;              /*字體大小*/
+      padding: 0.5em 1em;             /* 內距*/
     }
     .dashboard-card {
   height: 100%;
