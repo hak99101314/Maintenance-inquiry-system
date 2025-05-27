@@ -346,8 +346,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- 開發者資訊 -->
             <div class="developer-info">
                 協作單位：睿煬企業社<br>
-                康寧大學資管科<br>
-                17.林宸皓 13.陳彥丞 19.陳宗偉
+                製作者：林宸皓 陳彥丞 陳宗偉<br>
+                三位共同開發本系統
             </div>
         </div>
     </div>

@@ -104,6 +104,7 @@ $status_map = [
             </tr>
           </thead>
           <tbody>
+            <?php $today = date('Y-m-d'); ?>
             <?php foreach ($appointments as $appointment): ?>
               <tr>
                 <td><?= htmlspecialchars($appointment['id']) ?></td>
@@ -126,19 +127,22 @@ $status_map = [
                     };
                     echo "<span class='badge $badgeClass'>" . ($status_map[$appointment['status']] ?? '未知') . "</span>";
                   ?>
-                </td>
-                <?php if ($is_admin): ?>
-                  <td><?= $appointment['is_blacklisted'] ? '<span class="text-danger fw-bold">是</span>' : '否' ?></td>
-                <?php endif; ?>
                 <td>
-                  <?php if ($appointment['status'] === 'pending'): ?>
-                    <button class="btn btn-sm btn-success" onclick="updateStatus(<?= $appointment['id'] ?>, 'confirmed')">確認</button>
-                    <button class="btn btn-sm btn-danger" onclick="updateStatus(<?= $appointment['id'] ?>, 'cancelled')">取消</button>
-                    <button class="btn btn-sm btn-secondary" onclick="updateStatus(<?= $appointment['id'] ?>, 'no_show')">未到</button>
-                  <?php else: ?>
-                    <span class="text-muted">--</span>
-                  <?php endif; ?>
-                </td>
+  <?php if ($a['status'] === 'pending'): ?>
+    <button class="btn btn-sm btn-success" onclick="updateStatus(<?= $a['id'] ?>, 'confirmed')">確認</button>
+    <button class="btn btn-sm btn-danger" onclick="updateStatus(<?= $a['id'] ?>, 'cancelled')">取消</button>
+    <?php if ($a['appointment_date'] === $today): ?>
+      <button class="btn btn-sm btn-secondary" onclick="updateStatus(<?= $a['id'] ?>, 'noshow')">未到</button>
+    <?php endif; ?>
+  <?php elseif ($a['status'] === 'confirmed'): ?>
+    <a href="admin_create_estimate.php?appointment_id=<?= $a['id'] ?>" class="btn btn-sm btn-primary">開始維修</a>
+    <button class="btn btn-sm btn-danger" onclick="updateStatus(<?= $a['id'] ?>, 'cancelled')">取消</button>
+    <?php if ($a['appointment_date'] === $today): ?>
+      <button class="btn btn-sm btn-secondary" onclick="updateStatus(<?= $a['id'] ?>, 'noshow')">未到</button>
+    <?php endif; ?>
+  <?php endif; ?>
+</td>
+
               </tr>
             <?php endforeach; ?>
           </tbody>
@@ -149,27 +153,64 @@ $status_map = [
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-function updateStatus(appointmentId, status) {
-  if (confirm('確定要更新預約狀態嗎？')) {
-    fetch('api/updateAppointmentStatus.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ appointment_id: appointmentId, status: status })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        alert('狀態更新成功！');
-        location.reload();
-      } else {
-        alert('更新失敗：' + data.message);
-      }
-    })
-    .catch(error => {
-      console.error('錯誤：', error);
-      alert('系統錯誤，請稍後再試');
-    });
-  }
+function updateStatus(id, status) {
+  Swal.fire({
+    title: '確定執行？',
+    text: `狀態將更改為「${status}」`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: '確定',
+    cancelButtonText: '取消'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch('api/updateAppointmentStatus.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          appointment_id: id,
+          status: status
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          Swal.fire('✅ 成功更新', '', 'success').then(() => location.reload());
+        } else {
+          Swal.fire('❌ 操作失敗', data.message || '請稍後再試', 'error');
+        }
+      });
+    }
+  });
+}
+function cancelAppointment(id) {
+  Swal.fire({
+    title: '確定要取消嗎？',
+    text: '此操作將取消該筆預約並釋放名額',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: '是，取消',
+    cancelButtonText: '不',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch('api/updateAppointmentStatus.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          appointment_id: id,
+          status: 'cancelled'
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          Swal.fire('已取消！', '該預約已取消並釋放名額', 'success');
+          refreshTimeSlots(); // 這是你的自訂函式，用來更新時段人數
+        } else {
+          Swal.fire('失敗', data.message || '無法取消', 'error');
+        }
+      });
+    }
+  });
 }
 </script>
 </body>

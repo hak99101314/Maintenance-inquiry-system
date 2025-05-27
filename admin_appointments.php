@@ -4,15 +4,12 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// 啟動 session 並驗證管理員身份
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
   header("Location: login.php");
   exit();
 }
-$is_admin = $_SESSION['role'] === 'admin';
 
-// 資料庫連線參數
 $servername = "localhost";
 $dbUsername = "root";
 $dbPassword = "karry,roy,jackson";
@@ -23,7 +20,6 @@ if ($conn->connect_error) {
   die("資料庫連線失敗: " . $conn->connect_error);
 }
 
-// 搜尋條件處理
 $conditions = [];
 if (!empty($_GET['search_name'])) {
   $name = $conn->real_escape_string($_GET['search_name']);
@@ -76,7 +72,7 @@ if ($result) {
     $appointments[] = $row;
   }
 } else {
-  die("❌ 查詢預約失敗：" . $conn->error);
+  die("\u274c \u67e5\u8a62\u9810\u7d04\u5931\u6557：" . $conn->error);
 }
 $conn->close();
 
@@ -183,6 +179,7 @@ $status_class_map = [
             </tr>
           </thead>
           <tbody>
+            <?php $today = date('Y-m-d'); ?>
             <?php foreach ($appointments as $a): ?>
               <tr>
                 <td><?= $a['id'] ?></td>
@@ -199,19 +196,21 @@ $status_class_map = [
                     <button class="btn btn-sm btn-outline-danger mt-1" onclick="unblockUser(<?= $a['id'] ?>)">解除</button>
                   <?php endif; ?>
                 </td>
-                <td>
-                  <?php if ($a['status'] === 'pending'): ?>
-                    <button class="btn btn-sm btn-success" onclick="updateStatus(<?= $a['id'] ?>, 'confirmed')">確認</button>
-                    <button class="btn btn-sm btn-danger" onclick="updateStatus(<?= $a['id'] ?>, 'cancelled')">取消</button>
-                    <button class="btn btn-sm btn-secondary" onclick="updateStatus(<?= $a['id'] ?>, 'noshow')">未到</button>
-                  <?php elseif ($a['status'] === 'repair'): ?>
-                    <button class="btn btn-sm btn-success" onclick="updateStatus(<?= $a['id'] ?>, 'completed')">完成維修</button>
-                    <button class="btn btn-sm btn-secondary" onclick="updateStatus(<?= $a['id'] ?>, 'noshow')">未到</button>
-                  <?php else: ?>
-                    <span class="text-muted">--</span>
-                  <?php endif; ?>
-
-                </td>
+               <td>
+  <?php if ($a['status'] === 'pending'): ?>
+    <button class="btn btn-sm btn-success" onclick="updateStatus(<?= $a['id'] ?>, 'confirmed')">確認</button>
+    <button class="btn btn-sm btn-danger" onclick="updateStatus(<?= $a['id'] ?>, 'cancelled')">取消</button>
+    <?php if ($a['appointment_date'] === $today): ?>
+      <button class="btn btn-sm btn-secondary" onclick="updateStatus(<?= $a['id'] ?>, 'noshow')">未到</button>
+    <?php endif; ?>
+  <?php elseif ($a['status'] === 'confirmed'): ?>
+    <a href="admin_create_estimate.php?appointment_id=<?= $a['id'] ?>" class="btn btn-sm btn-primary">開始維修</a>
+    <button class="btn btn-sm btn-danger" onclick="updateStatus(<?= $a['id'] ?>, 'cancelled')">取消</button>
+    <?php if ($a['appointment_date'] === $today): ?>
+      <button class="btn btn-sm btn-secondary" onclick="updateStatus(<?= $a['id'] ?>, 'noshow')">未到</button>
+    <?php endif; ?>
+  <?php endif; ?>
+</td>
               </tr>
             <?php endforeach; ?>
           </tbody>

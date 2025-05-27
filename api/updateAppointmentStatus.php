@@ -76,7 +76,7 @@ if (!$success) {
 
 // 若是確認狀態，寄送 Email 通知
 if ($status === 'confirmed') {
-    require_once '../utils/send_email.php';
+   require_once 'send_email.php';
 
     $query = $conn->prepare("
         SELECT u.email, u.full_name, a.appointment_date, a.appointment_time, a.service_items
@@ -124,6 +124,85 @@ if ($status === 'confirmed') {
         sendEmail($to, $name, $subject, $body);
     }
 }
+if ($status === 'cancelled') {
+    require_once 'send_email.php';
+
+    $query = $conn->prepare("
+        SELECT u.email, u.full_name, a.appointment_date, a.appointment_time, a.service_items
+        FROM appointments a
+        JOIN users u ON a.customer_id = u.user_id
+        WHERE a.appointment_id = ?
+    ");
+    $query->bind_param("i", $appointment_id);
+    $query->execute();
+    $res = $query->get_result();
+    $info = $res->fetch_assoc();
+    $query->close();
+
+    if ($info) {
+        $to = $info['email'];
+        $name = $info['full_name'];
+        $date = $info['appointment_date'];
+        $time = $info['appointment_time'];
+        $service = $info['service_items'];
+
+        $subject = "【睿煬企業社】預約已取消";
+        $body = "
+            <div style='font-family:Arial,sans-serif; background:#fffbe7; padding:20px; border-radius:8px; max-width:600px; margin:auto; color:#333;'>
+                <h2 style='color:#e74c3c;'>親愛的 {$name}，您好：</h2>
+                <p>您原訂的預約已成功取消，以下是原預約內容：</p>
+                <ul>
+                    <li>🛠️ 服務項目：{$service}</li>
+                    <li>📅 日期：{$date}</li>
+                    <li>⏰ 時間：{$time}</li>
+                </ul>
+                <p>如您仍需要服務，歡迎重新預約。</p>
+                <p style='margin-top:20px;'>睿煬企業社 敬上</p>
+            </div>
+        ";
+        sendEmail($to, $name, $subject, $body);
+    }
+}
+if ($status === 'noshow') {
+    require_once 'send_email.php';
+
+    $query = $conn->prepare("
+        SELECT u.email, u.full_name, a.appointment_date, a.appointment_time, a.service_items
+        FROM appointments a
+        JOIN users u ON a.customer_id = u.user_id
+        WHERE a.appointment_id = ?
+    ");
+    $query->bind_param("i", $appointment_id);
+    $query->execute();
+    $res = $query->get_result();
+    $info = $res->fetch_assoc();
+    $query->close();
+
+    if ($info) {
+        $to = $info['email'];
+        $name = $info['full_name'];
+        $date = $info['appointment_date'];
+        $time = $info['appointment_time'];
+        $service = $info['service_items'];
+
+        $subject = "【睿煬企業社】預約未到提醒";
+        $body = "
+            <div style='font-family:Arial,sans-serif; background:#f2f2f2; padding:20px; border-radius:8px; max-width:600px; margin:auto; color:#333;'>
+                <h2 style='color:#555;'>親愛的 {$name}，您好：</h2>
+                <p>我們注意到您未出席以下預約：</p>
+                <ul>
+                    <li>🛠️ 服務項目：{$service}</li>
+                    <li>📅 日期：{$date}</li>
+                    <li>⏰ 時間：{$time}</li>
+                </ul>
+                <p>如為誤會，請聯繫我們重新安排。</p>
+                <p style='margin-top:20px;'>睿煬企業社 敬上</p>
+            </div>
+        ";
+        sendEmail($to, $name, $subject, $body);
+    }
+}
+
 
 // 處理未到（noshow）與黑名單邏輯
 if ($status === 'noshow') {

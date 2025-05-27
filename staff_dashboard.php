@@ -521,33 +521,66 @@ footer {
   }
 
   // 取消預約的函數
-  function cancelAppointment(appointmentId) {
-      if (confirm('確定要取消這個預約嗎？')) {
-          // 發送 AJAX 請求到後端 API
-          $.ajax({
-              url: 'api/updateAppointmentStatus.php',
-              type: 'POST',
-              contentType: 'application/json',
-              data: JSON.stringify({
-                  appointment_id: appointmentId,
-                  status: 'cancelled'
-              }),
-              success: function(response) {
-                  if (response.success) {
-                      alert('預約已取消！');
-                      location.reload();
-                  } else {
-                      alert('更新失敗：' + response.message);
-                  }
-              },
-              error: function(xhr, status, error) {
-                  console.error('Error:', error);
-                  alert('系統錯誤，請稍後再試');
-              }
-          });
-      }
-  }
-  </script>
+ function cancelAppointment(id) {
+  Swal.fire({
+    title: '確定要取消嗎？',
+    text: '此操作將取消該筆預約並釋放名額',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: '是，取消',
+    cancelButtonText: '不',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch('api/updateAppointmentStatus.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          appointment_id: id,
+          status: 'cancelled'
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          Swal.fire('已取消！', '該預約已取消並釋放名額', 'success');
+          refreshTimeSlots(); // 這是你的自訂函式，用來更新時段人數
+        } else {
+          Swal.fire('失敗', data.message || '無法取消', 'error');
+        }
+      });
+    }
+  });
+}
+function updateStatus(id, status) {
+  Swal.fire({
+    title: '確定執行？',
+    text: `狀態將更改為「${status}」`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: '確定',
+    cancelButtonText: '取消'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch('api/updateAppointmentStatus.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          appointment_id: id,
+          status: status
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          Swal.fire('✅ 成功更新', '', 'success').then(() => location.reload());
+        } else {
+          Swal.fire('❌ 操作失敗', data.message || '請稍後再試', 'error');
+        }
+      });
+    }
+  });
+}
+</script>
 </body>
 </html>
 <?php

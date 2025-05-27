@@ -351,6 +351,7 @@ $service_item_map = [
           $result = $conn->query($sql);
 
           if ($result && $result->num_rows > 0) {
+            $today = date('Y-m-d');
             while ($row = $result->fetch_assoc()) {
               echo "<tr>";
               echo "<td>" . htmlspecialchars($row['appointment_date']) . "</td>";
@@ -368,19 +369,27 @@ $service_item_map = [
               $text = $status_map[$status] ?? $status;
               echo "<td><span class='badge $badge'>" . $text . "</span></td>";
 
-              // 操作按鈕
               echo "<td>";
-              if ($status == 'pending') {
-                echo "<button class='btn btn-sm btn-outline-primary me-1' onclick='updateStatus(" . $row['appointment_id'] . ", \"confirmed\")'>確認</button>";
-                echo "<button class='btn btn-sm btn-outline-danger' onclick='updateStatus(" . $row['appointment_id'] . ", \"cancelled\")'>取消</button>";
-              } elseif ($status == 'confirmed') {
-                echo "<button class='btn btn-sm btn-outline-primary me-1' onclick='startRepair(" . $row['appointment_id'] . ")'>開始維修</button>";
-                echo "<button class='btn btn-sm btn-outline-dark' onclick='updateStatus(" . $row['appointment_id'] . ", \"noshow\")'>未到</button>";
-              } elseif ($status == 'repair') {
-                echo "<button class='btn btn-sm btn-outline-success me-1' onclick='updateStatus(" . $row['appointment_id'] . ", \"completed\")'>完成維修</button>";
-                echo "<button class='btn btn-sm btn-outline-dark' onclick='updateStatus(" . $row['appointment_id'] . ", \"noshow\")'>未到</button>";
-              }
-              echo "</td>";
+if ($status == 'pending') {
+  echo "<button class='btn btn-sm btn-outline-primary me-1' onclick='updateStatus(" . $row['appointment_id'] . ", \"confirmed\")'>確認</button>";
+  echo "<button class='btn btn-sm btn-outline-danger' onclick='updateStatus(" . $row['appointment_id'] . ", \"cancelled\")'>取消</button>";
+  if ($row['appointment_date'] === $today) {
+    echo "<button class='btn btn-sm btn-outline-dark mt-1' onclick='updateStatus(" . $row['appointment_id'] . ", \"noshow\")'>未到</button>";
+  }
+} elseif ($status == 'confirmed') {
+  echo "<button class='btn btn-sm btn-outline-primary me-1' onclick='startRepair(" . $row['appointment_id'] . ")'>開始維修</button>";
+  echo "<button class='btn btn-sm btn-outline-danger' onclick='updateStatus(" . $row['appointment_id'] . ", \"cancelled\")'>取消</button>";
+  if ($row['appointment_date'] === $today) {
+    echo "<button class='btn btn-sm btn-outline-dark mt-1' onclick='updateStatus(" . $row['appointment_id'] . ", \"noshow\")'>未到</button>";
+  }
+} elseif ($status == 'repair') {
+  echo "<button class='btn btn-sm btn-outline-success me-1' onclick='updateStatus(" . $row['appointment_id'] . ", \"completed\")'>完成維修</button>";
+  if ($row['appointment_date'] === $today) {
+    echo "<button class='btn btn-sm btn-outline-dark mt-1' onclick='updateStatus(" . $row['appointment_id'] . ", \"noshow\")'>未到</button>";
+  }
+}
+echo "</td>";
+
             }
           } else {
             echo "<tr><td colspan='6' class='text-center'>最近無預約</td></tr>";
@@ -393,33 +402,36 @@ $service_item_map = [
 
     <!-- JS 功能：狀態更新與開始維修 -->
     <script>
-      function updateStatus(id, status) {
-        if (confirm('是否更新狀態為 "' + status + '"？')) {
-          fetch('api/updateAppointmentStatus.php', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                appointment_id: id,
-                status: status
-              })
-            })
-            .then(res => res.json())
-            .then(data => {
-              if (data.success) {
-                alert('更新成功');
-                location.reload();
-              } else {
-                alert('錯誤：' + data.message);
-              }
-            })
-            .catch(err => {
-              console.error('錯誤：', err);
-              alert('更新失敗');
-            });
+function updateStatus(id, status) {
+  Swal.fire({
+    title: '確定執行？',
+    text: `狀態將更改為「${status}」`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: '確定',
+    cancelButtonText: '取消'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch('api/updateAppointmentStatus.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          appointment_id: id,
+          status: status
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          Swal.fire('✅ 成功更新', '', 'success').then(() => location.reload());
+        } else {
+          Swal.fire('❌ 操作失敗', data.message || '請稍後再試', 'error');
         }
-      }
+      });
+    }
+  });
+}
+
 
       function startRepair(id) {
         if (confirm('開始維修並建立估價單？')) {
@@ -446,6 +458,36 @@ $service_item_map = [
             });
         }
       }
+      function cancelAppointment(id) {
+  Swal.fire({
+    title: '確定要取消嗎？',
+    text: '此操作將取消該筆預約並釋放名額',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: '是，取消',
+    cancelButtonText: '不',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch('api/updateAppointmentStatus.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          appointment_id: id,
+          status: 'cancelled'
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          Swal.fire('已取消！', '該預約已取消並釋放名額', 'success');
+          refreshTimeSlots(); // 這是你的自訂函式，用來更新時段人數
+        } else {
+          Swal.fire('失敗', data.message || '無法取消', 'error');
+        }
+      });
+    }
+  });
+}
     </script>
 
     </script>

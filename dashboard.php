@@ -285,63 +285,61 @@ footer {
 
  <!-- 最近預約區塊 -->
  <h3 class="mb-4 mt-4">最近預約</h3>
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>預約日期</th>
-                        <th>預約時間</th>
-                        <th>車牌號碼</th>
-                        <th>服務項目</th>
-                        <th>狀態</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (count($appointments) > 0): ?>
-                        <?php foreach ($appointments as $appt): ?>
-                            <tr id="appointment-row-<?= htmlspecialchars($appt['appointment_id']) ?>">
-                                <td><?= htmlspecialchars($appt['appointment_date']) ?></td>
-                                <td><?= htmlspecialchars($appt['appointment_time']) ?></td>
-                                <td><?= htmlspecialchars($appt['license_plate']) ?></td>
-                                <td><?= htmlspecialchars($appt['service_items']) ?></td>
-                                <td>
-                                    <?php
-                                    $status = isset($appt['status']) ? $appt['status'] : 'pending';
-                                    if ($status === 'pending') {
-                                        echo '<span class="badge bg-warning">待確認</span>';
-                                    } elseif ($status === 'confirmed') {
-                                        echo '<span class="badge bg-success">已確認</span>';
-                                    } elseif ($status === 'repair') {
-                                        echo '<span class="badge bg-info">維修中</span>';
-                                    } elseif ($status === 'completed') {
-                                        echo '<span class="badge bg-success">已完成</span>';
-                                    } elseif ($status === 'cancelled') {
-                                        echo '<span class="badge bg-danger">已取消</span>';
-                                    } elseif ($status === 'noshow') {
-                                        echo '<span class="badge bg-dark">未到</span>';
-                                    } else {
-                                        echo '<span class="badge bg-secondary">' . htmlspecialchars($status) . '</span>';
-                                    }
-                                    ?>
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary" onclick="viewDetails('<?= htmlspecialchars($appt['appointment_id']) ?>')">詳情</button>
-                                    <?php if ($status === 'pending' || $status === 'confirmed'): ?>
-                                        <button class="btn btn-sm btn-outline-danger" onclick="cancelAppointment('<?= htmlspecialchars($appt['appointment_id']) ?>')">取消</button>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="6" class="text-center">無預約資訊</td>
-                        </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
+<div class="table-responsive">
+  <table class="table table-bordered table-hover align-middle text-center">
+    <thead class="table-dark">
+      <tr>
+        <th>預約日期</th>
+        <th>預約時間</th>
+        <th>車牌號碼</th>
+        <th>服務項目</th>
+        <th>狀態</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php if (count($appointments) > 0): ?>
+        <?php foreach ($appointments as $appt): ?>
+          <tr id="appointment-row-<?= htmlspecialchars($appt['appointment_id']) ?>">
+            <td><?= htmlspecialchars($appt['appointment_date']) ?></td>
+            <td><?= htmlspecialchars($appt['appointment_time']) ?></td>
+            <td><?= htmlspecialchars($appt['license_plate']) ?></td>
+            <td><?= htmlspecialchars($appt['service_items']) ?></td>
+            <td>
+              <?php
+              $status = $appt['status'] ?? 'pending';
+              $status_labels = [
+                'pending' => ['待確認', 'warning'],
+                'confirmed' => ['已確認', 'success'],
+                'repair' => ['維修中', 'info'],
+                'completed' => ['已完成', 'success'],
+                'cancelled' => ['已取消', 'danger'],
+                'noshow' => ['未到', 'dark']
+              ];
+              $label = $status_labels[$status][0] ?? $status;
+              $class = $status_labels[$status][1] ?? 'secondary';
+              echo "<span class='badge bg-{$class}'>{$label}</span>";
+              ?>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary" onclick="viewDetails('<?= htmlspecialchars($appt['appointment_id']) ?>')">詳情</button>
+              <?php if ($status === 'pending' || $status === 'confirmed'): ?>
+                <button class="btn btn-sm btn-outline-danger" onclick="cancelAppointment('<?= htmlspecialchars($appt['appointment_id']) ?>')">取消</button>
+              <?php else: ?>
+                <span class="text-muted">--</span>
+              <?php endif; ?>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <tr>
+          <td colspan="6" class="text-center">無預約資訊</td>
+        </tr>
+      <?php endif; ?>
+    </tbody>
+  </table>
+</div>
+
 
     <script>
         function viewDetails(appointmentId) {
