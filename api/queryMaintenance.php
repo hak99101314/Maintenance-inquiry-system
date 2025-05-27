@@ -4,7 +4,7 @@ header('Content-Type: application/json');
 // 資料庫連接資訊
 $servername = "localhost";
 $username = "root";
-$password = "karry,roy,jackson";
+$password = "";
 $dbname = "睿煬企業社";
 
 $conn = new mysqli($servername, $username, $password, $dbname);

@@ -1,4 +1,9 @@
 <?php
+// 顯示錯誤訊息（除錯用）
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'staff'])) {
     header("Location: login.php");
@@ -7,7 +12,7 @@ if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'staf
 
 $servername = "localhost";
 $dbUsername = "root";
-$dbPassword = "karry,roy,jackson";
+$dbPassword = "";
 $dbName = "睿煬企業社";
 
 $conn = new mysqli($servername, $dbUsername, $dbPassword, $dbName);
@@ -18,7 +23,7 @@ if ($conn->connect_error) {
 $is_admin = ($_SESSION['role'] === 'admin');
 
 $sql = "SELECT 
-            a.appointment_id AS id,
+            a.appointment_id,
             u.full_name AS name,
             u.contact_number AS phone,
             u.no_show_count,
@@ -72,6 +77,7 @@ $status_map = [
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -105,44 +111,57 @@ $status_map = [
           </thead>
           <tbody>
             <?php $today = date('Y-m-d'); ?>
-            <?php foreach ($appointments as $appointment): ?>
+            <?php foreach ($appointments as $a): ?>
               <tr>
-                <td><?= htmlspecialchars($appointment['id']) ?></td>
-                <td><?= htmlspecialchars($appointment['name']) ?></td>
-                <td><?= htmlspecialchars($appointment['phone']) ?></td>
-                <td><?= htmlspecialchars($appointment['license_plate']) ?></td>
-                <td><?= htmlspecialchars($appointment['service_translated']) ?></td>
-                <td><?= htmlspecialchars($appointment['appointment_date']) ?></td>
-                <td><?= htmlspecialchars($appointment['appointment_time']) ?></td>
+                <td><?= htmlspecialchars($a['appointment_id']) ?></td>
+                <td><?= htmlspecialchars($a['name']) ?></td>
+                <td><?= htmlspecialchars($a['phone']) ?></td>
+                <td><?= htmlspecialchars($a['license_plate']) ?></td>
+                <td><?= htmlspecialchars($a['service_translated']) ?></td>
+                <td><?= htmlspecialchars($a['appointment_date']) ?></td>
+                <td><?= htmlspecialchars($a['appointment_time']) ?></td>
                 <td>
                   <?php
-                    $badgeClass = match ($appointment['status']) {
+                    $badgeClass = match ($a['status']) {
                       'pending' => 'bg-warning',
                       'confirmed' => 'bg-info',
                       'repair' => 'bg-primary',
                       'completed' => 'bg-success',
                       'cancelled' => 'bg-danger',
-                      'no_show' => 'bg-dark',
+                      'noshow' => 'bg-dark',
                       default => 'bg-secondary',
                     };
-                    echo "<span class='badge $badgeClass'>" . ($status_map[$appointment['status']] ?? '未知') . "</span>";
+                    echo "<span class='badge $badgeClass'>" . ($status_map[$a['status']] ?? '未知') . "</span>";
                   ?>
+                </td>
+                <?php if ($is_admin): ?>
                 <td>
-  <?php if ($a['status'] === 'pending'): ?>
-    <button class="btn btn-sm btn-success" onclick="updateStatus(<?= $a['id'] ?>, 'confirmed')">確認</button>
-    <button class="btn btn-sm btn-outline-danger" onclick="cancelAppointment(<?= $row['appointment_id'] ?>)">取消</button>
-    <?php if ($a['appointment_date'] === $today): ?>
-      <button class="btn btn-sm btn-secondary" onclick="updateStatus(<?= $a['id'] ?>, 'noshow')">未到</button>
-    <?php endif; ?>
-  <?php elseif ($a['status'] === 'confirmed'): ?>
-    <a href="admin_create_estimate.php?appointment_id=<?= $a['id'] ?>" class="btn btn-sm btn-primary">開始維修</a>
-    <button class="btn btn-sm btn-outline-danger" onclick="cancelAppointment(<?= $row['appointment_id'] ?>)">取消</button>
-    <?php if ($a['appointment_date'] === $today): ?>
-      <button class="btn btn-sm btn-secondary" onclick="updateStatus(<?= $a['id'] ?>, 'noshow')">未到</button>
-    <?php endif; ?>
-  <?php endif; ?>
-</td>
-
+                  <?= $a['is_blacklisted'] ? '<span class="text-danger fw-bold">是</span>' : '否' ?>
+                </td>
+                <?php endif; ?>
+                <td>
+                  <?php if ($a['status'] === 'pending'): ?>
+                    <button class="btn btn-sm btn-success" onclick="updateStatus(<?= $a['appointment_id'] ?>, 'confirmed')">確認</button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="cancelAppointment(<?= $a['appointment_id'] ?>)">取消</button>
+                    <?php if ($a['appointment_date'] === $today): ?>
+                      <button class="btn btn-sm btn-secondary" onclick="updateStatus(<?= $a['appointment_id'] ?>, 'noshow')">未到</button>
+                    <?php endif; ?>
+                  <?php elseif ($a['status'] === 'confirmed'): ?>
+                    <a href="admin_create_estimate.php?appointment_id=<?= $a['appointment_id'] ?>&license_plate=<?= urlencode($a['license_plate']) ?>" class="btn btn-sm btn-primary">開始維修</a>
+                    <button class="btn btn-sm btn-outline-danger" onclick="cancelAppointment(<?= $a['appointment_id'] ?>)">取消</button>
+                    <?php if ($a['appointment_date'] === $today): ?>
+                      <button class="btn btn-sm btn-secondary" onclick="updateStatus(<?= $a['appointment_id'] ?>, 'noshow')">未到</button>
+                    <?php endif; ?>
+                  <?php elseif ($a['status'] === 'repair'): ?>
+                    <span class="text-muted">維修中</span>
+                  <?php elseif ($a['status'] === 'completed'): ?>
+                    <span class="text-success">已完成</span>
+                  <?php elseif ($a['status'] === 'cancelled'): ?>
+                    <span class="text-danger">已取消</span>
+                  <?php elseif ($a['status'] === 'noshow'): ?>
+                    <span class="text-secondary">未到</span>
+                  <?php endif; ?>
+                </td>
               </tr>
             <?php endforeach; ?>
           </tbody>
@@ -151,8 +170,9 @@ $status_map = [
     </div>
   </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+const currentUserId = <?= json_encode($_SESSION['user_id']) ?>;
+
 function updateStatus(id, status) {
   Swal.fire({
     title: '確定執行？',
@@ -168,7 +188,8 @@ function updateStatus(id, status) {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({
           appointment_id: id,
-          status: status
+          status: status,
+          operator_id: currentUserId
         })
       })
       .then(res => res.json())
@@ -182,6 +203,7 @@ function updateStatus(id, status) {
     }
   });
 }
+
 function cancelAppointment(id) {
   Swal.fire({
     title: '確定要取消嗎？',
@@ -197,14 +219,14 @@ function cancelAppointment(id) {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({
           appointment_id: id,
-          status: 'cancelled'
+          status: 'cancelled',
+          operator_id: currentUserId
         })
       })
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          Swal.fire('已取消！', '該預約已取消並釋放名額', 'success');
-          refreshTimeSlots(); // 這是你的自訂函式，用來更新時段人數
+          Swal.fire('✅ 已取消', '該預約已取消並釋放名額', 'success').then(() => location.reload());
         } else {
           Swal.fire('失敗', data.message || '無法取消', 'error');
         }

@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $servername = "localhost";
 $dbUsername = "root";
-$dbPassword = "karry,roy,jackson";
+$dbPassword = "";
 $dbName     = "睿煬企業社";
 
 $conn = new mysqli($servername, $dbUsername, $dbPassword, $dbName);

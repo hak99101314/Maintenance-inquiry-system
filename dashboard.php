@@ -17,7 +17,7 @@ $userName = isset($_SESSION['full_name']) ? $_SESSION['full_name'] : "會員名�
 // 設定資料庫連線參數
 $servername = "localhost";
 $dbUsername = "root";
-$dbPassword = "karry,roy,jackson";
+$dbPassword = "";
 $dbName = "睿煬企業社";
 
 // 建立資料庫連線

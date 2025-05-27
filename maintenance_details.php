@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 // 連線資料庫
 $servername = "localhost";
 $username = "root";
-$password = "karry,roy,jackson";
+$password = "";
 $dbname = "睿煬企業社";
 
 $conn = new mysqli($servername, $username, $password, $dbname);

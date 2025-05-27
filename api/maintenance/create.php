@@ -13,7 +13,7 @@ if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'staff') {
 }
 
 try {
-    $pdo = new PDO('mysql:host=localhost;dbname=睿煬企業社;charset=utf8mb4', 'root', 'karry,roy,jackson');
+    $pdo = new PDO('mysql:host=localhost;dbname=睿煬企業社;charset=utf8mb4', 'root', '');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $data = $_POST;

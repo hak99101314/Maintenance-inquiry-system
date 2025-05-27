@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 資料庫連線設定
     $servername  = "localhost";    // 資料庫伺服器位置
     $dbUsername  = "root";         // 資料庫登入帳號
-    $dbPassword  = "karry,roy,jackson";             // 資料庫登入密碼
+    $dbPassword  = "";             // 資料庫登入密碼
     $dbName      = "睿煬企業社";   // 資料庫名稱
 
     // 建立資料庫連線
