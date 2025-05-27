@@ -147,6 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     親愛的 {$full_name} 您好：<br><br>
                     您的估價單已成功建立。<br>
                     車牌：<strong>{$license_plate}</strong><br>
+                    📋 估價內容：<pre>{$items}</pre>
                     總金額：<strong>NT$" . number_format($total_price) . "</strong><br><br>
                     如有疑問，請與我們聯繫。<br><br>
                     睿煬企業社 敬上
