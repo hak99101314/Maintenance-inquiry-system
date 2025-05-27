@@ -1,153 +1,138 @@
 <?php
-// ========== 初始化設定 ==========
-// 引入必要的檔案
-require_once 'includes/db_connect.php';    // 引入資料庫連線設定
-require_once 'includes/auth_check.php';    // 引入身份驗證檢查
+// 資料庫連線設定
+$servername = "localhost";
+$username = "root";
+$password = "karry,roy,jackson";
+$dbname = "睿煬企業社";
 
-// ========== 權限檢查 ==========
-// 確認使用者是否為管理員，如果不是則導向登入頁面
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: login.php');
-    exit();
+// 建立連線
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// 檢查連線是否成功
+if ($conn->connect_error) {
+    die("連線失敗：" . $conn->connect_error);
 }
 
-// ========== 統計資料查詢 ==========
-// 1. 查詢待處理的預約數量
-$pending_sql = "SELECT COUNT(*) as pending_count FROM appointments WHERE status = 'pending'";
-$pending_result = $conn->query($pending_sql);
-$pending_count = $pending_result->fetch_assoc()['pending_count'];
+// 取得本月的起始與結束日期
+$current_month = date('Y-m'); // 例：2025-05
+$start_date = $current_month . "-01";              // 當月1號
+$end_date = date("Y-m-t", strtotime($start_date)); // 當月最後一天
 
-// 2. 計算本月完成的維修數量
-// 設定本月的起始日期和結束日期
-$current_month = date('Y-m');              // 取得當前年月（格式：YYYY-MM）
-$start_date = $current_month . "-01";      // 本月第一天
-$end_date = date("Y-m-t", strtotime($start_date));  // 本月最後一天
+// -----------------------------------------------
+// ✅ 1. 查詢本月未完成預約筆數（pending 狀態）
+// -----------------------------------------------
+$sql1 = "SELECT COUNT(*) AS pending_count 
+         FROM appointments 
+         WHERE appointment_date BETWEEN ? AND ? AND status = 'pending'";
+$stmt1 = $conn->prepare($sql1);
+$stmt1->bind_param("ss", $start_date, $end_date);
+$stmt1->execute();
+$result1 = $stmt1->get_result();
+$row1 = $result1->fetch_assoc();
+$pending_count = is_array($row1) && isset($row1['pending_count']) ? $row1['pending_count'] : 0;
 
-// 查詢本月完成的維修數量
-$completed_sql = "SELECT COUNT(*) as completed_count 
-                 FROM repair_orders 
-                 WHERE repair_date BETWEEN ? AND ?";
-$stmt = $conn->prepare($completed_sql);
-$stmt->bind_param('ss', $start_date, $end_date);
-$stmt->execute();
-$completed_result = $stmt->get_result();
-$completed_count = $completed_result->fetch_assoc()['completed_count'];
+// -----------------------------------------------
+// ✅ 2. 查詢本月完成預約筆數（completed 狀態）
+// -----------------------------------------------
+$sql2 = "SELECT COUNT(*) AS completed_count 
+         FROM appointments 
+         WHERE appointment_date BETWEEN ? AND ? AND status = 'completed'";
+$stmt2 = $conn->prepare($sql2);
+$stmt2->bind_param("ss", $start_date, $end_date);
+$stmt2->execute();
+$result2 = $stmt2->get_result();
+$row2 = $result2->fetch_assoc();
+$completed_count = is_array($row2) && isset($row2['completed_count']) ? $row2['completed_count'] : 0;
 
-// 3. 計算本月總收入
-$revenue_sql = "SELECT COALESCE(SUM(total_cost), 0) as total_revenue 
-                FROM repair_orders 
-                WHERE repair_date BETWEEN ? AND ?";
-$stmt = $conn->prepare($revenue_sql);
-$stmt->bind_param('ss', $start_date, $end_date);
-$stmt->execute();
-$revenue_result = $stmt->get_result();
-$total_revenue = $revenue_result->fetch_assoc()['total_revenue'];
+// -----------------------------------------------
+// ✅ 3. 查詢本月總維修收入（來自 maintenance_records）
+// -----------------------------------------------
+$sql3 = "SELECT SUM(total_cost) AS total_revenue 
+         FROM maintenance_records 
+         WHERE repair_date BETWEEN ? AND ?";
+$stmt3 = $conn->prepare($sql3);
+$stmt3->bind_param("ss", $start_date, $end_date);
+$stmt3->execute();
+$result3 = $stmt3->get_result();
+$row3 = $result3->fetch_assoc();
+$total_revenue = is_array($row3) && isset($row3['total_revenue']) ? $row3['total_revenue'] : 0.00;
 
-// 4. 查詢最常維修的車型
-$popular_model_sql = "SELECT car_model, COUNT(*) as repair_count
-                     FROM repair_orders
-                     WHERE car_model IS NOT NULL AND car_model != ''
-                     GROUP BY car_model
-                     ORDER BY repair_count DESC
-                     LIMIT 1";
-$popular_model_result = $conn->query($popular_model_sql);
-$popular_model = $popular_model_result->fetch_assoc();
+// -----------------------------------------------
+// ✅ 4. 查詢本月最常維修的車型
+// -----------------------------------------------
+$sql4 = "SELECT v.model, COUNT(*) AS count
+         FROM maintenance_records m
+         JOIN vehicles v ON m.vehicle_id = v.vehicle_id
+         WHERE m.repair_date BETWEEN ? AND ?
+         GROUP BY v.model
+         ORDER BY count DESC
+         LIMIT 1";
+$stmt4 = $conn->prepare($sql4);
+$stmt4->bind_param("ss", $start_date, $end_date);
+$stmt4->execute();
+$result4 = $stmt4->get_result();
+$row4 = $result4->fetch_assoc();
+$popular_model = is_array($row4) && isset($row4['model']) ? $row4['model'] : '無資料';
 
-// 除錯用註解：如需檢查數據可取消下方註解
-/*
-echo "<pre>";
-var_dump($start_date, $end_date, $total_revenue, $completed_count, $pending_count);
-echo "</pre>";
-*/
+// -----------------------------------------------
+// ✅ 顯示統計結果（HTML 區塊）
+// -----------------------------------------------
 ?>
 
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>維修統計</title>
-    <!-- 引入外部資源 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>維修統計報表</title>
+    <style>
+        body { font-family: "微軟正黑體", sans-serif; margin: 30px; }
+        h2, h3 { color: #2c3e50; }
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+        }
+        .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+    </style>
 </head>
 <body>
-    <!-- ========== 導覽列 ========== -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-            <!-- 網站標題 -->
-            <a class="navbar-brand" href="admin_dashboard.php">
-                <i class="fas fa-tools me-2"></i>管理員系統
-            </a>
-            
-            <!-- 手機版選單按鈕 -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <!-- 導覽列內容 -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <!-- 右側選單 -->
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="admin_dashboard.php">首頁</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="maintenance_statistics.php">維修統計</a></li>
-                    <li class="nav-item"><a class="nav-link" href="logout.php">登出</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <!-- ========== 主要內容區域 ========== -->
-    <div class="container mt-4">
-        <!-- 頁面標題 -->
-        <h2 class="text-center mb-4">維修統計資訊</h2>
-        
-        <!-- 統計卡片區域 -->
-        <div class="row justify-content-center">
-            <!-- 待處理預約卡片 -->
-            <div class="col-md-3">
-                <div class="card text-center mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">待處理預約</h5>
-                        <p class="card-text display-4"><?php echo $pending_count; ?></p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 本月完成維修卡片 -->
-            <div class="col-md-3">
-                <div class="card text-center mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">本月完成維修</h5>
-                        <p class="card-text display-4"><?php echo $completed_count; ?></p>
-                    </div>
-                </div>
-            </div>
+    <h2>本月維修統計報表</h2>
 
-            <!-- 本月總收入卡片 -->
-            <div class="col-md-3">
-                <div class="card text-center mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">本月總收入</h5>
-                        <p class="card-text display-4">$<?php echo number_format($total_revenue, 2); ?></p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 最常維修車型卡片 -->
-            <div class="col-md-3">
-                <div class="card text-center mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">最常維修車型</h5>
-                        <p class="card-text display-6"><?php echo $popular_model ? htmlspecialchars($popular_model['car_model']) : '無資料'; ?></p>
-                        <p class="text-muted"><?php echo $popular_model ? '維修次數: ' . $popular_model['repair_count'] : ''; ?></p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="card">
+        <h3>📌 本月未完成維修預約</h3>
+        <p class="value"><?= $pending_count ?> 筆</p>
     </div>
 
-    <!-- 引入 Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="card">
+        <h3>✅ 本月完成維修預約</h3>
+        <p class="value"><?= $completed_count ?> 筆</p>
+    </div>
+
+    <div class="card">
+        <h3>💰 本月總收入</h3>
+        <p class="value">$<?= number_format($total_revenue, 2) ?> 元</p>
+    </div>
+
+    <div class="card">
+        <h3>🚗 最常維修車型</h3>
+        <p class="value"><?= htmlspecialchars($popular_model) ?></p>
+    </div>
+    <div style="text-align: center; margin-top: 30px;">
+    <button onclick="history.back()" style="padding: 10px 20px; font-size: 16px; border: none; background-color: #3498db; color: white; border-radius: 5px; cursor: pointer;">
+        ⬅ 返回
+    </button>
+</div>
 </body>
 </html>
+
+<?php
+// 關閉資料庫連線
+$conn->close();
+?>

@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// 僅限管理員登入
+// ========== 權限檢查（僅限管理員） ==========
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.php");
     exit();
@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 // ========== 資料庫連線 ==========
 $servername = "localhost";
 $dbUsername = "root";
-$dbPassword = "karry,roy,jackson"; // 改為你的資料庫密碼
+$dbPassword = "karry,roy,jackson";
 $dbName     = "睿煬企業社";
 
 $conn = new mysqli($servername, $dbUsername, $dbPassword, $dbName);
@@ -22,106 +22,75 @@ if ($conn->connect_error) {
 $searchPlate = isset($_GET['plate_number']) ? $conn->real_escape_string($_GET['plate_number']) : '';
 $searchDate  = isset($_GET['repair_date']) ? $conn->real_escape_string($_GET['repair_date']) : '';
 
-$sql = "SELECT ro.id, ro.plate_number, ro.car_model, ro.owner, ro.repair_date, ro.total_cost 
-        FROM repair_orders ro WHERE 1=1";
+// ========== 主查詢語句：從維修紀錄 + 車輛 + 車主資訊 ==========
+$sql = "SELECT 
+            mr.record_id AS id,
+            v.license_plate AS plate_number,
+            v.model AS car_model,
+            u.full_name AS owner,
+            mr.repair_date,
+            mr.total_cost
+        FROM maintenance_records mr
+        LEFT JOIN vehicles v ON mr.vehicle_id = v.vehicle_id
+        LEFT JOIN users u ON v.owner_id = u.user_id
+        WHERE 1=1";
 
+// 篩選條件
 if (!empty($searchPlate)) {
-    $sql .= " AND (ro.plate_number LIKE '%" . $searchPlate . "%' OR ro.plate_number REGEXP '[0-9]*" . $searchPlate . "[0-9]*')";
+    $sql .= " AND v.license_plate LIKE '%" . $searchPlate . "%'";
 }
 if (!empty($searchDate)) {
-    $sql .= " AND ro.repair_date = '" . $searchDate . "'";
+    $sql .= " AND mr.repair_date = '" . $searchDate . "'";
 }
-$sql .= " ORDER BY ro.repair_date DESC";
+$sql .= " ORDER BY mr.repair_date DESC";
+
 $result = $conn->query($sql);
 ?>
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>維修紀錄管理 - 管理員系統</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f9f9f9;
-        color: #2c3e50;
-        font-size: 18px;
-    }
-
-    h1, h2, h3 {
-        color: #2c3e50;
-        font-weight: bold;
-        border-bottom: 2px solid #f1c40f;
-        padding-bottom: 5px;
-        margin-bottom: 20px;
-    }
-
-    .container {
-        background-color: #ffffff;
-        border-radius: 10px;
-        padding: 30px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
-        margin-top: 50px;
-    }
-
-    .btn {
-        background-color: #2c3e50;
-        color: #fff;
-        border: none;
-        padding: 12px 24px;
-        font-size: 16px;
-        border-radius: 6px;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn:hover {
-        background-color: #f1c40f;
-        color: #2c3e50;
-        font-weight: bold;
-    }
-
-    table {
-        width: 100%;
-        margin-top: 20px;
-        border-collapse: collapse;
-    }
-
-    th, td {
-        border: 1px solid #ddd;
-        padding: 15px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #ecf0f1;
-        color: #2c3e50;
-    }
-
-    .navbar {
-        background-color: #2c3e50;
-    }
-
-    .navbar-brand, .nav-link {
-        color: #ffffff !important;
-        font-weight: bold;
-    }
-
-    .nav-link.active {
-        color: #f1c40f !important;
-    }
-
-    .form-label {
-        font-weight: bold;
-    }
-
-    input[type="text"],
-    input[type="date"],
-    .form-control {
-        border-radius: 5px;
-        border: 1px solid #ccc;
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: #2c3e50;
+            font-size: 18px;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+            margin-top: 50px;
+        }
+        .btn {
+            background-color: #2c3e50;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #f1c40f;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        .navbar {
+            background-color: #2c3e50;
+        }
+        .navbar-brand, .nav-link {
+            color: #ffffff !important;
+            font-weight: bold;
+        }
+        .nav-link.active {
+            color: #f1c40f !important;
+        }
     </style>
 </head>
 <body>
@@ -144,14 +113,15 @@ $result = $conn->query($sql);
         </div>
     </nav>
 
-    <!-- ========== 主內容 ========== -->
+    <!-- ========== 主內容區塊 ========== -->
     <div class="container">
         <h2 class="text-center">維修紀錄管理</h2>
+        <!-- 查詢表單 -->
         <form method="GET" class="row g-3">
             <div class="col-md-5">
                 <label for="plate_number" class="form-label">車牌號碼</label>
                 <input type="text" class="form-control" id="plate_number" name="plate_number"
-                       placeholder="輸入完整或部分車牌號碼或數字" value="<?= htmlspecialchars($searchPlate) ?>">
+                       placeholder="輸入完整或部分車牌號碼" value="<?= htmlspecialchars($searchPlate) ?>">
             </div>
             <div class="col-md-5">
                 <label for="repair_date" class="form-label">維修日期</label>
@@ -166,6 +136,7 @@ $result = $conn->query($sql);
             </div>
         </form>
 
+        <!-- 結果表格 -->
         <table class="table table-striped table-bordered mt-3">
             <thead>
                 <tr>
@@ -179,31 +150,31 @@ $result = $conn->query($sql);
                 </tr>
             </thead>
             <tbody>
-                <?php
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['id']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['plate_number']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['car_model']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['owner']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['repair_date']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['total_cost']) . "</td>";
-                        echo "<td>
-        <a href='maintenance_details.php?id=" . $row['id'] . "' class='btn btn-sm btn-primary'>查看</a>
-        <a href='edit_maintenance.php?id=" . $row['id'] . "' class='btn btn-sm btn-warning'>更正</a>
-        <button class='btn btn-sm btn-danger' onclick='deleteRepairOrder(" . $row['id'] . ")'>刪除</button>
-      </td>";
-
-                    }
-                } else {
-                    echo "<tr><td colspan='7' class='text-center'>查無資料</td></tr>";
-                }
-                ?>
+                <?php if ($result && $result->num_rows > 0): ?>
+                    <?php while($row = $result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($row['id']) ?></td>
+                            <td><?= htmlspecialchars($row['plate_number']) ?></td>
+                            <td><?= htmlspecialchars($row['car_model']) ?></td>
+                            <td><?= htmlspecialchars($row['owner']) ?></td>
+                            <td><?= htmlspecialchars($row['repair_date']) ?></td>
+                            <td><?= htmlspecialchars($row['total_cost']) ?></td>
+                            <td>
+                                <a href="maintenance_details.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-primary">查看</a>
+                                <a href="edit_maintenance.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">更正</a>
+                                <button class="btn btn-sm btn-danger" onclick="deleteRepairOrder(<?= $row['id'] ?>)">刪除</button>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <tr><td colspan="7" class="text-center">查無資料</td></tr>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
 
+    <!-- ========== 刪除確認與 AJAX ==========
+         TODO: 你必須建立 delete_maintenance.php 來接收 POST 請求並執行刪除 -->
     <script>
     function deleteRepairOrder(repairId) {
         if (!confirm("確定要刪除此維修單嗎？")) return;
@@ -227,4 +198,5 @@ $result = $conn->query($sql);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
 <?php $conn->close(); ?>

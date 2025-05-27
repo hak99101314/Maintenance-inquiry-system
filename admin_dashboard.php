@@ -7,8 +7,8 @@ session_start(); // 開始會話，用於管理登入狀態
 
 // 檢查使用者是否已登入且是否具有管理員權限
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: login.php");
-    exit();
+  header("Location: login.php");
+  exit();
 }
 
 // ========== 資料庫連線設定 ==========
@@ -19,7 +19,7 @@ $dbName     = "睿煬企業社";
 
 $conn = new mysqli($servername, $dbUsername, $dbPassword, $dbName);
 if ($conn->connect_error) {
-    die("資料庫連線失敗: " . $conn->connect_error);
+  die("資料庫連線失敗: " . $conn->connect_error);
 }
 
 // ========== 使用者資訊處理 ==========
@@ -30,31 +30,32 @@ $sqlLastLogin = "SELECT last_login FROM users WHERE user_id = '$user_id' LIMIT 1
 $resultLastLogin = $conn->query($sqlLastLogin);
 $lastLogin = "未知";
 if ($resultLastLogin && $resultLastLogin->num_rows > 0) {
-    $row = $resultLastLogin->fetch_assoc();
-    $lastLogin = date("Y-m-d H:i", strtotime($row['last_login']));
+  $row = $resultLastLogin->fetch_assoc();
+  $lastLogin = date("Y-m-d H:i", strtotime($row['last_login']));
 }
 
 // ========== 狀態對應設定 ==========
 // 預約狀態的中文對應
 $status_map = [
-    'pending' => '待確認',
-    'confirmed' => '已確認',
-    'repair' => '維修中',
-    'completed' => '維修完成',
-    'cancelled' => '已取消',
-    'noshow' => '未到'
+  'pending' => '待確認',
+  'confirmed' => '已確認',
+  'repair' => '維修中',
+  'completed' => '維修完成',
+  'cancelled' => '已取消',
+  'noshow' => '未到'
 ];
 
 // 維修項目的中文對應
 $service_item_map = [
-    'maintenance' => '一般檢查',
-    'inspection'  => '年度檢查',
-    'cleaning'    => '車輛清潔'
+  'maintenance' => '一般檢查',
+  'inspection'  => '年度檢查',
+  'cleaning'    => '車輛清潔'
 ];
 ?>
 
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,31 +69,42 @@ $service_item_map = [
   <style>
     /* 歡迎區塊樣式設定 */
     .welcome-section {
-      background-color: #f8f9fa;  /*淺灰色背景*/
-      padding: 2rem 0;            /* 上下內距*/
-      margin-bottom: 2rem;        /*下方外距*/
+      background-color: #f8f9fa;
+      /*淺灰色背景*/
+      padding: 2rem 0;
+      /* 上下內距*/
+      margin-bottom: 2rem;
+      /*下方外距*/
     }
+
     /* 儀表板卡片過渡效果設定 */
     .dashboard-card {
-      transition: transform 0.3s ease;  /* 平滑過渡效果*/
-      margin-bottom: 1.5rem;           /*; 下方外距*/
+      transition: transform 0.3s ease;
+      /* 平滑過渡效果*/
+      margin-bottom: 1.5rem;
+      /*; 下方外距*/
     }
+
     /* 卡片懸停效果 */
     .dashboard-card:hover {
-      transform: translateY(-5px);     /* 向上移動效果*/
+      transform: translateY(-5px);
+      /* 向上移動效果*/
     }
+
     /* 狀態徽章樣式設定 */
     .status-badge {
-      font-size: 0.9rem;              /*字體大小*/
-      padding: 0.5em 1em;             /* 內距*/
+      font-size: 0.9rem;
+      /*字體大小*/
+      padding: 0.5em 1em;
+      /* 內距*/
     }
-    .dashboard-card {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
 
+    .dashboard-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
   </style>
 </head>
 <!-- 引入 jQuery，供 AJAX 使用 -->
@@ -138,7 +150,7 @@ $service_item_map = [
         appointment_id: id,
         status: newStatus
       }),
-      success: function (res) {
+      success: function(res) {
         // 如果伺服器回傳的不是 JSON，先嘗試轉換
         try {
           if (typeof res === "string") {
@@ -156,7 +168,7 @@ $service_item_map = [
           alert('更新失敗：' + res.message);
         }
       },
-      error: function () {
+      error: function() {
         alert('發生錯誤，請稍後再試');
       }
     });
@@ -193,7 +205,9 @@ $service_item_map = [
             <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item" href="admin_profile.php">管理員資料</a></li>
               <li><a class="dropdown-item" href="admin_settings.php">系統設定</a></li>
-              <li><hr class="dropdown-divider"></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
               <li><a class="dropdown-item" href="logout.php">登出</a></li>
             </ul>
           </li>
@@ -254,43 +268,43 @@ $service_item_map = [
           </div>
         </div>
       </div>
- <!-- 新增：統計圖表卡片 -->
- <div class="col-md-3">
-      <div class="card dashboard-card">
-        <div class="card-body text-center">
-          <i class="fas fa-chart-pie fa-2x mb-3 text-danger"></i>
-          <h5 class="card-title">統計圖表</h5>
-          <a href="admin_statistics.php" class="btn btn-danger text-white">查看統計</a>
+      <!-- 新增：統計圖表卡片 -->
+      <div class="col-md-3">
+        <div class="card dashboard-card">
+          <div class="card-body text-center">
+            <i class="fas fa-chart-pie fa-2x mb-3 text-danger"></i>
+            <h5 class="card-title">統計圖表</h5>
+            <a href="admin_statistics.php" class="btn btn-danger text-white">查看統計</a>
+          </div>
         </div>
       </div>
-    </div>
-<!-- 新增估價單卡片 -->
-<div class="col-md-3">
-  <div class="card dashboard-card h-100">
-    <div class="card-body text-center">
-      <i class="fas fa-tools fa-2x mb-3 text-primary"></i>
-      <h5 class="card-title">新增估價單</h5>
-      <a href="admin_add_part.php" class="btn btn-primary mt-3">進入</a>
-    </div>
-  </div>
-</div>
-<!-- 📅 今日排程 -->
-<div class="col-md-3">
-  <div class="card dashboard-card h-100">
-    <div class="card-body text-center d-flex flex-column justify-content-between">
-      <div>
-        <i class="fas fa-calendar-alt fa-2x mb-3 text-secondary"></i>
-        <h5 class="card-title">本月排程</h5>
+      <!-- 新增估價單卡片 -->
+      <div class="col-md-3">
+        <div class="card dashboard-card h-100">
+          <div class="card-body text-center">
+            <i class="fas fa-tools fa-2x mb-3 text-primary"></i>
+            <h5 class="card-title">新增估價單</h5>
+            <a href="admin_add_part.php" class="btn btn-primary mt-3">進入</a>
+          </div>
+        </div>
       </div>
-      <a href="schedule_overview.php" class="btn btn-secondary mt-3">查看排程</a>
+      <!-- 📅 今日排程 -->
+      <div class="col-md-3">
+        <div class="card dashboard-card h-100">
+          <div class="card-body text-center d-flex flex-column justify-content-between">
+            <div>
+              <i class="fas fa-calendar-alt fa-2x mb-3 text-secondary"></i>
+              <h5 class="card-title">本月排程</h5>
+            </div>
+            <a href="schedule_overview.php" class="btn btn-secondary mt-3">查看排程</a>
+          </div>
+        </div>
+      </div>
+
     </div>
-  </div>
-</div>
 
-  </div>
-
-<!-- ========== 最近預約列表 ========== -->
-<h3 class="mb-4">最近預約</h3>
+    <!-- ========== 最近預約列表 ========== -->
+    <h3 class="mb-4">最近預約</h3>
     <div class="table-responsive">
       <table class="table table-hover">
         <thead>
@@ -304,65 +318,138 @@ $service_item_map = [
           </tr>
         </thead>
         <tbody>
-  <?php
-  // 查詢最近預約
-  $sql = "SELECT a.appointment_id, a.appointment_date, a.appointment_time, v.license_plate, a.service_items, a.status
-         FROM appointments a
-         JOIN vehicles v ON a.vehicle_id = v.vehicle_id
-         ORDER BY a.appointment_date DESC, a.appointment_time DESC";
-  $result = $conn->query($sql);
+          <?php
+          // 狀態對應樣式
+          $status_map = [
+            'pending' => '待確認',
+            'confirmed' => '已確認',
+            'repair' => '維修中',
+            'completed' => '已完成',
+            'cancelled' => '已取消',
+            'noshow' => '未到'
+          ];
+          $status_class_map = [
+            'pending' => 'bg-warning',
+            'confirmed' => 'bg-info',
+            'repair' => 'bg-primary',
+            'completed' => 'bg-success',
+            'cancelled' => 'bg-danger',
+            'noshow' => 'bg-dark'
+          ];
+          $service_item_map = [
+            'maintenance' => '一般檢修',
+            'inspection' => '年度檢查',
+            'cleaning' => '車輛清潔'
+          ];
 
-  if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-      echo "<tr>";
-      echo "<td>" . htmlspecialchars($row['appointment_date']) . "</td>";
-      echo "<td>" . htmlspecialchars($row['appointment_time']) . "</td>";
-      echo "<td>" . htmlspecialchars($row['license_plate']) . "</td>";
+          // 查詢預約
+          $sql = "SELECT a.appointment_id, a.appointment_date, a.appointment_time, v.license_plate, a.service_items, a.status
+              FROM appointments a
+              JOIN vehicles v ON a.vehicle_id = v.vehicle_id
+              ORDER BY a.appointment_date DESC, a.appointment_time DESC
+              LIMIT 10";
+          $result = $conn->query($sql);
 
-      // 中文維修項目
-      $items = explode(',', $row['service_items']);
-      $translated_items = [];
-      foreach ($items as $item) {
-        $item = trim($item);
-        $translated_items[] = $service_item_map[$item] ?? $item;
-      }
-      echo "<td>" . htmlspecialchars(implode('、', $translated_items)) . "</td>";
+          if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+              echo "<tr>";
+              echo "<td>" . htmlspecialchars($row['appointment_date']) . "</td>";
+              echo "<td>" . htmlspecialchars($row['appointment_time']) . "</td>";
+              echo "<td>" . htmlspecialchars($row['license_plate']) . "</td>";
 
-      // 狀態顏色與文字
-      $status = $row['status'];
-      $statusText = $status_map[$status] ?? '';
-      $statusClass = match($status) {
-        'pending' => 'bg-warning',
-        'confirmed' => 'bg-info',
-        'repair' => 'bg-primary',
-        'completed' => 'bg-success',
-        'cancelled' => 'bg-danger',
-        'noshow' => 'bg-dark',
+              // 維修項目中文轉換
+              $items = explode(',', $row['service_items']);
+              $translated_items = array_map(fn($i) => $service_item_map[trim($i)] ?? trim($i), $items);
+              echo "<td>" . htmlspecialchars(implode('、', $translated_items)) . "</td>";
 
-        default => 'bg-secondary'
-      };
-      echo "<td><span class='badge $statusClass status-badge'>$statusText</span></td>";
+              // 狀態顯示
+              $status = $row['status'];
+              $badge = $status_class_map[$status] ?? 'bg-secondary';
+              $text = $status_map[$status] ?? $status;
+              echo "<td><span class='badge $badge'>" . $text . "</span></td>";
 
-      // 操作按鈕
-      echo "<td>";
-      if ($status == 'pending') {
-          echo "<button class='btn btn-sm btn-outline-primary' onclick='confirmAppointment(" . $row['appointment_id'] . ")'>確認</button> ";
-          echo "<button class='btn btn-sm btn-outline-danger' onclick='cancelAppointment(" . $row['appointment_id'] . ")'>取消</button>";
-      } elseif ($status == 'confirmed') {
-          echo "<button class='btn btn-sm btn-outline-primary' onclick='startMaintenance(" . $row['appointment_id'] . ")'>開始維修</button>";
-      } elseif ($status == 'repair') {
-          echo "<button class='btn btn-sm btn-outline-success' onclick='completeMaintenance(" . $row['appointment_id'] . ")'>完成維修</button>";
-      }
-      echo "</td></tr>";
-    }
-  } else {
-    echo "<tr><td colspan='6' class='text-center'>最近無預約</td></tr>";
-  }
-  ?>
-</tbody>
-
+              // 操作按鈕
+              echo "<td>";
+              if ($status == 'pending') {
+                echo "<button class='btn btn-sm btn-outline-primary me-1' onclick='updateStatus(" . $row['appointment_id'] . ", \"confirmed\")'>確認</button>";
+                echo "<button class='btn btn-sm btn-outline-danger' onclick='updateStatus(" . $row['appointment_id'] . ", \"cancelled\")'>取消</button>";
+              } elseif ($status == 'confirmed') {
+                echo "<button class='btn btn-sm btn-outline-primary me-1' onclick='startRepair(" . $row['appointment_id'] . ")'>開始維修</button>";
+                echo "<button class='btn btn-sm btn-outline-dark' onclick='updateStatus(" . $row['appointment_id'] . ", \"noshow\")'>未到</button>";
+              } elseif ($status == 'repair') {
+                echo "<button class='btn btn-sm btn-outline-success me-1' onclick='updateStatus(" . $row['appointment_id'] . ", \"completed\")'>完成維修</button>";
+                echo "<button class='btn btn-sm btn-outline-dark' onclick='updateStatus(" . $row['appointment_id'] . ", \"noshow\")'>未到</button>";
+              }
+              echo "</td>";
+            }
+          } else {
+            echo "<tr><td colspan='6' class='text-center'>最近無預約</td></tr>";
+          }
+          ?>
+        </tbody>
       </table>
     </div>
+
+
+    <!-- JS 功能：狀態更新與開始維修 -->
+    <script>
+      function updateStatus(id, status) {
+        if (confirm('是否更新狀態為 "' + status + '"？')) {
+          fetch('api/updateAppointmentStatus.php', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                appointment_id: id,
+                status: status
+              })
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data.success) {
+                alert('更新成功');
+                location.reload();
+              } else {
+                alert('錯誤：' + data.message);
+              }
+            })
+            .catch(err => {
+              console.error('錯誤：', err);
+              alert('更新失敗');
+            });
+        }
+      }
+
+      function startRepair(id) {
+        if (confirm('開始維修並建立估價單？')) {
+          fetch('api/startRepair.php', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                appointment_id: id
+              })
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data.success) {
+                window.location.href = `admin_create_estimate.php?estimate_id=${data.estimate_id}&license_plate=${encodeURIComponent(data.license_plate)}`;
+              } else {
+                alert('錯誤：' + data.message);
+              }
+            })
+            .catch(err => {
+              console.error('錯誤：', err);
+              alert('系統錯誤');
+            });
+        }
+      }
+    </script>
+
+    </script>
+
 
 
     <!-- 系統概況區塊 -->
@@ -416,6 +503,7 @@ $service_item_map = [
   <!-- 引入管理後台專用 JavaScript -->
   <script src="assets/js/admin_dashboard.js"></script>
 </body>
+
 </html>
 <?php
 // 關閉資料庫連線，釋放資源

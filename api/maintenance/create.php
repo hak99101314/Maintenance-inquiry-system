@@ -18,9 +18,8 @@ try {
 
     $data = $_POST;
 
-    // 驗證基本欄位
-    if (empty($data['owner']) || empty($data['plate_number']) || empty($data['date'])) {
-        echo json_encode(['status' => 'error', 'message' => '請填寫車主、車號與日期']);
+    if (empty($data['vehicle_id']) || empty($data['repair_date'])) {
+        echo json_encode(['status' => 'error', 'message' => '請填寫車輛與維修日期']);
         exit();
     }
 
@@ -34,39 +33,35 @@ try {
         exit();
     }
 
-    // 1. 插入維修單
+    // 1. 插入維修主表 maintenance_records
     $stmt = $pdo->prepare("
-        INSERT INTO repair_orders 
-        (owner, phone, mobile, plate_number, car_model, year, repair_date, mileage, recommendations, customer_signature, total_cost)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO maintenance_records 
+        (vehicle_id, repair_date, mileage, recommendations, customer_signature, total_cost, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, NOW())
     ");
 
     $stmt->execute([
-        $data['owner'], 
-        $data['phone'], 
-        $data['mobile'], 
-        $data['plate_number'], 
-        $data['car_model'], 
-        $data['year'], 
-        $data['date'], 
-        $data['mileage'], 
-        $data['suggestions'], 
-        $data['customer_signature'], 
+        $data['vehicle_id'],
+        $data['repair_date'],
+        $data['mileage'],
+        $data['suggestions'],
+        $data['customer_signature'],
         $data['total_amount']
     ]);
 
-    $orderId = $pdo->lastInsertId();
+    $recordId = $pdo->lastInsertId();
 
-    // 2. 插入維修項目
+    // 2. 插入維修明細 maintenance_items
     $stmt = $pdo->prepare("
-        INSERT INTO repair_items (order_id, repair_item, specification, quantity, unit_price, subtotal, notes)
+        INSERT INTO maintenance_items 
+        (record_id, item_name, specification, quantity, unit_price, subtotal, notes)
         VALUES (?, ?, ?, ?, ?, ?, ?)
     ");
 
-    foreach ($data['item'] as $index => $item) {
+    foreach ($data['item'] as $index => $itemName) {
         $stmt->execute([
-            $orderId,
-            $data['item'][$index],
+            $recordId,
+            $itemName,
             $data['spec'][$index] ?? '',
             $data['quantity'][$index] ?? 0,
             $data['price'][$index] ?? 0,

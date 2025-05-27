@@ -70,5 +70,5 @@ document.addEventListener('DOMContentLoaded', loadUsers);
 function logout() {
     localStorage.clear();
     alert('您已成功登出，請重新登入');
-    window.location.href = 'login.html';
+    window.location.href = 'login.php';
 }

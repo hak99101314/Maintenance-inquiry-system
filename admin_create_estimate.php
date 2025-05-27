@@ -1,0 +1,384 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'staff'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$host = "localhost";
+$dbname = "睿煬企業社";
+$username = "root";
+$password = "karry,roy,jackson";
+$conn = new mysqli($host, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("連線失敗：" . $conn->connect_error);
+}
+
+require_once __DIR__ . '/send_email.php';
+
+$message = "";
+$usersWithVehicles = [];
+
+$appointment_user_id = null;
+$appointment_plate = null;
+$appointment_user_name = null;
+$maintenance_records = [];
+
+if (isset($_GET['appointment_id'])) {
+    $aid = intval($_GET['appointment_id']);
+    $stmt = $conn->prepare("
+        SELECT u.user_id, u.full_name, v.license_plate
+        FROM appointments a
+        JOIN vehicles v ON a.vehicle_id = v.vehicle_id
+        JOIN users u ON v.owner_id = u.user_id
+        WHERE a.appointment_id = ?
+    ");
+    $stmt->bind_param("i", $aid);
+    $stmt->execute();
+    $stmt->bind_result($appointment_user_id, $appointment_user_name, $appointment_plate);
+    $stmt->fetch();
+    $stmt->close();
+
+    // 查詢該車歷史維修紀錄
+    $stmt = $conn->prepare("
+        SELECT r.record_id, r.repair_date, r.mileage, r.recommendations, r.total_cost,
+               i.item_name, i.quantity, i.unit_price
+        FROM maintenance_records r
+        LEFT JOIN vehicles v ON r.vehicle_id = v.vehicle_id
+        LEFT JOIN maintenance_items i ON r.record_id = i.record_id
+        WHERE v.license_plate = ?
+        ORDER BY r.repair_date DESC, r.record_id
+    ");
+    $stmt->bind_param("s", $appointment_plate);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $rid = $row['record_id'];
+        if (!isset($maintenance_records[$rid])) {
+            $maintenance_records[$rid] = [
+                'repair_date' => $row['repair_date'],
+                'mileage' => $row['mileage'],
+                'recommendations' => $row['recommendations'],
+                'total_cost' => $row['total_cost'],
+                'items' => []
+            ];
+        }
+        $maintenance_records[$rid]['items'][] = [
+            'name' => $row['item_name'],
+            'qty' => $row['quantity'],
+            'price' => $row['unit_price']
+        ];
+    }
+    $stmt->close();
+}
+
+$sql = "
+    SELECT u.user_id, u.full_name, v.license_plate
+    FROM users u
+    LEFT JOIN vehicles v ON u.user_id = v.owner_id
+    WHERE u.role = 'customer'
+    ORDER BY u.full_name, v.license_plate
+";
+$result = $conn->query($sql);
+while ($row = $result->fetch_assoc()) {
+    $uid = $row['user_id'];
+    $usersWithVehicles[$uid]['name'] = $row['full_name'];
+    if (!empty($row['license_plate'])) {
+        $usersWithVehicles[$uid]['plates'][] = $row['license_plate'];
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $license_plate = $_POST['license_plate'] ?? $_POST['license_plate_hidden'] ?? '';
+    $items = $_POST['items'];
+    $total_price = floatval($_POST['total_price']);
+
+    $stmt = $conn->prepare("SELECT owner_id FROM vehicles WHERE license_plate = ?");
+    $stmt->bind_param("s", $license_plate);
+    $stmt->execute();
+    $stmt->bind_result($member_id);
+    $stmt->fetch();
+    $stmt->close();
+
+    if ($member_id) {
+        $insert = $conn->prepare("INSERT INTO estimates (member_id, license_plate, items, total_price, created_by) VALUES (?, ?, ?, ?, ?)");
+        $insert->bind_param("issdi", $member_id, $license_plate, $items, $total_price, $_SESSION['user_id']);
+        if ($insert->execute()) {
+            $estimate_id = $insert->insert_id;
+            $message = "✅ 估價單新增成功！";
+
+            $names = $_POST['item_name'];
+            $specs = $_POST['item_spec'];
+            $qtys = $_POST['item_qty'];
+            $prices = $_POST['item_price'];
+            $notes = $_POST['item_note'];
+
+            $itemInsert = $conn->prepare("INSERT INTO estimates_items (estimate_id, item_name, specification, quantity, unit_price, subtotal, note) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            for ($i = 0; $i < count($names); $i++) {
+                $q = intval($qtys[$i]);
+                $p = floatval($prices[$i]);
+                $sub = $q * $p;
+                $itemInsert->bind_param("issiids", $estimate_id, $names[$i], $specs[$i], $q, $p, $sub, $notes[$i]);
+                $itemInsert->execute();
+            }
+            $itemInsert->close();
+
+            // 發送 email 通知會員
+            $stmt = $conn->prepare("SELECT full_name, email FROM users WHERE user_id = ?");
+            $stmt->bind_param("i", $member_id);
+            $stmt->execute();
+            $stmt->bind_result($full_name, $email);
+            $stmt->fetch();
+            $stmt->close();
+
+            if (!empty($email)) {
+                $subject = "【睿煬企業社】您的維修估價單已建立";
+                $body = "
+                    親愛的 {$full_name} 您好：<br><br>
+                    您的估價單已成功建立。<br>
+                    車牌：<strong>{$license_plate}</strong><br>
+                    總金額：<strong>NT$" . number_format($total_price) . "</strong><br><br>
+                    如有疑問，請與我們聯繫。<br><br>
+                    睿煬企業社 敬上
+                ";
+                sendEmail($email, $full_name, $subject, $body);
+            }
+        }
+        $insert->close();
+    }
+}
+$conn->close();
+?>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>新增估價單 - 睿煬企業社</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+      background-color: #f5f6fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .form-container {
+      max-width: 800px;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.05);
+      margin: 40px auto;
+    }
+    h2 {
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #2c3e50;
+      border-bottom: 2px solid #f1c40f;
+      padding-bottom: 10px;
+    }
+    label {
+      font-weight: bold;
+    }
+    .btn-primary {
+      background-color: #2c3e50;
+      border: none;
+    }
+    .btn-primary:hover {
+      background-color: #f1c40f;
+      color: #2c3e50;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="form-container">
+  <h2>🧾 新增估價單</h2>
+
+  <?php if ($message): ?>
+    <div class="alert alert-info"><?= htmlspecialchars($message) ?></div>
+  <?php endif; ?>
+
+
+
+ <?php if ($appointment_user_id): ?>
+  <input type="hidden" name="member_id" value="<?= htmlspecialchars($appointment_user_id) ?>">
+  <input type="hidden" name="license_plate" value="<?= htmlspecialchars($appointment_plate) ?>">
+<?php endif; ?>
+  <div class="mb-3">
+  <label>👤 選擇會員</label>
+  <select name="member_id" id="memberSelect" class="form-select" onchange="updatePlates()" <?= $appointment_user_id ? 'readonly disabled' : '' ?> required>
+    <option value="">請選擇會員</option>
+    <?php foreach ($usersWithVehicles as $uid => $data): ?>
+      <option value="<?= $uid ?>" <?= ($appointment_user_id == $uid) ? 'selected' : '' ?>>
+        <?= htmlspecialchars($data['name']) ?>
+      </option>
+    <?php endforeach; ?>
+  </select>
+</div>
+<div class="mb-3">
+  <label>🚗 選擇車牌</label>
+  <select name="license_plate" id="plateSelect" class="form-select" <?= $appointment_plate ? 'readonly disabled' : '' ?> required>
+    <?php if ($appointment_plate): ?>
+      <option value="<?= htmlspecialchars($appointment_plate) ?>" selected><?= htmlspecialchars($appointment_plate) ?></option>
+    <?php else: ?>
+      <option value="">請先選擇會員</option>
+    <?php endif; ?>
+  </select>
+</div>
+
+
+  <div class="mb-3">
+    <label>📋 維修項目明細</label>
+    <div class="table-responsive">
+      <table class="table table-bordered text-center align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>維修項目</th>
+            <th>規格</th>
+            <th>數量</th>
+            <th>單價</th>
+            <th>小計</th>
+            <th>備註</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="itemsBody">
+          <tr>
+            <td><input type="text" class="form-control" name="item_name[]"></td>
+            <td><input type="text" class="form-control" name="item_spec[]"></td>
+            <td><input type="number" class="form-control" name="item_qty[]" oninput="calculateSubtotal(this)"></td>
+            <td><input type="number" class="form-control" name="item_price[]" oninput="calculateSubtotal(this)"></td>
+            <td><input type="number" class="form-control" name="item_total[]" readonly></td>
+            <td><input type="text" class="form-control" name="item_note[]"></td>
+            <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">刪除</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button type="button" class="btn btn-secondary btn-sm" onclick="addRow()">➕ 新增項目</button>
+  </div>
+
+  <input type="hidden" name="items" id="items">
+
+  <div class="mb-3">
+    <label>💰 總金額 (NT$)</label>
+    <input type="number" name="total_price" id="total_price" class="form-control" required min="0" step="1" readonly>
+  </div>
+
+  <div class="d-flex justify-content-between mt-4">
+    <a href="<?= ($_SESSION['role'] === 'admin') ? 'admin_dashboard.php' : 'staff_dashboard.php' ?>" class="btn btn-secondary">
+      ← 返回後台
+    </a>
+    <button type="button" class="btn btn-primary" onclick="confirmSubmit()">送出估價單</button>
+  </div>
+</form>
+<script>
+const userVehicles = <?= json_encode($usersWithVehicles) ?>;
+// 在頁尾 updatePlates() 函式加上判斷：若是自動帶入就不執行
+function updatePlates() {
+  const plateSelect = document.getElementById('plateSelect');
+  if (!plateSelect || plateSelect.disabled) return;
+
+  const memberId = document.getElementById('memberSelect').value;
+  plateSelect.innerHTML = '';
+
+  if (!memberId || !userVehicles[memberId]) {
+    plateSelect.innerHTML = '<option value="">請先選擇會員</option>';
+    return;
+  }
+
+  const plates = userVehicles[memberId]['plates'] || [];
+  if (plates.length === 0) {
+    plateSelect.innerHTML = '<option value="">此會員尚無車輛</option>';
+  } else {
+    plateSelect.innerHTML = '<option value="">請選擇車牌</option>';
+    plates.forEach(plate => {
+      const opt = document.createElement('option');
+      opt.value = plate;
+      opt.text = plate;
+      plateSelect.appendChild(opt);
+    });
+  }
+}
+
+
+function addRow() {
+  const tbody = document.getElementById("itemsBody");
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td><input type="text" class="form-control" name="item_name[]"></td>
+    <td><input type="text" class="form-control" name="item_spec[]"></td>
+    <td><input type="number" class="form-control" name="item_qty[]" oninput="calculateSubtotal(this)"></td>
+    <td><input type="number" class="form-control" name="item_price[]" oninput="calculateSubtotal(this)"></td>
+    <td><input type="number" class="form-control" name="item_total[]" readonly></td>
+    <td><input type="text" class="form-control" name="item_note[]"></td>
+    <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">刪除</button></td>
+  `;
+  tbody.appendChild(row);
+}
+
+function removeRow(button) {
+  const row = button.closest("tr");
+  row.remove();
+  updateTotal();
+}
+
+function calculateSubtotal(input) {
+  const row = input.closest("tr");
+  const qty = parseFloat(row.querySelector("input[name='item_qty[]']").value) || 0;
+  const price = parseFloat(row.querySelector("input[name='item_price[]']").value) || 0;
+  const subtotal = qty * price;
+  row.querySelector("input[name='item_total[]']").value = subtotal.toFixed(0);
+  updateTotal();
+}
+
+function updateTotal() {
+  let total = 0;
+  document.querySelectorAll("input[name='item_total[]']").forEach(input => {
+    total += parseFloat(input.value) || 0;
+  });
+  document.getElementById("total_price").value = total.toFixed(0);
+}
+
+function confirmSubmit() {
+  const rows = document.querySelectorAll("#itemsBody tr");
+  let itemDetails = [];
+
+  rows.forEach(row => {
+    const name = row.querySelector("input[name='item_name[]']").value.trim();
+    const spec = row.querySelector("input[name='item_spec[]']").value.trim();
+    const qty = row.querySelector("input[name='item_qty[]']").value || 0;
+    const price = row.querySelector("input[name='item_price[]']").value || 0;
+    const total = row.querySelector("input[name='item_total[]']").value || 0;
+    const note = row.querySelector("input[name='item_note[]']").value.trim();
+    const text = `${name}（${spec}）×${qty} @${price}元 = ${total}元${note ? '，備註：' + note : ''}`;
+    itemDetails.push(text);
+  });
+
+  document.getElementById('items').value = itemDetails.join("\n");
+
+  Swal.fire({
+    title: '確認送出',
+    text: "請再次確認估價單資料是否正確",
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#2c3e50',
+    cancelButtonColor: '#888',
+    confirmButtonText: '送出',
+    cancelButtonText: '取消'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      document.getElementById('estimateForm').submit();
+    }
+  });
+}
+</script>
+
+</body>
+</html>
