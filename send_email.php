@@ -1,6 +1,9 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+// 關閉 Deprecated 警告，防止污染 JSON 輸出
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+ini_set('display_errors', 0);
 
 // 載入 Composer autoload
 require 'vendor/autoload.php';

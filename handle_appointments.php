@@ -130,13 +130,13 @@ $status_map = [
                 <td>
   <?php if ($a['status'] === 'pending'): ?>
     <button class="btn btn-sm btn-success" onclick="updateStatus(<?= $a['id'] ?>, 'confirmed')">確認</button>
-    <button class="btn btn-sm btn-danger" onclick="updateStatus(<?= $a['id'] ?>, 'cancelled')">取消</button>
+    <button class="btn btn-sm btn-outline-danger" onclick="cancelAppointment(<?= $row['appointment_id'] ?>)">取消</button>
     <?php if ($a['appointment_date'] === $today): ?>
       <button class="btn btn-sm btn-secondary" onclick="updateStatus(<?= $a['id'] ?>, 'noshow')">未到</button>
     <?php endif; ?>
   <?php elseif ($a['status'] === 'confirmed'): ?>
     <a href="admin_create_estimate.php?appointment_id=<?= $a['id'] ?>" class="btn btn-sm btn-primary">開始維修</a>
-    <button class="btn btn-sm btn-danger" onclick="updateStatus(<?= $a['id'] ?>, 'cancelled')">取消</button>
+    <button class="btn btn-sm btn-outline-danger" onclick="cancelAppointment(<?= $row['appointment_id'] ?>)">取消</button>
     <?php if ($a['appointment_date'] === $today): ?>
       <button class="btn btn-sm btn-secondary" onclick="updateStatus(<?= $a['id'] ?>, 'noshow')">未到</button>
     <?php endif; ?>

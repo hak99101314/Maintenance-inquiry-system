@@ -193,24 +193,27 @@ $status_class_map = [
                 <td>
                   <?= $a['is_blacklisted'] ? '<span class="text-danger fw-bold">是</span>' : '否' ?>
                   <?php if ($a['is_blacklisted']): ?>
-                    <button class="btn btn-sm btn-outline-danger mt-1" onclick="unblockUser(<?= $a['id'] ?>)">解除</button>
+                    <button class="btn btn-sm btn-outline-danger mt-1" onclick="unblockUser(<?= $a['user_id'] ?>)">解除</button>
+
                   <?php endif; ?>
                 </td>
                <td>
   <?php if ($a['status'] === 'pending'): ?>
     <button class="btn btn-sm btn-success" onclick="updateStatus(<?= $a['id'] ?>, 'confirmed')">確認</button>
-    <button class="btn btn-sm btn-danger" onclick="updateStatus(<?= $a['id'] ?>, 'cancelled')">取消</button>
+    <button class="btn btn-sm btn-outline-danger" onclick="cancelAppointment(<?= $a['id'] ?>)">取消</button>
     <?php if ($a['appointment_date'] === $today): ?>
       <button class="btn btn-sm btn-secondary" onclick="updateStatus(<?= $a['id'] ?>, 'noshow')">未到</button>
     <?php endif; ?>
+  
   <?php elseif ($a['status'] === 'confirmed'): ?>
     <a href="admin_create_estimate.php?appointment_id=<?= $a['id'] ?>" class="btn btn-sm btn-primary">開始維修</a>
-    <button class="btn btn-sm btn-danger" onclick="updateStatus(<?= $a['id'] ?>, 'cancelled')">取消</button>
+    <button class="btn btn-sm btn-outline-danger" onclick="cancelAppointment(<?= $a['id'] ?>)">取消</button>
     <?php if ($a['appointment_date'] === $today): ?>
       <button class="btn btn-sm btn-secondary" onclick="updateStatus(<?= $a['id'] ?>, 'noshow')">未到</button>
     <?php endif; ?>
   <?php endif; ?>
 </td>
+
               </tr>
             <?php endforeach; ?>
           </tbody>
@@ -218,7 +221,65 @@ $status_class_map = [
       </div>
     </div>
   </div>
+  <!-- 引入 SweetAlert2 函式庫 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <script>
+    document.addEventListener('DOMContentLoaded', function () {
+  window.cancelAppointment = function(id) {
+  console.log("正在執行取消邏輯 for appointment_id:", id); // debug 用
+
+ Swal.fire({
+    title: '確定要取消嗎？',
+    text: '此操作將取消該筆預約並釋放名額',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: '是，取消',
+    cancelButtonText: '不'
+  }).then((result) => {
+    if (!result.isConfirmed) return;
+
+    fetch('api/updateAppointmentStatus.php', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ appointment_id: id, status: 'cancelled' })
+})
+.then(res => res.text()) // 🔁 先拿原始文字
+.then(text => {
+  console.log("Raw response:", text); // ✅ 看這裡是否為純 JSON
+  const data = JSON.parse(text);
+  if (data.success) {
+    Swal.fire('✅ 已更新', '', 'success').then(() => location.reload());
+  } else {
+    Swal.fire('操作失敗', data.message || '請稍後再試', 'error');
+  }
+})
+.catch(err => {
+  console.error("解析錯誤：", err);
+  Swal.fire('系統錯誤', '請稍後再試', 'error');
+})
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        Swal.fire({
+          icon: 'success',
+          title: '已取消',
+          text: '該預約已取消並釋放名額',
+          timer: 1500,
+          showConfirmButton: false
+        });
+        setTimeout(() => location.reload(), 1600);
+      } else {
+        Swal.fire('操作失敗', data.message || '請稍後再試', 'error');
+      }
+    })
+    .catch(() => {
+      Swal.fire('系統錯誤', '請稍後再試', 'error');
+    });
+  });
+}
+});
+
     function updateStatus(id, status) {
       if (confirm(`是否將狀態設為「${status}」？`)) {
         fetch('api/updateAppointmentStatus.php', {
@@ -267,26 +328,23 @@ $status_class_map = [
       }
     }
 
-    function unblockUser(id) {
-      if (confirm('確定要解除黑名單？')) {
-        fetch('api/unblockUser.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            appointment_id: id
-          })
-        }).then(r => r.json()).then(data => {
-          if (data.success) {
-            alert('已解除黑名單');
-            location.reload();
-          } else {
-            alert('解除失敗：' + data.message);
-          }
-        });
-      }
+    function unblockUser(userId) {
+  fetch('api/unblockUser.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_id: userId })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert('✅ 已成功解除黑名單');
+      location.reload();
+    } else {
+      alert('❌ 解除失敗：' + data.message);
     }
+  });
+}
+
   </script>
 </body>
 

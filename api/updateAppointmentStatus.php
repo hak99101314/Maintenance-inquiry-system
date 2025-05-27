@@ -76,7 +76,7 @@ if (!$success) {
 
 // 若是確認狀態，寄送 Email 通知
 if ($status === 'confirmed') {
-   require_once 'send_email.php';
+   require_once __DIR__ . '/../send_email.php';
 
     $query = $conn->prepare("
         SELECT u.email, u.full_name, a.appointment_date, a.appointment_time, a.service_items
@@ -125,7 +125,7 @@ if ($status === 'confirmed') {
     }
 }
 if ($status === 'cancelled') {
-    require_once 'send_email.php';
+    require_once __DIR__ . '/../send_email.php';
 
     $query = $conn->prepare("
         SELECT u.email, u.full_name, a.appointment_date, a.appointment_time, a.service_items
@@ -146,6 +146,16 @@ if ($status === 'cancelled') {
         $time = $info['appointment_time'];
         $service = $info['service_items'];
 
+        $map = [
+            'maintenance' => '一般檢修',
+            'inspection' => '年度檢查',
+            'cleaning' => '車輛清潔'
+        ];
+        $items = array_map(function($i) use ($map) {
+            return $map[trim($i)] ?? $i;
+        }, explode(',', $info['service_items']));
+        $service = implode('、', $items);
+
         $subject = "【睿煬企業社】預約已取消";
         $body = "
             <div style='font-family:Arial,sans-serif; background:#fffbe7; padding:20px; border-radius:8px; max-width:600px; margin:auto; color:#333;'>
@@ -164,7 +174,7 @@ if ($status === 'cancelled') {
     }
 }
 if ($status === 'noshow') {
-    require_once 'send_email.php';
+    require_once __DIR__ . '/../send_email.php';
 
     $query = $conn->prepare("
         SELECT u.email, u.full_name, a.appointment_date, a.appointment_time, a.service_items
@@ -203,14 +213,23 @@ if ($status === 'noshow') {
     }
 }
 
-
 // 處理未到（noshow）與黑名單邏輯
 if ($status === 'noshow') {
-    // 累加未到次數
-    $stmt = $conn->prepare("UPDATE users SET no_show_count = no_show_count + 1 WHERE user_id = ?");
-    $stmt->bind_param("i", $customer_id);
+    // 防止同一筆預約重複累加
+    $stmt = $conn->prepare("SELECT status FROM appointments WHERE appointment_id = ?");
+    $stmt->bind_param("i", $appointment_id);
     $stmt->execute();
+    $stmt->bind_result($current_status);
+    $stmt->fetch();
     $stmt->close();
+
+    if ($current_status !== 'noshow') {
+        // 累加未到次數
+        $stmt = $conn->prepare("UPDATE users SET no_show_count = no_show_count + 1 WHERE user_id = ?");
+        $stmt->bind_param("i", $customer_id);
+        $stmt->execute();
+        $stmt->close();
+    }
 
     // 查詢目前未到次數
     $stmt = $conn->prepare("SELECT no_show_count FROM users WHERE user_id = ?");
@@ -220,22 +239,25 @@ if ($status === 'noshow') {
     $stmt->fetch();
     $stmt->close();
 
-    // 超過 3 次未到且不在黑名單
+    // 超過 3 次未到且尚未加入黑名單
     if ($count >= 3) {
         $stmt = $conn->prepare("SELECT id FROM appointment_blacklist WHERE user_id = ?");
         $stmt->bind_param("i", $customer_id);
         $stmt->execute();
         $stmt->store_result();
-        if ($stmt->num_rows === 0) {
-            $stmt->close();
+        $is_blacklisted = $stmt->num_rows > 0;
+        $stmt->close();
+
+        if (!$is_blacklisted) {
             $stmt = $conn->prepare("INSERT INTO appointment_blacklist (user_id, reason) VALUES (?, '預約未到達超過3次')");
             $stmt->bind_param("i", $customer_id);
             $stmt->execute();
-        } else {
             $stmt->close();
         }
     }
 }
 
+
 $conn->close();
 echo json_encode(['success' => true, 'message' => '狀態更新成功']);
+?>

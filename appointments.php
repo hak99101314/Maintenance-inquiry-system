@@ -264,25 +264,33 @@ document.addEventListener('DOMContentLoaded', function () {
     }).then((result) => {
       if (!result.isConfirmed) return;
       fetch('api/checkAvailableSlots.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ date: formData.date, time: formData.time }),
-        credentials: 'include'
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success && data.available_slots > 0) {
-          return fetch('api/createAppointment.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
-            credentials: 'include'
-          });
-        } else {
-          Swal.fire({ icon: 'error', title: '人數已滿', text: '請選擇其他時段' });
-          throw new Error("Slot full");
-        }
-      })
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ date: formData.date, time: formData.time }),
+  credentials: 'include'
+})
+.then(res => res.json())
+.then(data => {
+  if (data.success && data.available_slots > 0) {
+    return fetch('api/createAppointment.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+      credentials: 'include'
+    });
+  } else {
+    // ❌ 預約已滿，更新文字提示
+    slotInfo.textContent = '此時段已滿，請選擇其他時間';
+    slotInfo.style.color = '#dc3545';
+
+    Swal.fire({
+      icon: 'error',
+      title: '預約失敗',
+      text: `此時段已滿，剩餘名額：${data.available_slots || 0}`
+    });
+    throw new Error("Slot full");
+  }
+})
       .then(res => res.json())
       .then(data => {
         if (data.success) {
