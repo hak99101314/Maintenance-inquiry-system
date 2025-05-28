@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 // ========== 資料庫連線設定 ==========
 $servername  = "localhost";
 $dbUsername  = "root";
-$dbPassword  = "karry,roy,jackson";
+$dbPassword  = "";
 $dbName      = "睿煬企業社";
 
 // 建立資料庫連線

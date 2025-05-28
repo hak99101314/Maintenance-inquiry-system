@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $appointment_id = $_POST['appointment_id'];
 
     // 連接到數據庫
-    $conn = new mysqli("localhost", "root", "karry,roy,jackson", "睿煬企業社");
+    $conn = new mysqli("localhost", "root", "", "睿煬企業社");
 
     // 檢查連接
     if ($conn->connect_error) {

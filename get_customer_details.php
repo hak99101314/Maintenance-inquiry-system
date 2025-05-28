@@ -14,7 +14,7 @@ if (!isset($_SESSION['user_id'])) {
 // 資料庫連線設定
 $servername = "localhost";               // 資料庫伺服器位置
 $dbUsername = "root";                    // 資料庫使用者名稱
-$dbPassword = "karry,roy,jackson";        // 資料庫密碼
+$dbPassword = "";        // 資料庫密碼
 $dbName = "睿煬企業社";                   // 資料庫名稱
 
 // 建立 MySQLi 連線

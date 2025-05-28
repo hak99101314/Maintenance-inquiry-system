@@ -11,7 +11,7 @@ header('Content-Type: application/json');
 // 設定資料庫連線參數
 $servername = "localhost";    // 資料庫伺服器位址
 $username = "root";          // 資料庫使用者名稱
-$password = "karry,roy,jackson";              // 資料庫密碼
+$password = "";              // 資料庫密碼
 $dbname = "睿煬企業社";      // 資料庫名稱
 
 // ========== 請求資料處理 ==========

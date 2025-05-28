@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'staf
 }
 
 // 資料庫連線
-$conn = new mysqli("localhost", "root", "karry,roy,jackson", "睿煬企業社");
+$conn = new mysqli("localhost", "root", "", "睿煬企業社");
 if ($conn->connect_error) die("連線失敗：" . $conn->connect_error);
 
 // 取得 record_id

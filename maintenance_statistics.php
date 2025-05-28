@@ -2,7 +2,7 @@
 // 資料庫連線設定
 $servername = "localhost";
 $username = "root";
-$password = "karry,roy,jackson";
+$password = "";
 $dbname = "睿煬企業社";
 
 // 建立連線
