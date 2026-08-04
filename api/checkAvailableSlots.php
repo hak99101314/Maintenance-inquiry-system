@@ -6,7 +6,7 @@ header("Content-Type: application/json");
 // ====== 資料庫連線設定 ======
 $servername = "localhost";
 $dbUsername = "root";
-$dbPassword = "";
+$dbPassword = "karry,roy,jackson";
 $dbName     = "睿煬企業社";
 
 // 建立連線

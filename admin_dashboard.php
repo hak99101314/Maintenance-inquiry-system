@@ -14,7 +14,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 // ========== 資料庫連線設定 ==========
 $servername = "localhost";
 $dbUsername = "root";
-$dbPassword = ""; // ← 填入你真正的密碼
+$dbPassword = "karry,roy,jackson"; // ← 填入你真正的密碼
 $dbName     = "睿煬企業社";
 
 $conn = new mysqli($servername, $dbUsername, $dbPassword, $dbName);

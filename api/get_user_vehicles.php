@@ -6,7 +6,7 @@ session_start();
 $host = 'localhost';
 $dbname = '睿煬企業社';
 $username = 'root';
-$password = '';
+$password = 'karry,roy,jackson';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);

@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 
-$pdo = new PDO('mysql:host=localhost;dbname=睿煬企業社', 'root', '');
+$pdo = new PDO('mysql:host=localhost;dbname=睿煬企業社', 'root', 'karry,roy,jackson');
 $data = json_decode(file_get_contents('php://input'), true);
 
 if (empty($data['token']) || empty($data['password'])) {

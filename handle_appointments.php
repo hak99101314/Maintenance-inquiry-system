@@ -12,7 +12,7 @@ if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'staf
 
 $servername = "localhost";
 $dbUsername = "root";
-$dbPassword = "";
+$dbPassword = "karry,roy,jackson";
 $dbName = "睿煬企業社";
 
 $conn = new mysqli($servername, $dbUsername, $dbPassword, $dbName);

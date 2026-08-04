@@ -13,7 +13,7 @@ $user_id = $_SESSION['user_id']; // 取得登入的會員 ID
 // 資料庫連線
 $servername = "localhost";
 $username = "root";
-$password = "";
+$password = "karry,roy,jackson";
 $dbname = "睿煬企業社";
 
 $conn = new mysqli($servername, $username, $password, $dbname);

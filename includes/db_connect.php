@@ -2,7 +2,7 @@
 // 資料庫連線設定
 $servername = "localhost";
 $username = "root";  // 預設的 XAMPP MySQL 用戶名
-$password = "";      // 預設的 XAMPP MySQL 密碼
+$password = "karry,roy,jackson";      // 預設的 XAMPP MySQL 密碼
 $dbname = "睿煬企業社";  // 您的資料庫名稱
 
 // 建立資料庫連線

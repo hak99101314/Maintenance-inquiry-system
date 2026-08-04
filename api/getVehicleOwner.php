@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 try {
-    $pdo = new PDO('mysql:host=localhost;dbname=睿煬企業社;charset=utf8mb4', 'root', '');
+    $pdo = new PDO('mysql:host=localhost;dbname=睿煬企業社;charset=utf8mb4', 'root', 'karry,roy,jackson');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $data = json_decode(file_get_contents('php://input'), true);

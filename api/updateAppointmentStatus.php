@@ -36,7 +36,7 @@ if (!in_array($status, $valid_statuses)) {
 }
 
 // 資料庫連線
-$conn = new mysqli("localhost", "root", "", "睿煬企業社");
+$conn = new mysqli("localhost", "root", "karry,roy,jackson", "睿煬企業社");
 if ($conn->connect_error) {
     echo json_encode(['success' => false, 'message' => '資料庫連線失敗']);
     exit();

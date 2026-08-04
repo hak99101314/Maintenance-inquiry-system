@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-$pdo = new PDO('mysql:host=localhost;dbname=睿煬企業社', 'root', '');
+$pdo = new PDO('mysql:host=localhost;dbname=睿煬企業社', 'root', 'karry,roy,jackson');
 
 $stmt = $pdo->query("SELECT part_name, quantity FROM purchase_records");
 $inventory = $stmt->fetchAll(PDO::FETCH_ASSOC);

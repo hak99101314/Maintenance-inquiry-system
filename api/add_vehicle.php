@@ -20,7 +20,7 @@ $user_id = $_SESSION['user_id'];
 // 設定資料庫連線參數
 $servername = "localhost";    // 資料庫伺服器位址
 $username = "root";          // 資料庫使用者名稱
-$password = "";              // 資料庫密碼
+$password = "karry,roy,jackson";              // 資料庫密碼
 $dbname = "睿煬企業社";      // 資料庫名稱
 
 // 建立資料庫連線，並檢查連線是否成功

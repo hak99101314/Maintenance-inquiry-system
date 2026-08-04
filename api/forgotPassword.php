@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 
 // 資料庫連接
-$pdo = new PDO('mysql:host=localhost;dbname=睿煬企業社', 'root', '');
+$pdo = new PDO('mysql:host=localhost;dbname=睿煬企業社', 'root', 'karry,roy,jackson');
 
 $data = json_decode(file_get_contents('php://input'), true);
 if (empty($data['email'])) {

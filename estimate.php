@@ -5,7 +5,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'customer') {
     exit();
 }
 
-$conn = new mysqli("localhost", "root", "", "睿煬企業社");
+$conn = new mysqli("localhost", "root", "karry,roy,jackson", "睿煬企業社");
 if ($conn->connect_error) {
     die("連線失敗：" . $conn->connect_error);
 }
